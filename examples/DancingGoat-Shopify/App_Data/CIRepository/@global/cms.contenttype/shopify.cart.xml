@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.contenttype>
+  <ClassContentTypeType>Website</ClassContentTypeType>
+  <ClassDisplayName>Shopify cart</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="ContentItemDataID" columntype="integer" enabled="true" guid="3ed75a2a-68bb-4c8a-a923-af26405634bb" isPK="true" />
+      <field column="ContentItemDataCommonDataID" columntype="integer" enabled="true" guid="9b70a281-8faa-495b-948e-c3135d0dae66" refobjtype="cms.contentitemcommondata" reftype="Required" system="true" />
+      <field column="ContentItemDataGUID" columntype="guid" enabled="true" guid="9ab8120c-8893-4c18-8de9-7816651b7a97" isunique="true" system="true" />
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>50ea51ef-c58f-4cd9-bd32-9d9285ac908c</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassIconClass>xp-shopping-cart</ClassIconClass>
+  <ClassName>Shopify.Cart</ClassName>
+  <ClassTableName>Shopify_Cart</ClassTableName>
+  <ClassType>Content</ClassType>
+  <ClassWebPageHasUrl>True</ClassWebPageHasUrl>
+</cms.contenttype>

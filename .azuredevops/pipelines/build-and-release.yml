@@ -14,7 +14,6 @@ parameters:
     type: string
     default: " "
 
-
 resources:
   repositories:
     - repository: self

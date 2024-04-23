@@ -1,0 +1,19 @@
+﻿@using DancingGoat.Models
+
+@model StorePageViewModel
+
+<div class="sub-menu row">
+    <h1>@Model.Title</h1>
+    <div class="store-menu-list row">
+        <ul>
+            @foreach(var category in Model.Categories)
+            {
+                <li>
+                    <a href="@Url.Content(category.CategoryUrl)">
+                        @category.CategoryName
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

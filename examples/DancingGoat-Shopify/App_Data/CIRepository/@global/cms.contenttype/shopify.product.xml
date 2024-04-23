@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.contenttype>
+  <ClassContentTypeType>Reusable</ClassContentTypeType>
+  <ClassDisplayName>Shopify Product</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="ContentItemDataID" columntype="integer" enabled="true" guid="5951df61-fe79-4d0b-a6fa-507c3c16e3db" isPK="true" />
+      <field column="ContentItemDataCommonDataID" columntype="integer" enabled="true" guid="bf56d1fc-ea28-4590-8d3e-b710e971744c" refobjtype="cms.contentitemcommondata" reftype="Required" system="true" />
+      <field column="ContentItemDataGUID" columntype="guid" enabled="true" guid="6e19c0a0-5f74-45e2-b9f6-0b7513a09b47" isunique="true" system="true" />
+      <field column="Title" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="a43a33ce-9722-404b-8407-cf116786e76f" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Title</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.TextInput</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="Description" columnprecision="0" columntype="longtext" enabled="true" guid="b23e4cff-7700-4570-9422-7c7a7cc67643" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Description</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <ConfigurationName>Kentico.Administration.StructuredContent</ConfigurationName>
+          <controlname>Kentico.Administration.RichTextEditor</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ShopifyProductID" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="cebdd731-6db8-4254-bb7e-d7260b7ae435" />
+      <field allowempty="true" column="Images" columnprecision="0" columntype="contentitemreference" enabled="true" guid="f7d31583-546a-4ca2-960a-b4e95b14f7c2" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Images</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <AllowedContentItemTypeIdentifiers>
+            <![CDATA[["1c9564eb-3535-4115-bee3-180063b1816b"]]]>
+          </AllowedContentItemTypeIdentifiers>
+          <controlname>Kentico.Administration.ContentItemSelector</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="Variants" columnprecision="0" columntype="contentitemreference" enabled="true" guid="71b52447-56f4-40b8-8bdc-fca6351d28a2" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Variants</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <AllowedContentItemTypeIdentifiers>
+            <![CDATA[["8b6077af-6a9a-4cd0-ad12-a8552c54bf23"]]]>
+          </AllowedContentItemTypeIdentifiers>
+          <controlname>Kentico.Administration.ContentItemSelector</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="Parameters" columnprecision="0" columntype="longtext" enabled="true" guid="9bf0c20b-351a-41e2-9bb5-c046f8efe25d" visible="true">
+        <properties>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Prodcut parameters</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <ConfigurationName>Kentico.Administration.WebsitesStructuredContent</ConfigurationName>
+          <controlname>Kentico.Administration.RichTextEditor</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>57b30223-ca83-4d57-b271-1eb626a0fa02</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassIconClass>xp-box</ClassIconClass>
+  <ClassName>Shopify.Product</ClassName>
+  <ClassShortName>ShopifyProduct</ClassShortName>
+  <ClassTableName>Shopify_Product</ClassTableName>
+  <ClassType>Content</ClassType>
+  <ClassWebPageHasUrl>False</ClassWebPageHasUrl>
+</cms.contenttype>

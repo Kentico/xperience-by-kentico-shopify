@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.contenttype>
+  <ClassContentTypeType>Reusable</ClassContentTypeType>
+  <ClassDisplayName>Shopify Image</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="ContentItemDataID" columntype="integer" enabled="true" guid="ccbab0de-dbe2-483a-b51b-f7496adba2d7" isPK="true" />
+      <field column="ContentItemDataCommonDataID" columntype="integer" enabled="true" guid="b5b799e0-91c5-4c0c-ad75-c0a8161c7353" refobjtype="cms.contentitemcommondata" reftype="Required" system="true" />
+      <field column="ContentItemDataGUID" columntype="guid" enabled="true" guid="e202c8c2-049a-4af1-9226-8d0c8cddc4f4" isunique="true" system="true" />
+      <field allowempty="true" column="ImageAsset" columnprecision="0" columntype="contentitemasset" enabled="true" guid="009360f2-bfaa-405a-891a-98639e22702c" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify image data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Image</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <AllowedExtensions>_INHERITED_</AllowedExtensions>
+          <controlname>Kentico.Administration.ContentItemAssetUploader</controlname>
+        </settings>
+        <validationrulesdata>
+          <ValidationRuleConfiguration>
+            <ValidationRuleIdentifier>Kentico.Administration.RequiredValue</ValidationRuleIdentifier>
+            <RuleValues />
+          </ValidationRuleConfiguration>
+        </validationrulesdata>
+      </field>
+      <field allowempty="true" column="ImageDescription" columnprecision="0" columnsize="500" columntype="text" enabled="true" guid="4a6b55e7-28ef-4935-bbb7-c5a700d94772" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product variant data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Description</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.TextInput</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ShopifyImageID" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="7c94c991-06fc-41c3-9617-2a498e46cb1e">
+        <properties>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Shopify image ID</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <validationrulesdata>
+          <ValidationRuleConfiguration>
+            <ValidationRuleIdentifier>Kentico.Administration.RequiredValue</ValidationRuleIdentifier>
+            <RuleValues />
+          </ValidationRuleConfiguration>
+        </validationrulesdata>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>1c9564eb-3535-4115-bee3-180063b1816b</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassIconClass>xp-picture</ClassIconClass>
+  <ClassName>Shopify.Image</ClassName>
+  <ClassShortName>ShopifyImage</ClassShortName>
+  <ClassTableName>Shopify_Image</ClassTableName>
+  <ClassType>Content</ClassType>
+  <ClassWebPageHasUrl>False</ClassWebPageHasUrl>
+</cms.contenttype>

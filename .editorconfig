@@ -14,7 +14,7 @@ insert_final_newline                                                      = true
 dotnet_diagnostic.IDE0055.severity                                        = error
 
 dotnet_sort_system_directives_first                                       = true
-dotnet_separate_import_directive_groups                                   = true
+dotnet_separate_import_directive_groups                                   = false
 
 ## C# Formatting Rules https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/formatting-rules
 
@@ -213,14 +213,14 @@ dotnet_diagnostic.IDE0018.severity                                        = erro
 csharp_style_var_elsewhere                                                = true : error
 csharp_style_var_for_built_in_types                                       = false : error
 csharp_style_var_when_type_is_apparent                                    = true : error
-dotnet_diagnostic.IDE0007.severity                                        = error
-dotnet_diagnostic.IDE0008.severity                                        = error
+dotnet_diagnostic.IDE0007.severity                                        = suggestion
+dotnet_diagnostic.IDE0008.severity                                        = suggestion
 
-csharp_style_expression_bodied_constructors                               = true : error
-dotnet_diagnostic.IDE0021.severity                                        = error
+csharp_style_expression_bodied_constructors                               = true : suggestion
+dotnet_diagnostic.IDE0021.severity                                        = suggestion
 
-csharp_style_expression_bodied_methods                                    = true : error
-dotnet_diagnostic.IDE0022.severity                                        = error
+csharp_style_expression_bodied_methods                                    = true : suggestion
+dotnet_diagnostic.IDE0022.severity                                        = suggestion
 
 csharp_style_expression_bodied_operators                                  = true : error
 dotnet_diagnostic.IDE0023.severity                                        = error
@@ -236,7 +236,7 @@ csharp_style_expression_bodied_accessors                                  = true
 dotnet_diagnostic.IDE0027.severity                                        = error
 
 csharp_style_expression_bodied_lambdas                                    = true : error
-dotnet_diagnostic.IDE0053.severity                                        = error
+dotnet_diagnostic.IDE0053.severity                                        = suggestion
 
 csharp_style_expression_bodied_local_functions                            = true : error
 dotnet_diagnostic.IDE0061.severity                                        = error
@@ -289,7 +289,7 @@ dotnet_diagnostic.IDE0080.severity                                        = erro
 dotnet_diagnostic.IDE0110.severity                                        = warning
 
 # IDE1006: Naming Styles
-dotnet_diagnostic.IDE1006.severity                                        = error
+dotnet_diagnostic.IDE1006.severity                                        = suggestion
 
 # Naming Conventions
 dotnet_naming_symbols.const_field_symbols.applicable_kinds                = field

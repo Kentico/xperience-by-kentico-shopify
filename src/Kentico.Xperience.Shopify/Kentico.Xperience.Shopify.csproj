@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Product>Xperience by Kentico Shopify</Product>
+		<Title>$(Product)</Title>
+		<Description>Xperience By Kentico - Shopify integration</Description>
+		<PackageId>Kentico.Xperience.Shopify</PackageId>
+		<RootNamespace>Kentico.Xperience.Shopify</RootNamespace>
+		<PackageTags>$(PackageTags);dynamics</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="CMS.AssemblyDiscoverableAttribute">
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GraphQL" />
+		<PackageReference Include="GraphQL.Client" />
+		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" />
+		<PackageReference Include="Kentico.Xperience.Core" />
+		<PackageReference Include="ShopifySharp" />
+		<PackageReference Include="ShopifySharp.Extensions.DependencyInjection" />		
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Kentico.Xperience.Ecommerce.Common\Kentico.Xperience.Ecommerce.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Components\" />
+	</ItemGroup>
+</Project>

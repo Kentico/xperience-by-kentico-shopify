@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <RootNamespace>DancingGoat</RootNamespace>    
+    <SeparatedAdmin Condition="'$(SeparatedAdmin)' == ''">false</SeparatedAdmin>
+    <Nullable>disable</Nullable>
+    <DisableCodeAnalysis>True</DisableCodeAnalysis>
+    <NoWarn>$(NoWarn);CS1570;CS1572</NoWarn>
+    <TargetFramework>net8.0</TargetFramework>
+    <UserSecretsId>b43dbf40-f6c3-4bca-99d4-f485b81c97ec</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="App_Data\CMSModules\WebFarm\webfarm.sync" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\**">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <!-- Exclude administration parts from the compilation in live-site only deployment  -->
+  <ItemGroup Condition="'$(SeparatedAdmin)' == 'true'">
+    <Compile Remove="AdminComponents\**" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(SeparatedAdmin)' == 'true'">
+    <DefineConstants>$(DefineConstants);SEPARATED_ADMIN</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="kentico.xperience.admin" Condition="'$(SeparatedAdmin)' == 'false'" />
+    <PackageReference Include="kentico.xperience.azurestorage" />
+    <PackageReference Include="kentico.xperience.imageprocessing" />
+    <PackageReference Include="kentico.xperience.webapp" />
+    <PackageReference Include="ShopifySharp" />
+    <PackageReference Include="ShopifySharp.Extensions.DependencyInjection" />
+    <PackageReference Include="System.Linq.Async" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Kentico.Xperience.Shopify.Rcl\Kentico.Xperience.Shopify.Rcl.csproj" />
+    <ProjectReference Include="..\..\src\Kentico.Xperience.Shopify\Kentico.Xperience.Shopify.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.contenttype>
+  <ClassContentTypeType>Reusable</ClassContentTypeType>
+  <ClassDisplayName>Shopify Product Variant</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="ContentItemDataID" columntype="integer" enabled="true" guid="54997a2a-d6b4-40e2-841f-c45ea761a73d" isPK="true" />
+      <field column="ContentItemDataCommonDataID" columntype="integer" enabled="true" guid="96f84ee8-5495-433d-81eb-4895cce0fdd9" refobjtype="cms.contentitemcommondata" reftype="Required" system="true" />
+      <field column="ContentItemDataGUID" columntype="guid" enabled="true" guid="7418567a-3a4c-4bc2-b72e-d7e99117657f" isunique="true" system="true" />
+      <field allowempty="true" column="Title" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="5da98c7f-5040-44a2-904c-00679d603ade" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product variant data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Title</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.TextInput</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKU" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="c901323c-fb50-4727-9d53-40eeacfed3f0" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product variant data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>SKU number</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.TextInput</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="Weight" columnprecision="4" columnsize="19" columntype="decimal" enabled="true" guid="b00700db-57b1-4947-8e03-2fc62b94ceb8" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product variant data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Weight</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.DecimalNumberInput</controlname>
+        </settings>
+        <validationrulesdata>
+          <ValidationRuleConfiguration>
+            <ValidationRuleIdentifier>Kentico.Administration.MinimumDecimalValue</ValidationRuleIdentifier>
+            <RuleValues>
+              <MinValue>0</MinValue>
+            </RuleValues>
+          </ValidationRuleConfiguration>
+        </validationrulesdata>
+      </field>
+      <field allowempty="true" column="Image" columnprecision="0" columntype="contentitemreference" enabled="true" guid="6c0305e4-b8ab-4fa5-b92c-322e10fd7542" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[This field is filled with Shopify product variant data. Any changes will be overwritten.]]>
+          </explanationtext>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Image</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <AllowedContentItemTypeIdentifiers>
+            <![CDATA[["1c9564eb-3535-4115-bee3-180063b1816b"]]]>
+          </AllowedContentItemTypeIdentifiers>
+          <controlname>Kentico.Administration.ContentItemSelector</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ShopifyVariantID" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="64bd66ea-2154-4932-8049-e79fcbee1752" />
+      <field allowempty="true" column="ShopifyMerchandiseID" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="1e0f0a98-6c6f-4f02-83a4-84e263f25674" />
+      <field allowempty="true" column="ShopifyProductID" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="01790994-299c-4abd-970e-551ed6005203" />
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>8b6077af-6a9a-4cd0-ad12-a8552c54bf23</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassIconClass>xp-boxes</ClassIconClass>
+  <ClassName>Shopify.ProductVariant</ClassName>
+  <ClassShortName>ShopifyProductVariant</ClassShortName>
+  <ClassTableName>Shopify_ProductVariant</ClassTableName>
+  <ClassType>Content</ClassType>
+  <ClassWebPageHasUrl>False</ClassWebPageHasUrl>
+</cms.contenttype>

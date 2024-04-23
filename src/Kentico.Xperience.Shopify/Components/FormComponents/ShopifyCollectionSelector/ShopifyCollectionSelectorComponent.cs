@@ -1,7 +1,7 @@
 ﻿using Kentico.Forms.Web.Mvc;
 using Kentico.Web.Mvc;
 using Kentico.Xperience.Shopify.Components.FormComponents;
-using Kentico.Xperience.Shopify.Services;
+using Kentico.Xperience.Shopify.Products;
 
 [assembly: RegisterFormComponent(ShopifyCollectionSelectorComponent.IDENTIFIER, typeof(ShopifyCollectionSelectorComponent), "Shopify collections dropdown", IconClass = "icon-menu")]
 namespace Kentico.Xperience.Shopify.Components.FormComponents;

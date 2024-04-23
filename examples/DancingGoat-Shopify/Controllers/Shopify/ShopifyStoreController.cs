@@ -76,7 +76,10 @@ public class ShopifyStoreController : Controller
 
             var categories = await contentQueryExecutor.GetWebPageResult(builder, container => mapper.Map<CategoryPage>(container));
 
-            CacheHelper.GetCacheDependency(GetDependencyCacheKeys(categories, languageName));
+            if (cacheSettings.Cached)
+            {
+                cacheSettings.CacheDependency = CacheHelper.GetCacheDependency(GetDependencyCacheKeys(categories, languageName));
+            }
 
             return categories;
         }, new CacheSettings(cacheMinutes, websiteChannelContext.WebsiteChannelName, nameof(ShopifyStoreController), nameof(GetCategories), languageName, store.SystemFields.WebPageItemGUID));

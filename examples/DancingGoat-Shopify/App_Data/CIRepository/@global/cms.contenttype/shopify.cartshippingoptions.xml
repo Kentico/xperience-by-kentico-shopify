@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.contenttype>
+  <ClassContentTypeType>Website</ClassContentTypeType>
+  <ClassDisplayName>Shopify cart shipping options</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="ContentItemDataID" columntype="integer" enabled="true" guid="e09e29c0-afc6-409b-9737-6ffc0ed8d238" isPK="true" />
+      <field column="ContentItemDataCommonDataID" columntype="integer" enabled="true" guid="f76d0806-54a0-474d-aade-465b8c29b7ee" refobjtype="cms.contentitemcommondata" reftype="Required" system="true" />
+      <field column="ContentItemDataGUID" columntype="guid" enabled="true" guid="8f959872-02b7-4364-be13-ffc3b48f4f45" isunique="true" system="true" />
+      <field column="CartNextStep" columnprecision="0" columntype="webpages" enabled="true" guid="381e5448-8c57-48fb-a5fe-fa82fc471f73" visible="true">
+        <properties>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Next step</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.WebPageSelector</controlname>
+          <MaximumPages>1</MaximumPages>
+          <Sortable>False</Sortable>
+        </settings>
+      </field>
+      <field column="CartPreviousStep" columnprecision="0" columntype="webpages" enabled="true" guid="d638e934-19d4-4e54-a28e-1945f977bf81" visible="true">
+        <properties>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Previous step</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.WebPageSelector</controlname>
+          <MaximumPages>1</MaximumPages>
+          <Sortable>False</Sortable>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>c7275f94-ea2d-4bb2-ac10-3241cf3b0bf3</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassIconClass>xp-truck</ClassIconClass>
+  <ClassName>Shopify.CartShippingOptions</ClassName>
+  <ClassTableName>Shopify_CartShippingOptions</ClassTableName>
+  <ClassType>Content</ClassType>
+  <ClassWebPageHasUrl>True</ClassWebPageHasUrl>
+</cms.contenttype>

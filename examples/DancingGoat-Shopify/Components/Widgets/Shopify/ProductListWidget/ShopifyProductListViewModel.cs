@@ -1,4 +1,4 @@
-﻿using Kentico.Xperience.Shopify.Models;
+﻿using Kentico.Xperience.Shopify.Products.Models;
 
 namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
 {

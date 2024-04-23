@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
+
 using CMS.Core;
+
 using Kentico.Xperience.Shopify.Config;
-using Microsoft.Extensions.Options;
 
 namespace Kentico.Xperience.Shopify
 {
     public static class DecimalExtensions
     {
-        private static readonly IOptionsMonitor<ShopifyConfig> optionsMonitor = Service.Resolve<IOptionsMonitor<ShopifyConfig>>();
+        private static readonly IReadOnlyDictionary<string, string> currencyFormats = Service.Resolve<IShopifyCurrencyFormatService>().GetFormats();
 
         public static string FormatPrice(this decimal? price, string? currencyCode)
         {
@@ -21,8 +22,6 @@ namespace Kentico.Xperience.Shopify
 
         public static string FormatPrice(this decimal price, string currencyCode)
         {
-            var currencyFormats = optionsMonitor.CurrentValue.CurrencyFormats;
-
             if (currencyFormats.TryGetValue(currencyCode, out string? format) &&
                 !string.IsNullOrWhiteSpace(format))
             {

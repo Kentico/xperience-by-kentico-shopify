@@ -1,4 +1,5 @@
 ﻿using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
+
 using Shopify;
 
 namespace Kentico.Xperience.Shopify.ReusableContentTypes;

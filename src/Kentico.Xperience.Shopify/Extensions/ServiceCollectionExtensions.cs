@@ -1,22 +1,20 @@
 ﻿using Kentico.Xperience.Shopify.Config;
-using Kentico.Xperience.Shopify.ProductSynchronization;
-using Kentico.Xperience.Shopify.Services;
-using Kentico.Xperience.Shopify.Services.InventoryService;
-using Kentico.Xperience.Shopify.Services.ProductService;
+using Kentico.Xperience.Shopify.Products;
 using Kentico.Xperience.Shopify.ShoppingCart;
-using Microsoft.Extensions.Configuration;
+using Kentico.Xperience.Shopify.Synchronization;
+using Kentico.Xperience.Shopify.Synchronization.Images;
+using Kentico.Xperience.Shopify.Synchronization.Products;
+using Kentico.Xperience.Shopify.Synchronization.Variants;
+
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+
 using ShopifySharp.Extensions.DependencyInjection;
 
 namespace Kentico.Xperience.Shopify;
 public static class ServiceCollectionExtensions
 {
-    public static void RegisterShopifyServices(this IServiceCollection services, ConfigurationManager configuration)
+    public static void RegisterShopifyServices(this IServiceCollection services)
     {
-        // Get Shopify config from appsettings.json
-        services.Configure<ShopifyConfig>(configuration.GetSection(ShopifyConfig.SECTION_NAME));
-
         // ShopifySharp dependency injection
         services.AddShopifySharpServiceFactories();
 
@@ -30,17 +28,29 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductSynchronizationService, ProductSynchronizationService>();
         services.AddScoped<IVariantSynchronizationService, VariantSynchronizationService>();
         services.AddScoped<IShoppingService, ShoppingService>();
+        services.AddScoped<IShopifyIntegrationSettingsService, ShopifyIntegrationSettingsService>();
+
+        services.AddSingleton<IShopifyCurrencyFormatService, ShopifyCurrencyFormatService>();
 
         // Add Storefront API HTTP client
-        services.AddHttpClient(ShopifyConstants.STOREFRONT_API_CLIENT_NAME, (sp, httpClient) =>
+        services.AddHttpClient(ShopifyConstants.STOREFRONT_API_CLIENT_NAME, SetupHttpClient);
+    }
+
+    private static void SetupHttpClient(IServiceProvider sp, HttpClient httpClient)
+    {
+        var scope = sp.CreateScope();
+        var settings = scope.ServiceProvider.GetRequiredService<IShopifyIntegrationSettingsService>().GetSettings();
+
+        if (settings == null || !Uri.TryCreate(settings.ShopifyUrl, UriKind.Absolute, out var uri))
         {
-            var config = sp.GetRequiredService<IOptionsMonitor<ShopifyConfig>>();
-            var uriBuilder = new UriBuilder(config.CurrentValue.ShopifyUrl)
-            {
-                Path = $"api/{config.CurrentValue.StorefrontApiVersion}/graphql.json"
-            };
-            httpClient.BaseAddress = uriBuilder.Uri;
-            httpClient.DefaultRequestHeaders.Add(ShopifyConstants.STOREFRONT_API_HEADER_TOKEN_NAME, config.CurrentValue.StorefrontApiToken);
-        });
+            return;
+        }
+
+        var uriBuilder = new UriBuilder(uri!)
+        {
+            Path = $"api/{settings.StorefrontApiVersion}/graphql.json"
+        };
+        httpClient.BaseAddress = uriBuilder.Uri;
+        httpClient.DefaultRequestHeaders.Add(ShopifyConstants.STOREFRONT_API_HEADER_TOKEN_NAME, settings.StorefrontApiKey);
     }
 }

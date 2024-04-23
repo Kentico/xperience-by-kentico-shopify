@@ -4,8 +4,8 @@ using Kentico.Content.Web.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Kentico.Content.Web.Mvc;
 using Shopify.Controllers;
-using Kentico.Xperience.Shopify.API.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
+using Kentico.Xperience.Shopify.Products.Models;
 
 [assembly: RegisterWebPageRoute(ProductDetailPage.CONTENT_TYPE_NAME, typeof(ShopifyProductDetailController), WebsiteChannelNames = new[] { DancingGoatConstants.WEBSITE_CHANNEL_NAME })]
 

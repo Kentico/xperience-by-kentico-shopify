@@ -1,7 +1,7 @@
 ﻿using DancingGoat.Components.Widgets.Shopify.ProductListWidget;
 using Kentico.PageBuilder.Web.Mvc;
-using Kentico.Xperience.Shopify.Models;
-using Kentico.Xperience.Shopify.Services.ProductService;
+using Kentico.Xperience.Shopify.Products.Models;
+using Kentico.Xperience.Shopify.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using ShopifySharp.GraphQL;

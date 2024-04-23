@@ -14,6 +14,7 @@
     <PackageVersion Include="kentico.xperience.azurestorage" Version="28.2.1" />
     <PackageVersion Include="kentico.xperience.imageprocessing" Version="28.2.1" />
     <PackageVersion Include="Kentico.Xperience.Core" Version="28.2.1" />
+    <PackageVersion Include="Moq.AutoMock" Version="3.5.0" />
     <PackageVersion Include="ShopifySharp" Version="6.13.0" />
     <PackageVersion Include="ShopifySharp.Extensions.DependencyInjection" Version="1.4.0" />
     <PackageVersion Include="Microsoft.Extensions.ApiDescription.Client" Version="7.0.2" />

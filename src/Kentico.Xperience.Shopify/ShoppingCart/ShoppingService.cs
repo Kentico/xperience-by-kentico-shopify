@@ -1,6 +1,5 @@
 ﻿
 using CMS.Core;
-using CMS.Helpers;
 
 using GraphQL;
 
@@ -10,37 +9,29 @@ namespace Kentico.Xperience.Shopify.ShoppingCart;
 
 internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 {
-    private const string CACHE_KEY_FORMAT = $"{nameof(ShoppingCartInfo)}|{{0}}";
     private const string CART_ID_KEY = "CMSShoppingCart";
 
     private readonly IEventLogService eventLogService;
-    private readonly IProgressiveCache progressiveCache;
     private readonly IHttpContextAccessor httpContextAccessor;
-    private readonly ISettingsService settingsService;
-    private readonly IConversionService conversionService;
+    private readonly IShoppingCartCacheService shoppingCartCacheService;
 
     public ShoppingService(
         IEventLogService eventLogService,
-        IProgressiveCache progressiveCache,
         IHttpContextAccessor httpContextAccessor,
-        ISettingsService settingsService,
-        IConversionService conversionService,
-        IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        IGraphQLHttpClientFactory clientFactory,
+        IShoppingCartCacheService shoppingCartCacheService) : base(clientFactory)
     {
         this.eventLogService = eventLogService;
-        this.progressiveCache = progressiveCache;
         this.httpContextAccessor = httpContextAccessor;
-        this.settingsService = settingsService;
-        this.conversionService = conversionService;
+        this.shoppingCartCacheService = shoppingCartCacheService;
     }
 
-    private string CacheKey(string cartId) => string.Format(CACHE_KEY_FORMAT, cartId);
 
     public async Task<CartOperationResult> UpdateCartItem(ShoppingCartItemParameters parameters)
     {
         var cart = await GetCurrentShoppingCart();
 
-        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.VariantGraphQLId == parameters.MerchandiseID);
+        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.ShopifyCartItemId == parameters.MerchandiseID);
         if (cart == null || cartItemToUpdate == null)
         {
             return await AddItemToCart(parameters);
@@ -56,6 +47,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         return result;
     }
 
+
     public async Task<CartOperationResult> RemoveCartItem(string merchandiseId)
     {
         var cart = await GetCurrentShoppingCart();
@@ -67,7 +59,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         var shopifyCartLine = cart.Items.FirstOrDefault(x => x.VariantGraphQLId == merchandiseId);
         if (shopifyCartLine == null)
         {
-            return new CartOperationResult(null, true);
+            return new CartOperationResult(cart, true);
         }
         var result = await RemoveCartItemInternal(cart.CartId, shopifyCartLine.ShopifyCartItemId);
         if (result.Success && result.Cart != null)
@@ -82,17 +74,13 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
     public async Task<ShoppingCartInfo?> GetCurrentShoppingCart()
     {
         string? cartId = GetCurrentShoppingCartId();
-        if (cartId == null)
+        if (string.IsNullOrEmpty(cartId))
         {
             return null;
         }
 
-        int cacheMinutes = conversionService.GetInteger(settingsService["CMSCacheMinutes"], 0);
-        return await progressiveCache.LoadAsync(
-            async (_) => await GetCurrentShoppingCartInternal(cartId),
-            new CacheSettings(cacheMinutes, CacheKey(cartId)));
+        return await shoppingCartCacheService.LoadAsync(cartId, GetCurrentShoppingCartInternal);
     }
-
 
 
     private async Task<CartOperationResult> CreateShoppingCart(ShoppingCartItemParameters parameters)
@@ -126,6 +114,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 
         return new CartOperationResult(new ShoppingCartInfo(cart), success);
     }
+
 
     public async Task<CartOperationResult> AddItemToCart(ShoppingCartItemParameters parameters)
     {
@@ -164,6 +153,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         return result;
     }
 
+
     private async Task<CartOperationResult> ExecuteAddItemMutation(ShoppingCartItemParameters parameters, string cartId)
     {
         string query = $"mutation addCartLines($cartId: ID!, $lines: [CartLineInput!]!) {{ cartLinesAdd(cartId: $cartId, lines: $lines) {{ cart {CartObjectModel.MutationObjectScheme} userErrors {{ field message }} }} }}";
@@ -190,6 +180,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         return new CartOperationResult(new ShoppingCartInfo(cart), success);
     }
 
+
     private async Task<CartOperationResult> UpdateCartItemInternal(string cartId, ShoppingCartItem cartItem, int newQuantity)
     {
         string query = $"mutation updateCartLines($cartId: ID!, $lines: [CartLineUpdateInput!]!) {{ cartLinesUpdate(cartId: $cartId, lines: $lines) {{ cart {CartObjectModel.MutationObjectScheme} userErrors {{ field message }} }} }}";
@@ -215,6 +206,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         return new CartOperationResult(new ShoppingCartInfo(cart), success);
     }
 
+
     private async Task<CartOperationResult> RemoveCartItemInternal(string shoppingCartId, string shopifyCartLineId)
     {
         string query = $"mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {{ cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {{ cart {CartObjectModel.MutationObjectScheme} userErrors {{ field message }} }} }}";
@@ -232,6 +224,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 
     }
 
+
     private async Task<ShoppingCartInfo?> GetCurrentShoppingCartInternal(string shoppingCartId)
     {
         string query = $"query cartQuery($cartId: ID!) {{ cart(id: $cartId) {CartObjectModel.QueryObjectScheme} }}";
@@ -244,6 +237,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 
         return new ShoppingCartInfo(response.Data.Cart);
     }
+
 
     /// <summary>
     /// Check and log response errors into kentico event log.
@@ -272,6 +266,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         return true;
     }
 
+
     private string? GetCurrentShoppingCartId()
     {
         var httpContext = httpContextAccessor.HttpContext;
@@ -289,6 +284,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         return cartId;
     }
 
+
     private void StoreCartToCookiesAndSession(string cartId)
     {
         var httpContext = httpContextAccessor.HttpContext;
@@ -305,11 +301,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         }
     }
 
-    private void UpdateCartCache(ShoppingCartInfo cart)
-    {
-        string cacheKey = CacheKey(cart.CartId);
-        CacheHelper.Remove(cacheKey, false, false);
-        CacheHelper.Add(cacheKey, cart, null, DateTimeOffset.Now.AddMinutes(10), TimeSpan.Zero);
-    }
+
+    private void UpdateCartCache(ShoppingCartInfo cart) => shoppingCartCacheService.UpdateCartCache(cart);
 }
 

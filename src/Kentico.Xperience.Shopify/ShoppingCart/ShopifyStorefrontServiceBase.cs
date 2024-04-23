@@ -6,11 +6,11 @@ namespace Kentico.Xperience.Shopify.ShoppingCart
 {
     internal abstract class ShopifyStorefrontServiceBase
     {
-        private readonly HttpClient httpClient;
+        private readonly IGraphQLHttpClientFactory clientFactory;
 
-        protected ShopifyStorefrontServiceBase(IHttpClientFactory httpClientFactory)
+        protected ShopifyStorefrontServiceBase(IGraphQLHttpClientFactory clientFactory)
         {
-            httpClient = httpClientFactory.CreateClient(ShopifyConstants.STOREFRONT_API_CLIENT_NAME);
+            this.clientFactory = clientFactory;
         }
 
         protected async Task<GraphQLResponse<TResponse>> PostQueryAsync<TResponse>(string query, object? variables)
@@ -21,25 +21,26 @@ namespace Kentico.Xperience.Shopify.ShoppingCart
 
         private async Task<GraphQLResponse<TResponse>> SendRequestInternalAsync<TResponse>(string query, object? variables, GraphQLRequestType requestType)
         {
-            // No Shopify store URL was set yet
-            if (httpClient.BaseAddress is null)
-            {
-                return new GraphQLResponse<TResponse>();
-            }
-
-            var client = new GraphQLHttpClient(new GraphQLHttpClientOptions(), new NewtonsoftJsonSerializer(), httpClient);
+            var client = clientFactory.CreateGraphQLHttpClient();
             var request = new GraphQLRequest()
             {
                 Query = query,
                 Variables = variables
             };
 
-            return requestType switch
+            try
             {
-                GraphQLRequestType.Query => await client.SendQueryAsync<TResponse>(request),
-                GraphQLRequestType.Mutation => await client.SendMutationAsync<TResponse>(request),
-                _ => throw new NotImplementedException($"{requestType} is not implemented")
-            };
+                return requestType switch
+                {
+                    GraphQLRequestType.Query => await client.SendQueryAsync<TResponse>(request),
+                    GraphQLRequestType.Mutation => await client.SendMutationAsync<TResponse>(request),
+                    _ => throw new NotImplementedException($"{requestType} is not implemented")
+                };
+            }
+            catch (InvalidOperationException)
+            {
+                return new GraphQLResponse<TResponse>();
+            }
         }
     }
 

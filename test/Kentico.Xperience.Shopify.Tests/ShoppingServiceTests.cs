@@ -11,11 +11,11 @@ using Kentico.Xperience.Shopify.Tests.Repositories;
 namespace Kentico.Xperience.Shopify.Tests
 {
     [TestFixture]
-    public class ShoppingCartApiTests
+    public class ShoppingServiceTests
     {
         private readonly AutoMocker mocker;
 
-        public ShoppingCartApiTests()
+        public ShoppingServiceTests()
         {
             mocker = new AutoMocker();
         }

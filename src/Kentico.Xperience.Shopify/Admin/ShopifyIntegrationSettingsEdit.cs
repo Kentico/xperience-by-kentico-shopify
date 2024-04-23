@@ -30,6 +30,12 @@ namespace Kentico.Xperience.Shopify.Admin
         protected override ShopifyIntegrationSettingsModel Model => model ??= CreateShopifySettingsModel(SettingsInfo);
 
 
+        public override Task ConfigurePage()
+        {
+            PageConfiguration.Headline = "It is recommended to use appsettings.json or user secrets to store API credentials. Use this primarly for developement.";
+            return base.ConfigurePage();
+        }
+
 
         protected override Task<ICommandResponse> ProcessFormData(ShopifyIntegrationSettingsModel model, ICollection<IFormItem> formItems)
         {

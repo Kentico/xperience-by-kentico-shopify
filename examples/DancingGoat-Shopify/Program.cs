@@ -51,7 +51,7 @@ builder.Services.AddDancingGoatServices();
 
 ConfigureMembershipServices(builder.Services);
 
-builder.Services.RegisterShopifyServices();
+builder.RegisterShopifyServices();
 
 var app = builder.Build();
 

@@ -1,0 +1,18 @@
+﻿@using DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
+@model ShoppingCartTotalsViewModel
+
+<div class="cart-right-panel floating-box">
+    <hr>
+    <div class="cart-total">
+        <div class="cart-total-viewer">
+            <div class="label">
+                <span>Total (incl. tax estimate)</span>
+            </div>
+            <div class="value">
+                <span>@Model.GrandTotal</span>
+            </div>
+        </div>
+    </div>
+    <p>@HtmlLocalizer["Review your shopping cart and checkout"]</p>
+    <a href="@Model.ShopifyCheckoutUrl" class="btn-primary checkout-button btn btn-default">@HtmlLocalizer["Go to shopify checkout page"]</a>
+</div>

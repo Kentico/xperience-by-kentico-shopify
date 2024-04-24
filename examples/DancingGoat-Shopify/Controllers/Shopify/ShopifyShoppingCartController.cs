@@ -66,7 +66,6 @@ namespace DancingGoat.Controllers.Shopify
             return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
         }
 
-
         [HttpPost]
         [Route("/cart/addDiscountCode")]
         [AutoValidateAntiforgeryToken]

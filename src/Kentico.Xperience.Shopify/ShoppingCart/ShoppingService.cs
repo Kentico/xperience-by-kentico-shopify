@@ -171,10 +171,10 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, false);
         }
 
-        var oldCouponsList = currentCart.DiscountCodes.ToList();
-        string[] updatedCouponList = [.. oldCouponsList, discountCode];
+        var oldCodesList = currentCart.DiscountCodes.ToList();
+        string[] updatedCodesList = [.. oldCodesList, discountCode];
 
-        return await UpdateDiscountCodes(currentCart, updatedCouponList);
+        return await UpdateDiscountCodes(currentCart, updatedCodesList);
     }
 
     public async Task<CartOperationResult> RemoveDiscountCode(string discountCode)

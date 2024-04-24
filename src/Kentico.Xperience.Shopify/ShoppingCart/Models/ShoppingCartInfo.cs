@@ -20,7 +20,7 @@ public class ShoppingCartInfo
         Currency = shopifyCart.Cost.TotalAmount.CurrencyCode;
         Items = cartItems.Select(CreateShoppingCartItem);
         GrandTotal = shopifyCart.Cost.TotalAmount.Amount;
-        DiscountCodes = shopifyCart.DiscountCodes?.Select(x => x.Code) ?? [];
+        DiscountCodes = shopifyCart.DiscountCodes?.Where(x => x.Applicable).Select(x => x.Code) ?? [];
     }
 
     private ShoppingCartItem CreateShoppingCartItem(CartLineNode node)

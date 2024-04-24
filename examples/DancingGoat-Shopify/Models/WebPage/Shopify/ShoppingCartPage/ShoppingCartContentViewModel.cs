@@ -22,7 +22,7 @@ namespace DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
                     ImageUrl = GetDictValue(productImages, x.VariantGraphQLId),
                     VariantGraphQLId = x.VariantGraphQLId,
                     CartItemId = x.ShopifyCartItemId,
-                    ItemPrice = x.Price.FormatPrice(cart.Currency.ToString()),
+                    ItemPrice = x.Price.FormatPrice(cart.Currency),
                 })
             };
         }

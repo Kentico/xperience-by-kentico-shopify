@@ -4,28 +4,28 @@
 <div class="cart-right-panel floating-box">
     <div class="cart-coupon-input">
         <label>@HtmlLocalizer["Discount coupon"]</label>
-        <form asp-action="AddCouponCode" asp-controller="Checkout" data-ajax="true" data-ajax-method="POST" data-ajax-success="getResult">
+        <form asp-controller="ShopifyShoppingCart" asp-action="AddDiscountCode" method="post" asp-antiforgery="true">
             <div>
-                <input type="text" name="couponCode" value="" class="form-control" required />
+                <input type="text" name="discountCode" value="" class="form-control" required />
                 <input type="submit" name="NewCouponCodeButton" value="@HtmlLocalizer["Apply"]" class="btn btn-primary" />
             </div>
             <div class="message message-error" id="coupon-message-error">
             </div>
         </form>
-        @* @foreach (var couponCode in Model.AppliedCouponCodes)
+        @foreach (var couponCode in Model.AppliedCoupons)
         {
             <div class="cart-coupon-code">
-                <form asp-action="RemoveCouponCode" asp-controller="Checkout" data-ajax="true" data-ajax-method="POST" data-ajax-success="getResult">
-                    <input type="hidden" name="couponCode" value="@couponCode" />
+                <form asp-controller="ShopifyShoppingCart" asp-action="RemoveDiscountCode" method="post" asp-antiforgery="true">
+                    <input type="hidden" name="discountCode" value="@couponCode" />
                     <div class="label">
                         <span>@couponCode</span>
                     </div>
                     <div class="button">
-                        <input type="submit" name="RemoveCouponCodeButton" value="@HtmlLocalizer["remove"]" class="btn btn-default" />
+                        <input type="submit" name="RemoveCouponCodeButton" value="@HtmlLocalizer["remove"]" class="btn btn-default" style="color: black" />
                     </div>
                 </form>
             </div>
-        } *@
+        }
     </div>
     <hr>
     <div class="cart-total">

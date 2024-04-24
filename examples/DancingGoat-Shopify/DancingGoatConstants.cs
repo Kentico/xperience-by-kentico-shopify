@@ -24,5 +24,8 @@
 
 
         public const string NAVIGATION_MENU_FOLDER_PATH = "/Navigation_menu";
+
+
+        public const string SHOPPING_CART_PATH = "/shopping-cart";
     }
 }

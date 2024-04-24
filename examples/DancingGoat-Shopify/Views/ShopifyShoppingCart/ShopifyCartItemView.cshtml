@@ -9,7 +9,7 @@
         <div class="cart-item-info">
             @Model.ItemName
         </div>
-        <form asp-controller="ShopifyCartContent" asp-action="Update" asp-antiforgery="true" method="post">
+        <form asp-controller="ShopifyShoppingCart" asp-action="Update" asp-antiforgery="true" method="post">
             @Html.Kentico().PageData()
             <div class="cart-item-amount">
                 <span>Qty</span>

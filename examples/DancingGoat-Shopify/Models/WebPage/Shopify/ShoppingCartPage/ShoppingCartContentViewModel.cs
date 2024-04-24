@@ -25,7 +25,7 @@ namespace DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
                     VariantGraphQLId = x.VariantGraphQLId,
                     CartItemId = x.ShopifyCartItemId,
                     ItemPrice = x.Price.FormatPrice(cart.Currency),
-                })
+                }) ?? []
             };
         }
 

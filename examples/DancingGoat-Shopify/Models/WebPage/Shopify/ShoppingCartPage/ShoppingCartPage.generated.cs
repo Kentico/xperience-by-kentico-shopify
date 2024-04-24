@@ -30,5 +30,11 @@ namespace DancingGoat.Models
 		/// Represents system properties for a web page item.
 		/// </summary>
 		public WebPageFields SystemFields { get; set; }
+
+
+		/// <summary>
+		/// Title.
+		/// </summary>
+		public string Title { get; set; }
 	}
 }

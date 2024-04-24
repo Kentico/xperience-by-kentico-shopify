@@ -5,9 +5,9 @@
     <div class="cart">
         <div class="col-md-8 cart-content">
             <hr class="first-separator" />
-            @if (Model.CartItems == null || !Model.CartItems.Any())
+            @if (!Model.CartItems.Any())
             {
-                <span>Shopping cart is empty</span>
+                <span>@HtmlLocalizer["Shopping cart is empty"]</span>
                 <hr class="last-separator">
             }
             else
@@ -19,13 +19,16 @@
             }
         </div>
         <div class="col-md-4">
-            <partial name="~/Views/ShopifyShoppingCart/CartContentTotalsView.cshtml"
-                     model="new ShoppingCartTotalsViewModel()
+            @if (Model.CartItems.Any())
+            {
+                <partial name="~/Views/ShopifyShoppingCart/CartContentTotalsView.cshtml"
+                         model="new ShoppingCartTotalsViewModel()
                         {
                             GrandTotal = Model.GrandTotal,
                             AppliedCoupons = Model.AppliedCoupons,
                             ShopifyCheckoutUrl = Model.ShopifyCheckoutUrl
                         }" />
+            }
         </div>
         <editable-area area-identifier="@nameof(ShoppingCartContentViewModel)">
             <widget-zone />

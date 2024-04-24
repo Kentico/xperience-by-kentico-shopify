@@ -2,11 +2,36 @@
 @model ShoppingCartTotalsViewModel
 
 <div class="cart-right-panel floating-box">
+    <div class="cart-coupon-input">
+        <label>@HtmlLocalizer["Discount coupon"]</label>
+        <form asp-action="AddCouponCode" asp-controller="Checkout" data-ajax="true" data-ajax-method="POST" data-ajax-success="getResult">
+            <div>
+                <input type="text" name="couponCode" value="" class="form-control" required />
+                <input type="submit" name="NewCouponCodeButton" value="@HtmlLocalizer["Apply"]" class="btn btn-primary" />
+            </div>
+            <div class="message message-error" id="coupon-message-error">
+            </div>
+        </form>
+        @* @foreach (var couponCode in Model.AppliedCouponCodes)
+        {
+            <div class="cart-coupon-code">
+                <form asp-action="RemoveCouponCode" asp-controller="Checkout" data-ajax="true" data-ajax-method="POST" data-ajax-success="getResult">
+                    <input type="hidden" name="couponCode" value="@couponCode" />
+                    <div class="label">
+                        <span>@couponCode</span>
+                    </div>
+                    <div class="button">
+                        <input type="submit" name="RemoveCouponCodeButton" value="@HtmlLocalizer["remove"]" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        } *@
+    </div>
     <hr>
     <div class="cart-total">
         <div class="cart-total-viewer">
             <div class="label">
-                <span>Total (incl. tax estimate)</span>
+                <span>@HtmlLocalizer["Total (incl. tax estimate)"]</span>
             </div>
             <div class="value">
                 <span>@Model.GrandTotal</span>

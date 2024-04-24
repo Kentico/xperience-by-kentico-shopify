@@ -67,6 +67,25 @@ namespace DancingGoat.Controllers.Shopify
         }
 
 
+        [HttpPost]
+        [Route("/cart/addDiscountCode")]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddDiscountCode([FromForm] string discountCode)
+        {
+            await shoppingService.AddDiscountCode(discountCode);
+            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+        }
+
+        [HttpPost]
+        [Route("/cart/removeDiscountCode")]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> RemoveDiscountCode([FromForm] string discountCode)
+        {
+            await shoppingService.RemoveDiscountCode(discountCode);
+            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+        }
+
+
         private async Task<Dictionary<string, string>> GetCartItemsImages(IEnumerable<string> variantGraphQLIds)
         {
             var variants = await contentItemService.GetVariants(variantGraphQLIds.ToArray());

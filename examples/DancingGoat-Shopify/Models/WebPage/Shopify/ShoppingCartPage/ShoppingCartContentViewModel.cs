@@ -8,13 +8,15 @@ namespace DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
         public IEnumerable<ShoppingCartItemViewModel> CartItems { get; set; }
         public string GrandTotal { get; set; }
         public IEnumerable<string> AppliedCoupons { get; set; }
+        public string ShopifyCheckoutUrl { get; set; }
 
         public static ShoppingCartContentViewModel GetViewModel(ShoppingCartInfo cart, Dictionary<string, string> productImages)
         {
             return new ShoppingCartContentViewModel()
             {
-                GrandTotal = cart?.GrandTotal.FormatPrice(cart.Currency.ToString()),
+                GrandTotal = cart?.GrandTotal.FormatPrice(cart.Currency),
                 AppliedCoupons = cart?.DiscountCodes ?? [],
+                ShopifyCheckoutUrl = cart.CartUrl,
                 CartItems = cart?.Items.Select(x => new ShoppingCartItemViewModel()
                 {
                     ItemName = x.Name,

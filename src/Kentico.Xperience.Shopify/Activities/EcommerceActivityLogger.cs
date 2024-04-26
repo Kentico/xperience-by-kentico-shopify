@@ -15,21 +15,21 @@ namespace Kentico.Xperience.Shopify.Activities
         }
 
 
-        public void LogProductAddedToShoppingCartActivity(ShoppingCartItem cartItem, int quantity)
+        public void LogProductAddedToShoppingCartActivity(ShoppingCartItem? cartItem, int quantity)
         {
             customActivityLogger.Log(EcommerceActivityTypes.ProductAddedToCartActivity, new CustomActivityData()
             {
-                ActivityTitle = $"Product added to shopping cart '{cartItem.Name}'",
+                ActivityTitle = $"Product added to shopping cart '{cartItem?.Name}'",
                 ActivityValue = quantity.ToString()
             });
         }
 
 
-        public void LogProductRemovedFromShoppingCartActivity(ShoppingCartItem cartItem, int quantity)
+        public void LogProductRemovedFromShoppingCartActivity(ShoppingCartItem? cartItem, int quantity)
         {
-            customActivityLogger.Log(EcommerceActivityTypes.ProductAddedToCartActivity, new CustomActivityData()
+            customActivityLogger.Log(EcommerceActivityTypes.ProductRemovedFromCartActivity, new CustomActivityData()
             {
-                ActivityTitle = $"Product removed from shopping cart '{cartItem.Name}'",
+                ActivityTitle = $"Product removed from shopping cart '{cartItem?.Name}'",
                 ActivityValue = quantity.ToString()
             });
         }
@@ -37,7 +37,7 @@ namespace Kentico.Xperience.Shopify.Activities
 
         public void LogPurchaseActivity(decimal totalPrice, long orderId, CurrencyCode currency)
         {
-            customActivityLogger.Log(EcommerceActivityTypes.ProductAddedToCartActivity, new CustomActivityData()
+            customActivityLogger.Log(EcommerceActivityTypes.PurchaseActivity, new CustomActivityData()
             {
                 ActivityTitle = $"Purchase for {totalPrice.FormatPrice(currency)} (shopify orderID: {orderId})",
                 ActivityValue = totalPrice.ToString(),
@@ -45,11 +45,11 @@ namespace Kentico.Xperience.Shopify.Activities
         }
 
 
-        public void LogPurchasedProductActivity(ShoppingCartItem cartItem, int quantity)
+        public void LogPurchasedProductActivity(ShoppingCartItem? cartItem, int quantity)
         {
             customActivityLogger.Log(EcommerceActivityTypes.PurchasedProductActivity, new CustomActivityData
             {
-                ActivityTitle = $"Purchased product '{cartItem.Name}'",
+                ActivityTitle = $"Purchased product '{cartItem?.Name}'",
                 ActivityValue = quantity.ToString()
             });
         }

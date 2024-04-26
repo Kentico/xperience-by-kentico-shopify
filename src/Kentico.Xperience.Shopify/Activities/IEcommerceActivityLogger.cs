@@ -10,15 +10,15 @@ namespace Kentico.Xperience.Shopify.Activities
         /// </summary>
         /// <param name="cartItem">New shopping cart item that was added to the shopping cart.</param>
         /// <param name="quantity">Cart item quantity.</param>
-        void LogProductAddedToShoppingCartActivity(ShoppingCartItem cartItem, int quantity);
+        void LogProductAddedToShoppingCartActivity(ShoppingCartItem? cartItem, int quantity);
 
 
         /// <summary>
         /// Logs activity product removed to shopping cart. 
         /// </summary>
         /// <param name="cartItem">Shopping cart item that was removed from the shopping cart.</param>
-        /// <param name="quantity">Cart item quantity.</param>
-        void LogProductRemovedFromShoppingCartActivity(ShoppingCartItem cartItem, int quantity);
+        /// <param name="quantity">Removed cart item quantity.</param>
+        void LogProductRemovedFromShoppingCartActivity(ShoppingCartItem? cartItem, int quantity);
 
 
         /// <summary>
@@ -35,6 +35,6 @@ namespace Kentico.Xperience.Shopify.Activities
         /// </summary>
         /// <param name="cartItem">Purchased shopping cart item.</param>
         /// <param name="quantity">Quantity.</param>
-        void LogPurchasedProductActivity(ShoppingCartItem cartItem, int quantity);
+        void LogPurchasedProductActivity(ShoppingCartItem? cartItem, int quantity);
     }
 }

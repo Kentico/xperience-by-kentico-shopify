@@ -1,7 +1,5 @@
 ﻿using CMS.Activities;
 using Kentico.Xperience.Shopify.ShoppingCart;
-using Kentico.Xperience.Shopify.Synchronization;
-using Shopify.ContentTypes;
 using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify.Activities
@@ -9,14 +7,11 @@ namespace Kentico.Xperience.Shopify.Activities
     internal class EcommerceActivityLogger : IEcommerceActivityLogger
     {
         private readonly ICustomActivityLogger customActivityLogger;
-        private readonly IShopifyContentItemService contentItemService;
 
         public EcommerceActivityLogger(
-            ICustomActivityLogger customActivityLogger,
-            IShopifyContentItemService shopifyContentItemService)
+            ICustomActivityLogger customActivityLogger)
         {
             this.customActivityLogger = customActivityLogger;
-            contentItemService = shopifyContentItemService;
         }
 
 

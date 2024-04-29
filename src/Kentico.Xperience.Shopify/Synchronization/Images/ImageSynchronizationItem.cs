@@ -1,7 +1,6 @@
 ﻿using CMS.ContentEngine;
 
 using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
-using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization.Interfaces;
 using Kentico.Xperience.Shopify.ReusableContentTypes;
 
 using Shopify;

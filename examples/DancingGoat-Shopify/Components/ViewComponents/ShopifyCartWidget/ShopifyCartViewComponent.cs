@@ -57,32 +57,5 @@ namespace DancingGoat.Components.ViewComponents
 
             return View($"~/Components/ViewComponents/ShopifyCartWidget/Default.cshtml", model);
         }
-
-        private async Task<string> GetShoppingCartPageUrl()
-        {
-            string websiteChannelName = websiteChannelContext.WebsiteChannelName;
-            string preferredLanguage = preferredLanguageRetriever.Get();
-            int cacheMinutes = conversionService.GetInteger(settingsService["CMSCacheMinutes"], 0);
-
-            return await progressiveCache.LoadAsync(async (cs) =>
-            {
-                string test = websiteChannelName + preferredLanguage;
-                int test2 = cacheMinutes;
-                var builder = new ContentItemQueryBuilder()
-                            .ForContentType(
-                                ShoppingCartPage.CONTENT_TYPE_NAME,
-                                config => config
-                                    .ForWebsite(websiteChannelName)
-                                    .TopN(1)
-                            ).InLanguage(preferredLanguage);
-
-                var cartPage = (await executor.GetWebPageResult(builder, queryResultMapper.Map<ShoppingCartPage>)).FirstOrDefault();
-
-                cs.CacheDependency = CacheHelper.GetCacheDependency($"webpageitem|byid|{cartPage?.SystemFields.WebPageItemID}");
-
-                return cartPage == null ? null : (await urlRetriever.Retrieve(cartPage))?.RelativePath;
-            },
-            new CacheSettings(cacheMinutes, nameof(ShopifyCartViewComponent), $"|{preferredLanguage}.{websiteChannelName}.CartPageUrl"));
-        }
     }
 }

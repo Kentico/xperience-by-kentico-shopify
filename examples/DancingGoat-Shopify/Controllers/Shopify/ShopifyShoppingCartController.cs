@@ -43,7 +43,6 @@ namespace DancingGoat.Controllers.Shopify
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromForm] string variantGraphQLId, [FromForm] int quantity, [FromForm] string cartOperation)
         {
-            // TODO resolve country
             var country = ShopifySharp.GraphQL.CountryCode.CZ;
             var operationEnum = Enum.Parse<CartOperation>(cartOperation);
 

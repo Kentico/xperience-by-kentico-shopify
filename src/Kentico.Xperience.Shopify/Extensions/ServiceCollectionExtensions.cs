@@ -1,5 +1,6 @@
 ﻿using Kentico.Xperience.Shopify.Activities;
 using Kentico.Xperience.Shopify.Config;
+using Kentico.Xperience.Shopify.Orders;
 using Kentico.Xperience.Shopify.Products;
 using Kentico.Xperience.Shopify.ShoppingCart;
 using Kentico.Xperience.Shopify.Synchronization;
@@ -33,6 +34,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IShoppingService, ShoppingService>();
         services.AddScoped<IShopifyIntegrationSettingsService, ShopifyIntegrationSettingsService>();
         services.AddScoped<IEcommerceActivityLogger, EcommerceActivityLogger>();
+        services.AddScoped<IShopifyOrderService, ShopifyOrderService>();
 
         services.AddSingleton<IShopifyCurrencyFormatService, ShopifyCurrencyFormatService>();
 

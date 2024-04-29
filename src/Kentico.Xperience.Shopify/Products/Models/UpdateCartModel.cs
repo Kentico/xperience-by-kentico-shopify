@@ -13,7 +13,7 @@ public class UpdateCartModel
 
 public enum CartOperation
 {
-    Add,
+    Update,
     Remove
 }
 

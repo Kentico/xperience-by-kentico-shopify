@@ -13,7 +13,7 @@ but the purchase itself still takes place on Shopify.
 
 ## Screenshots
 
-![Products in content hub](./images/screenshots/products_content_hub.png "Products in content hub")
+![Products in content hub](./images/screenshots/products_content_hub.jpg "Products in content hub")
 
 ## Library Version Matrix
 

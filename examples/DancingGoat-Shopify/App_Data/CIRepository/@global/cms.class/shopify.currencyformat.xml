@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.class>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <CodeNameColumn>CurrencyCode</CodeNameColumn>
+      <DisplayNameColumn>CurrencyCode</DisplayNameColumn>
+      <ObjectType>Shopify.CurrencyFormat</ObjectType>
+      <UseGuidHashtable>False</UseGuidHashtable>
+      <UseIdHashtable>False</UseIdHashtable>
+      <UseNameHashtable>False</UseNameHashtable>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>Shopify currency format</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="CurrencyFormatID" columntype="integer" enabled="true" guid="d29aad73-40e2-47b5-a315-d84f87354bb8" isPK="true" />
+      <field column="CurrencyCode" columnprecision="0" columnsize="5" columntype="text" enabled="true" guid="ceff5511-08b8-4072-8089-5ff7010b9248" />
+      <field column="CurrencyPriceFormat" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="3bf597d9-ce11-411b-8b5e-232b76ee26cc" />
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>996f2159-f3fd-4ec1-99c6-c6d62fa12705</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassName>Shopify.CurrencyFormat</ClassName>
+  <ClassResourceID>
+    <CodeName>ShopifyStoreConfiguration</CodeName>
+    <GUID>3b34600d-ecb1-4048-bdf0-4ec6298ddd28</GUID>
+    <ObjectType>cms.resource</ObjectType>
+  </ClassResourceID>
+  <ClassTableName>Shopify_CurrencyFormat</ClassTableName>
+  <ClassType>Other</ClassType>
+</cms.class>

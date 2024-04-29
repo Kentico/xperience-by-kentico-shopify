@@ -1,7 +1,7 @@
 ﻿using Kentico.Forms.Web.Mvc;
 using Kentico.Web.Mvc;
 using Kentico.Xperience.Shopify.Components.FormComponents;
-using Kentico.Xperience.Shopify.Services;
+using Kentico.Xperience.Shopify.Products;
 
 [assembly: RegisterFormComponent(ShopifyCurrencySelectorComponent.IDENTIFIER, typeof(ShopifyCurrencySelectorComponent), "Shopify enabled currencies dropdown", IconClass = "icon-dollar-sign")]
 namespace Kentico.Xperience.Shopify.Components.FormComponents;

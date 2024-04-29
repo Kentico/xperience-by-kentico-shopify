@@ -2,7 +2,7 @@
 {
     public class ShopifyConfig
     {
-        public readonly static string SECTION_NAME = "CMSShopifyConfig";
+        public static readonly string SECTION_NAME = "CMSShopifyConfig";
 
         /// <summary>
         /// Shopify store URL
@@ -12,22 +12,16 @@
         /// <summary>
         /// Admin API token
         /// </summary>
-        public required string AdminApiToken { get; set; }
+        public required string AdminApiKey { get; set; }
 
         /// <summary>
         /// Storefront API token
         /// </summary>
-        public required string StorefrontApiToken { get; set; }
+        public required string StorefrontApiKey { get; set; }
 
         /// <summary>
         /// Storefront API version
         /// </summary>
         public required string StorefrontApiVersion { get; set; }
-
-        /// <summary>
-        /// Dictionary where key is currency code and value is the format
-        /// </summary>
-        public required IDictionary<string, string> CurrencyFormats { get; set; }
     }
 }
-

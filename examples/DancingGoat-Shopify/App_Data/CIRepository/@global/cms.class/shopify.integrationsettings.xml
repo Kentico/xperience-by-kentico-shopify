@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.class>
+  <ClassDisplayName>Shopify integration settings</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="IntegrationSettingsID" columntype="integer" enabled="true" guid="f1e4df61-6f06-4258-bcc5-d62f589ba275" isPK="true" />
+      <field column="ShopifyUrl" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="8487044c-4b9b-43f2-9b8f-0843c469cf56" />
+      <field column="AdminApiKey" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="946a39cc-2e4f-4694-a4b7-16948e121c42" />
+      <field column="StorefrontApiKey" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="fdb6af83-8a42-4fa2-a881-2be8606938b8" />
+      <field column="StorefrontApiVersion" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="c50ecd44-9844-4183-ab70-32874039f672" />
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>0ae428b8-e2db-4dae-a6ce-7c317f121679</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassName>Shopify.IntegrationSettings</ClassName>
+  <ClassResourceID>
+    <CodeName>ShopifyStoreConfiguration</CodeName>
+    <GUID>3b34600d-ecb1-4048-bdf0-4ec6298ddd28</GUID>
+    <ObjectType>cms.resource</ObjectType>
+  </ClassResourceID>
+  <ClassTableName>Shopify_IntegrationSettings</ClassTableName>
+  <ClassType>Other</ClassType>
+</cms.class>

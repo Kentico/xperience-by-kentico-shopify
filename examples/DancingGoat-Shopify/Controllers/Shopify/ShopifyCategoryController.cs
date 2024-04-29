@@ -1,17 +1,18 @@
-﻿using Shopify.Controllers;
-using DancingGoat.Models;
-using DancingGoat;
-using Kentico.Content.Web.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc;
-using Kentico.Content.Web.Mvc;
-using CMS.Websites;
-using ShopifySharp;
+﻿using CMS.Core;
 using CMS.Helpers;
-using Kentico.Xperience.Shopify.Services.ProductService;
-using Kentico.Xperience.Shopify.Models;
-using ShopifySharp.GraphQL;
-using Kentico.Xperience.Shopify.Services;
-using CMS.Core;
+using CMS.Websites;
+
+using DancingGoat;
+using DancingGoat.Models;
+
+using Kentico.Content.Web.Mvc;
+using Kentico.Xperience.Shopify.Products;
+using Kentico.Xperience.Shopify.Products.Models;
+using Kentico.Content.Web.Mvc.Routing;
+
+using Microsoft.AspNetCore.Mvc;
+
+using Shopify.Controllers;
 
 [assembly: RegisterWebPageRoute(CategoryPage.CONTENT_TYPE_NAME, typeof(ShopifyCategoryController), WebsiteChannelNames = new[] { DancingGoatConstants.WEBSITE_CHANNEL_NAME })]
 

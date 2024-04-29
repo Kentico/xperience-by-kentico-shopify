@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.alternativeform>
+  <FormClassID>
+    <CodeName>Shopify.CurrencyFormat</CodeName>
+    <GUID>996f2159-f3fd-4ec1-99c6-c6d62fa12705</GUID>
+    <ObjectType>cms.class</ObjectType>
+  </FormClassID>
+  <FormDefinition>
+    <form>
+      <field column="CurrencyFormatID" guid="d29aad73-40e2-47b5-a315-d84f87354bb8" enabled="" />
+      <field column="CurrencyCode" enabled="true" guid="ceff5511-08b8-4072-8089-5ff7010b9248" visible="true">
+        <settings>
+          <controlname>Kentico.Administration.TextInput</controlname>
+        </settings>
+        <validationrulesdata>
+          <ValidationRuleConfiguration>
+            <ValidationRuleIdentifier>Kentico.Administration.RequiredValue</ValidationRuleIdentifier>
+            <RuleValues />
+          </ValidationRuleConfiguration>
+        </validationrulesdata>
+        <properties>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Currency code</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+      </field>
+      <field column="CurrencyPriceFormat" enabled="true" guid="3bf597d9-ce11-411b-8b5e-232b76ee26cc" visible="true">
+        <settings>
+          <controlname>Kentico.Administration.TextInput</controlname>
+          <WatermarkText>$0.00</WatermarkText>
+        </settings>
+        <properties>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Currency price format</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+      </field>
+    </form>
+  </FormDefinition>
+  <FormDisplayName>Shopify currency format form</FormDisplayName>
+  <FormGUID>fc4f83bf-6a68-4c18-8e1e-77763f6ea36f</FormGUID>
+  <FormIsCustom>True</FormIsCustom>
+  <FormName>ShopifyCurrencyFormatForm</FormName>
+</cms.alternativeform>

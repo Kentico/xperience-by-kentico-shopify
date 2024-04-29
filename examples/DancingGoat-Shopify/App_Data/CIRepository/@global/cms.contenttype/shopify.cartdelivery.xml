@@ -35,7 +35,7 @@
   </ClassFormDefinition>
   <ClassGUID>864bed3b-5157-40a4-8ccf-82a6970c3cb2</ClassGUID>
   <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
-  <ClassIconClass>xp-truck</ClassIconClass>
+  <ClassIconClass>xp-l-forms-2</ClassIconClass>
   <ClassName>Shopify.CartDelivery</ClassName>
   <ClassTableName>Shopify_CartDelivery</ClassTableName>
   <ClassType>Content</ClassType>

@@ -3,6 +3,7 @@
 using CMS.Core;
 
 using Kentico.Xperience.Shopify.Config;
+using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify
 {
@@ -30,5 +31,9 @@ namespace Kentico.Xperience.Shopify
 
             return price.ToString();
         }
+
+        public static string FormatPrice(this decimal price, CurrencyCode currencyCode) => FormatPrice(price, currencyCode.ToString());
+
+        public static string FormatPrice(this decimal? price, CurrencyCode currencyCode) => FormatPrice(price, currencyCode.ToString());
     }
 }

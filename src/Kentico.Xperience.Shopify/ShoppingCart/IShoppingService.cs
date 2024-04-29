@@ -31,5 +31,21 @@ public interface IShoppingService
     /// <param name="parameters"></param>
     /// <returns><see cref="CartOperationResult"/> with updated shopping cart if operation was successful.</returns>
     Task<CartOperationResult> AddItemToCart(ShoppingCartItemParameters parameters);
+
+
+    /// <summary>
+    /// Add discount code to current shopping cart.
+    /// </summary>
+    /// <param name="discountCode"></param>
+    /// <returns></returns>
+    Task<CartOperationResult> AddDiscountCode(string discountCode);
+
+
+    /// <summary>
+    /// Remove discount code from current shopping cart.
+    /// </summary>
+    /// <param name="discountCode"></param>
+    /// <returns></returns>
+    Task<CartOperationResult> RemoveDiscountCode(string discountCode);
 }
 

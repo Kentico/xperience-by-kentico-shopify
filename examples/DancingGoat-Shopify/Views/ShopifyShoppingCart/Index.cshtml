@@ -1,0 +1,41 @@
+﻿@using DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
+@model ShoppingCartContentViewModel
+
+@{
+    ViewData["PageClass"] = "inverted";
+}
+
+<div class="checkout-container">
+    <div class="cart">
+        <div class="col-md-8 cart-content">
+            <hr class="first-separator" />
+            @if (!Model.CartItems.Any())
+            {
+                <span>@HtmlLocalizer["Shopping cart is empty"]</span>
+                <hr class="last-separator">
+            }
+            else
+            {
+                foreach (var cartItem in Model.CartItems)
+                {
+                    <partial name="~/Views/ShopifyShoppingCart/ShopifyCartItemView.cshtml" model="cartItem" />
+                }
+            }
+        </div>
+        <div class="col-md-4">
+            @if (Model.CartItems.Any())
+            {
+                <partial name="~/Views/ShopifyShoppingCart/CartContentTotalsView.cshtml"
+                         model="new ShoppingCartTotalsViewModel()
+                        {
+                            GrandTotal = Model.GrandTotal,
+                            AppliedCoupons = Model.AppliedCoupons,
+                            ShopifyCheckoutUrl = Model.ShopifyCheckoutUrl
+                        }" />
+            }
+        </div>
+        <editable-area area-identifier="@nameof(ShoppingCartContentViewModel)">
+            <widget-zone />
+        </editable-area>
+    </div>
+</div>

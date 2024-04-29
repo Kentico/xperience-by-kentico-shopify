@@ -34,7 +34,7 @@ namespace DancingGoat.Controllers.Shopify
             var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
             var model = ShoppingCartContentViewModel.GetViewModel(cart, images);
 
-            return View("~/Views/ShopifyShoppingCart/Index.cshtml", model);
+            return View(model);
         }
 
 

@@ -11,38 +11,31 @@ namespace Kentico.Xperience.Shopify.Orders
         private readonly IOrderService orderService;
 
 
-        public ShopifyOrderService(IOrderServiceFactory orderServiceFactory, IShopifyIntegrationSettingsService integrationSettingsService) : base(integrationSettingsService)
+        public ShopifyOrderService(
+            IOrderServiceFactory orderServiceFactory,
+            IShopifyIntegrationSettingsService integrationSettingsService) : base(integrationSettingsService)
         {
             orderService = orderServiceFactory.Create(shopifyCredentials);
         }
 
-        public async Task<OrderCustomerDetails?> GetOrderCustomerDetails(string cartToken)
+
+        /// <inheritdoc/>
+        public async Task<Order?> GetOrder(string sourceId)
         {
-            var filter = new OrderListFilter()
-            {
-                CreatedAtMin = DateTime.Now.AddMinutes(-10).Date,
-                Fields = "customer"
-            };
-
-            var result = await orderService.ListAsync(filter);
-
-            var customer = result.Items.FirstOrDefault(x => x.CartToken == cartToken)?.Customer;
-            if (customer == null)
+            if (string.IsNullOrEmpty(sourceId))
             {
                 return null;
             }
 
-
-            return new OrderCustomerDetails()
+            var filter = new OrderListFilter()
             {
-                Email = customer.Email,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Address1 = customer.DefaultAddress.Address1,
-                City = customer.DefaultAddress.City,
-                Zip = customer.DefaultAddress.Zip,
-                CountryCode = customer.DefaultAddress.CountryCode
+                CreatedAtMin = DateTime.Now.AddDays(-1).Date,
+                Fields = "customer,source_identifier,name,order_status_url,id,line_items,total_price_set,presentment_currency"
             };
+
+            var result = await orderService.ListAsync(filter);
+
+            return result.Items.FirstOrDefault(x => x.SourceIdentifier == sourceId);
         }
     }
 }

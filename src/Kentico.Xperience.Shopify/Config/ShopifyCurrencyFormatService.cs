@@ -8,17 +8,17 @@ namespace Kentico.Xperience.Shopify.Config
     internal class ShopifyCurrencyFormatService : IShopifyCurrencyFormatService
     {
         private readonly IProgressiveCache cache;
-        private readonly IInfoProvider<CurrencyFormatInfo> currencyFormatInfoProvider;
+        private readonly IInfoProvider<CurrencyFormatInfo> currencyFormatProvider;
 
 
-        public ShopifyCurrencyFormatService(IProgressiveCache cache, IInfoProvider<CurrencyFormatInfo> currencyFormatInfoProvider)
+        public ShopifyCurrencyFormatService(IProgressiveCache cache, IInfoProvider<CurrencyFormatInfo> currencyFormatProvider)
         {
             this.cache = cache;
-            this.currencyFormatInfoProvider = currencyFormatInfoProvider;
+            this.currencyFormatProvider = currencyFormatProvider;
         }
 
         public IReadOnlyDictionary<string, string> GetFormats() =>
-            cache.Load(cs => currencyFormatInfoProvider.Get()
+            cache.Load(cs => currencyFormatProvider.Get()
                 .ToDictionary(format => format.CurrencyCode, format => format.CurrencyPriceFormat)
             , new CacheSettings(20, $"{nameof(ShopifyCurrencyFormatService)}|{nameof(GetFormats)}")
             {

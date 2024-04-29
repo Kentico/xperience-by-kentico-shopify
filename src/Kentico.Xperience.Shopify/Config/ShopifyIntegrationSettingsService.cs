@@ -1,4 +1,5 @@
-﻿using CMS.Helpers;
+﻿using CMS.DataEngine;
+using CMS.Helpers;
 
 using Kentico.Xperience.Shopify.Admin;
 using Microsoft.Extensions.Options;
@@ -9,11 +10,16 @@ namespace Kentico.Xperience.Shopify.Config
     {
         private readonly IProgressiveCache cache;
         private readonly IOptionsMonitor<ShopifyConfig> monitor;
+        private readonly IInfoProvider<IntegrationSettingsInfo> integrationSettingsProvider;
 
-        public ShopifyIntegrationSettingsService(IProgressiveCache cache, IOptionsMonitor<ShopifyConfig> monitor)
+        public ShopifyIntegrationSettingsService(
+            IProgressiveCache cache,
+            IOptionsMonitor<ShopifyConfig> monitor,
+            IInfoProvider<IntegrationSettingsInfo> integrationSettingsProvider)
         {
             this.cache = cache;
             this.monitor = monitor;
+            this.integrationSettingsProvider = integrationSettingsProvider;
         }
 
         public ShopifyConfig? GetSettings()
@@ -35,7 +41,7 @@ namespace Kentico.Xperience.Shopify.Config
 
         private ShopifyConfig? GetConfigFromSettings()
         {
-            var settingsInfo = IntegrationSettingsInfo.Provider.Get()
+            var settingsInfo = integrationSettingsProvider.Get()
                     .TopN(1)
                     .FirstOrDefault();
             if (settingsInfo == null)

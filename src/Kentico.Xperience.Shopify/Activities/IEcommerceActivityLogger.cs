@@ -26,15 +26,14 @@ namespace Kentico.Xperience.Shopify.Activities
         /// </summary>
         /// <param name="totalPrice">Order total price in shopping cart currency.</param>
         /// <param name="orderId">Order ID.</param>
-        /// <param name="currency">Shopping cart currency.</param>
-        void LogPurchaseActivity(decimal totalPrice, long orderId, CurrencyCode currency);
+        /// <param name="currencyCode">Shopping cart currency.</param>
+        void LogPurchaseActivity(decimal totalPrice, long orderId, string currencyCode);
 
 
         /// <summary>
         /// Logs product purchased activity.
         /// </summary>
         /// <param name="cartItem">Purchased shopping cart item.</param>
-        /// <param name="quantity">Quantity.</param>
-        void LogPurchasedProductActivity(ShoppingCartItem? cartItem, int quantity);
+        void LogPurchasedProductActivity(ShoppingCartItem? cartItem);
     }
 }

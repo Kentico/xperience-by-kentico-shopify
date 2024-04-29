@@ -35,22 +35,22 @@ namespace Kentico.Xperience.Shopify.Activities
         }
 
 
-        public void LogPurchaseActivity(decimal totalPrice, long orderId, CurrencyCode currency)
+        public void LogPurchaseActivity(decimal totalPrice, long orderId, string currencyCode)
         {
             customActivityLogger.Log(EcommerceActivityTypes.PurchaseActivity, new CustomActivityData()
             {
-                ActivityTitle = $"Purchase for {totalPrice.FormatPrice(currency)} (shopify orderID: {orderId})",
+                ActivityTitle = $"Purchase for {totalPrice.FormatPrice(currencyCode)} (shopify orderID: {orderId})",
                 ActivityValue = totalPrice.ToString(),
             });
         }
 
 
-        public void LogPurchasedProductActivity(ShoppingCartItem? cartItem, int quantity)
+        public void LogPurchasedProductActivity(ShoppingCartItem? cartItem)
         {
             customActivityLogger.Log(EcommerceActivityTypes.PurchasedProductActivity, new CustomActivityData
             {
                 ActivityTitle = $"Purchased product '{cartItem?.Name}'",
-                ActivityValue = quantity.ToString()
+                ActivityValue = cartItem?.Quantity.ToString()
             });
         }
 

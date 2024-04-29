@@ -1,8 +1,7 @@
-﻿using DancingGoat.Components.ViewComponents.ShopifyCartWidget;
-using Kentico.Xperience.Shopify.ShoppingCart;
+﻿using Kentico.Xperience.Shopify.ShoppingCart;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DancingGoat.Components.ViewComponents
+namespace DancingGoat.Components.ViewComponents.ShopifyCart
 {
     public class ShopifyCartViewComponent : ViewComponent
     {
@@ -18,13 +17,13 @@ namespace DancingGoat.Components.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
-            var model = new ShopifyCartWidgetViewModel()
+            var model = new ShopifyCartViewComponentModel()
             {
                 CartItemCount = cart?.Items.Sum(x => x.Quantity) ?? 0,
                 CartUrl = DancingGoatConstants.SHOPPING_CART_PATH
             };
 
-            return View($"~/Components/ViewComponents/ShopifyCartWidget/Default.cshtml", model);
+            return View($"~/Components/ViewComponents/ShopifyCart/Default.cshtml", model);
         }
     }
 }

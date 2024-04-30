@@ -58,6 +58,7 @@ namespace DancingGoat.Controllers.Shopify
             return View(model);
         }
 
+
         private void LogPurchaseActivity(Order order, ShoppingCartInfo cart)
         {
             activityLogger.LogPurchaseActivity(order.TotalPriceSet.PresentmentMoney.Amount ?? 0, order?.Id ?? 0, order.PresentmentCurrency);
@@ -66,6 +67,7 @@ namespace DancingGoat.Controllers.Shopify
                 activityLogger.LogPurchasedProductActivity(lineItem);
             }
         }
+
 
         private void UpdateCurrentContact(Order order)
         {
@@ -116,5 +118,4 @@ namespace DancingGoat.Controllers.Shopify
             HttpContext.Session.Remove(CART_ID_KEY);
         }
     }
-
 }

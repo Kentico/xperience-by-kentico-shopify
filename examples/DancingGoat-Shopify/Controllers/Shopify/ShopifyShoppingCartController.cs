@@ -30,13 +30,11 @@ namespace DancingGoat.Controllers.Shopify
 
         public async Task<IActionResult> Index()
         {
-            ViewData["PageClass"] = "inverted";
-
             var cart = await shoppingService.GetCurrentShoppingCart();
             var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
             var model = ShoppingCartContentViewModel.GetViewModel(cart, images);
 
-            return View("~/Views/ShopifyShoppingCart/Index.cshtml", model);
+            return View(model);
         }
 
 
@@ -45,7 +43,6 @@ namespace DancingGoat.Controllers.Shopify
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromForm] string variantGraphQLId, [FromForm] int quantity, [FromForm] string cartOperation)
         {
-            // TODO resolve country
             var country = ShopifySharp.GraphQL.CountryCode.CZ;
             var operationEnum = Enum.Parse<CartOperation>(cartOperation);
 

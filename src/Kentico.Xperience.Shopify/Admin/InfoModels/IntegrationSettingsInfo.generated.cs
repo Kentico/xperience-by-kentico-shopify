@@ -26,7 +26,6 @@ namespace Kentico.Xperience.Shopify.Admin
         /// <summary>
         /// Type information.
         /// </summary>
-#warning "You will need to configure the type info."
         public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(IInfoProvider<IntegrationSettingsInfo>), OBJECT_TYPE, "Shopify.IntegrationSettings", "IntegrationSettingsID", null, null, null, null, null, null, null)
         {
             TouchCacheDependencies = true,

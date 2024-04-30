@@ -282,5 +282,163 @@ namespace Kentico.Xperience.Shopify.Tests
                 Assert.That(cartItem.VariantGraphQLId, Is.EqualTo(itemParams.MerchandiseID));
             });
         }
+
+
+        [Test]
+        public async Task ShoppingCartAddExistingDiscountCode_Should_Add_Discount_Code()
+        {
+            string discountCode = new DiscountCodesRepository().DiscountCodes.First();
+            var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
+            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+            var result = await shoppingService.AddDiscountCode(discountCode);
+            var cart = result?.Cart;
+
+            if (cart is null)
+            {
+                Assert.Fail("Returned shopping cart was null");
+                return;
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(cart, Is.Not.Null);
+                string[] discountCodes = cart.DiscountCodes.ToArray();
+                Assert.That(discountCodes, Has.Length.EqualTo(1));
+                Assert.That(discountCodes[0], Is.EqualTo(discountCode));
+            });
+        }
+
+
+        [Test]
+        public async Task ShoppingCartAddNonExistingDiscountCode_Should_Ignore_Discount_Code()
+        {
+            string discountCode = DiscountCodesRepository.NonExistingDiscountCode;
+            var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
+            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+            var result = await shoppingService.AddDiscountCode(discountCode);
+            var cart = result?.Cart;
+
+            if (cart is null)
+            {
+                Assert.Fail("Returned shopping cart was null");
+                return;
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(cart, Is.Not.Null);
+                Assert.That(cart.DiscountCodes.ToArray(), Is.Empty);
+            });
+        }
+
+
+        [Test]
+        public async Task ShoppingCartWithDiscountCodeAddExisting_Should_Add_Discount_Code()
+        {
+            var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
+            string discountCode = new DiscountCodesRepository().DiscountCodes.First(x => !shoppingCart.DiscountCodes.Contains(x));
+            int originalDiscountsCount = shoppingCart.DiscountCodes.Count();
+
+            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+            var result = await shoppingService.AddDiscountCode(discountCode);
+            var cart = result?.Cart;
+
+            if (cart is null)
+            {
+                Assert.Fail("Returned shopping cart was null");
+                return;
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(cart, Is.Not.Null);
+                string[] discountCodes = cart.DiscountCodes.ToArray();
+                Assert.That(discountCodes, Has.Length.EqualTo(originalDiscountsCount + 1));
+                Assert.That(discountCodes, Has.Member(discountCode));
+            });
+        }
+
+
+        [Test]
+        public async Task ShoppingCartWithDiscountCodeAddNonExisting_Should_Ignore_Code()
+        {
+            string discountCode = DiscountCodesRepository.NonExistingDiscountCode;
+            var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
+            int originalDiscountsCount = shoppingCart.DiscountCodes.Count();
+
+            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+            var result = await shoppingService.AddDiscountCode(discountCode);
+            var cart = result?.Cart;
+
+            if (cart is null)
+            {
+                Assert.Fail("Returned shopping cart was null");
+                return;
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(cart, Is.Not.Null);
+                Assert.That(cart.DiscountCodes.ToArray(), Has.Length.EqualTo(originalDiscountsCount));
+            });
+        }
+
+
+        [Test]
+        public async Task ShoppingCartWithDiscountCodeRemoveExisting_Should_Remove_Code()
+        {
+            var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
+            int originalDiscountCodesLength = shoppingCart.DiscountCodes.Count();
+            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+            string discountCodeToRemove = shoppingCart.DiscountCodes.First();
+            var result = await shoppingService.RemoveDiscountCode(discountCodeToRemove);
+
+            var cart = result?.Cart;
+
+            if (cart is null)
+            {
+                Assert.Fail("Returned shopping cart was null");
+                return;
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(cart.DiscountCodes, Has.No.Member(discountCodeToRemove));
+                Assert.That(cart.DiscountCodes.ToArray(), Has.Length.EqualTo(originalDiscountCodesLength - 1));
+            });
+        }
+
+
+        [Test]
+        public async Task ShoppingCartWithDiscountCodeRemoveNonExisting_Should_Ignore_Code()
+        {
+            var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
+            int originalDiscountCodesLength = shoppingCart.DiscountCodes.Count();
+            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+            string discountCodeToRemove = DiscountCodesRepository.NonExistingDiscountCode;
+            var result = await shoppingService.RemoveDiscountCode(discountCodeToRemove);
+
+            var cart = result?.Cart;
+
+            if (cart is null)
+            {
+                Assert.Fail("Returned shopping cart was null");
+                return;
+            }
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(cart.DiscountCodes, Has.No.Member(discountCodeToRemove));
+                Assert.That(cart.DiscountCodes.ToArray(), Has.Length.EqualTo(originalDiscountCodesLength));
+            });
+        }
     }
 }

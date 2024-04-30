@@ -10,6 +10,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
     internal class GraphQLHttpClientMock : IGraphQLClient
     {
         private ShoppingCartRepository CartRepository => new();
+        private DiscountCodesRepository DiscountCodesRepository => new();
 
         public GraphQLHttpClientMock()
         {
@@ -39,6 +40,10 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
             {
                 response = HandleCreateCart(request);
             }
+            else if (typeof(TResponse) == typeof(UpdateDiscountCodesResponse))
+            {
+                response = HandleUpdateDiscountCodes(request);
+            }
 
             if (response == null)
             {
@@ -48,6 +53,33 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
             return Task.FromResult(WrapResult<TResponse>(response));
         }
 
+
+        private UpdateDiscountCodesResponse HandleUpdateDiscountCodes(GraphQLRequest request)
+        {
+            string? cartId = request.GetProperty<string>("CartId");
+            string[]? discountCodes = request.GetProperty<string[]>("discountCodes");
+
+            var availableDiscountCodes = DiscountCodesRepository.DiscountCodes;
+            var cart = CartRepository.Carts.FirstOrDefault(x => x.Id == cartId);
+
+            if (cart != null && discountCodes != null)
+            {
+                cart.DiscountCodes = discountCodes.Select(x => new DiscountCode
+                {
+                    Code = x,
+                    Applicable = availableDiscountCodes.Contains(x)
+                });
+            }
+
+            return new UpdateDiscountCodesResponse()
+            {
+                CartDiscountCodesUpdate = new CartResponseBase()
+                {
+                    Cart = cart,
+                    UserErrors = []
+                }
+            };
+        }
 
         private CreateCartResponse HandleCreateCart(GraphQLRequest request)
         {

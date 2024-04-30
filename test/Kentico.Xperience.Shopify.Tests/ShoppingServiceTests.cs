@@ -30,10 +30,10 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task GetCurrentShoppingCart_Should_Return_Cart()
+        public async Task GetCurrentShoppingCart_ExistingCartIdInSession_ShouldReturnCart()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
 
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var returnedCart = await shoppingService.GetCurrentShoppingCart();
@@ -47,7 +47,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task GetCurrentShoppingCart_Should_Retrun_Null()
+        public async Task GetCurrentShoppingCart_NoCartIdInSession_ShouldRetrunNull()
         {
             mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(string.Empty));
             var shoppingService = mocker.CreateInstance<ShoppingService>();
@@ -58,10 +58,10 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartItemUpdateNegativeQuantity_Should_Remove_CartItem()
+        public async Task UpdateCartItem_SetNegativeQuantity_ShouldRemoveCartItem()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
 
             var shoppingService = mocker.CreateInstance<ShoppingService>();
 
@@ -93,7 +93,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task NonExistingShoppingCartRemoveItem_Should_Retrun_Null()
+        public async Task RemoveCartItem_NoCartIdInSession_ShouldRetrunNull()
         {
             mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(string.Empty));
             var itemToRemove = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First()).Items.First();
@@ -109,10 +109,10 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartNonExistingItemUpdate_Should_Add_Item_To_Cart()
+        public async Task UpdateCartItem_AddNewCartItem_ShouldAddItemToCart()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var itemToAdd = new ShoppingCartItemParameters()
             {
                 Country = CountryCode.CZ,
@@ -125,7 +125,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
             if (cart is null)
             {
-                Assert.Fail("Returned shopping cart was null");
+                AssertCartIsNull();
                 return;
             }
 
@@ -143,10 +143,10 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartItemUpdateQuantity_Should_Update_CartItem()
+        public async Task UpdateCartItem_UpdatedProductAlreadyInCart_ShouldUpdateExistingCartItem()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
 
             var cartItemsList = shoppingCart.Items.ToList();
@@ -175,10 +175,10 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartExistingItemRemove_Should_Remove_Item()
+        public async Task SRemoveCartItem_CartContainsItem_ShouldRemoveCartItem()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var cartItemsList = shoppingCart.Items.ToList();
             var itemToRemove = cartItemsList[0];
@@ -198,16 +198,16 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartRemoveNonExistingItem_Should_Return_Unmodified_Cart()
+        public async Task RemoveCartItem_CartDoesNotContainItem_ShouldReturnUnmodifiedCart()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var cart = (await shoppingService.RemoveCartItem("NonExistingMerchandiseID")).Cart;
 
             if (cart is null)
             {
-                Assert.Fail("Returned cart cannot be null");
+                AssertCartIsNull();
                 return;
             }
             var cartItemsList = cart.Items.ToList();
@@ -226,10 +226,10 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartAddNewItem_Should_Add_Item()
+        public async Task AddItemToCart_ExistingCartIdStoredInSession_ShouldAddItemToCart()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var itemToAdd = new ShoppingCartItem()
             {
@@ -258,7 +258,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartAddItemWithoutExistingCart_Should_Return_New_Cart()
+        public async Task AddItemToCart_NoExistingCartIdInSession_ShouldReturnNewCartWithProduct()
         {
             mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(string.Empty));
             string merchandiseID = "TestMerchandiseID";
@@ -285,18 +285,18 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartAddExistingDiscountCode_Should_Add_Discount_Code()
+        public async Task AddDiscountCode_ExistingCartIdInSession_ShouldAddDiscountCode()
         {
             string discountCode = new DiscountCodesRepository().DiscountCodes.First();
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var result = await shoppingService.AddDiscountCode(discountCode);
             var cart = result?.Cart;
 
             if (cart is null)
             {
-                Assert.Fail("Returned shopping cart was null");
+                AssertCartIsNull();
                 return;
             }
 
@@ -311,18 +311,18 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartAddNonExistingDiscountCode_Should_Ignore_Discount_Code()
+        public async Task AddDiscountCode_NonExistingDiscountCode_ShouldIgnoreDiscountCode()
         {
             string discountCode = DiscountCodesRepository.NonExistingDiscountCode;
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().Carts.First());
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var result = await shoppingService.AddDiscountCode(discountCode);
             var cart = result?.Cart;
 
             if (cart is null)
             {
-                Assert.Fail("Returned shopping cart was null");
+                AssertCartIsNull();
                 return;
             }
 
@@ -335,20 +335,20 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartWithDiscountCodeAddExisting_Should_Add_Discount_Code()
+        public async Task AddDiscountCode_CartAlreadyContainsAnotherCode_ShouldAddDiscountCode()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
             string discountCode = new DiscountCodesRepository().DiscountCodes.First(x => !shoppingCart.DiscountCodes.Contains(x));
             int originalDiscountsCount = shoppingCart.DiscountCodes.Count();
 
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var result = await shoppingService.AddDiscountCode(discountCode);
             var cart = result?.Cart;
 
             if (cart is null)
             {
-                Assert.Fail("Returned shopping cart was null");
+                AssertCartIsNull();
                 return;
             }
 
@@ -363,20 +363,20 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartWithDiscountCodeAddNonExisting_Should_Ignore_Code()
+        public async Task AddNonExistingDiscountCode_CartHasAnotherDiscountCode_ShouldIgnoreCode()
         {
             string discountCode = DiscountCodesRepository.NonExistingDiscountCode;
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
             int originalDiscountsCount = shoppingCart.DiscountCodes.Count();
 
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             var result = await shoppingService.AddDiscountCode(discountCode);
             var cart = result?.Cart;
 
             if (cart is null)
             {
-                Assert.Fail("Returned shopping cart was null");
+                AssertCartIsNull();
                 return;
             }
 
@@ -389,11 +389,11 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartWithDiscountCodeRemoveExisting_Should_Remove_Code()
+        public async Task RemoveExistingDiscountCode_CartContainsDiscountCode_ShouldRemoveCode()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
             int originalDiscountCodesLength = shoppingCart.DiscountCodes.Count();
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
 
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             string discountCodeToRemove = shoppingCart.DiscountCodes.First();
@@ -403,7 +403,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
             if (cart is null)
             {
-                Assert.Fail("Returned shopping cart was null");
+                AssertCartIsNull();
                 return;
             }
 
@@ -416,11 +416,11 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task ShoppingCartWithDiscountCodeRemoveNonExisting_Should_Ignore_Code()
+        public async Task RemoveNonExistingDiscountCode_CartContainsAnotherDiscountCode_ShouldIgnoreCode()
         {
             var shoppingCart = new ShoppingCartInfo(new ShoppingCartRepository().CartWithDiscountCode);
             int originalDiscountCodesLength = shoppingCart.DiscountCodes.Count();
-            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
+            SetHttpContext(shoppingCart);
 
             var shoppingService = mocker.CreateInstance<ShoppingService>();
             string discountCodeToRemove = DiscountCodesRepository.NonExistingDiscountCode;
@@ -430,7 +430,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
             if (cart is null)
             {
-                Assert.Fail("Returned shopping cart was null");
+                AssertCartIsNull();
                 return;
             }
 
@@ -440,5 +440,12 @@ namespace Kentico.Xperience.Shopify.Tests
                 Assert.That(cart.DiscountCodes.ToArray(), Has.Length.EqualTo(originalDiscountCodesLength));
             });
         }
+
+
+        private void AssertCartIsNull() => Assert.Fail("Returned shopping cart was null");
+
+
+        private void SetHttpContext(ShoppingCartInfo shoppingCart) =>
+            mocker.Setup<IHttpContextAccessor, HttpContext?>(s => s.HttpContext).Returns(new HttpContextMock(shoppingCart.CartId));
     }
 }

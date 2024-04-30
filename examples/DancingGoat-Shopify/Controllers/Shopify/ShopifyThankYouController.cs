@@ -43,7 +43,7 @@ namespace DancingGoat.Controllers.Shopify
         public async Task<IActionResult> Index(string sourceId)
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
-            var order = await orderService.GetOrder(sourceId);
+            var order = await orderService.GetRecentOrder(sourceId);
             if (order != null)
             {
                 UpdateCurrentContact(order);

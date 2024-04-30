@@ -10,6 +10,6 @@ namespace Kentico.Xperience.Shopify.Orders
         /// <param name="sourceId">Order source identifier.</param>
         /// <remarks>WARNING: Method looks for orders no older than 1 day.</remarks>
         /// <returns>Retrieved Shopify order if found.</returns>
-        Task<Order?> GetOrder(string sourceId);
+        Task<Order?> GetRecentOrder(string sourceId);
     }
 }

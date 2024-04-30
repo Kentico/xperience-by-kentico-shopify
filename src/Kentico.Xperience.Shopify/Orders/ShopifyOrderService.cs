@@ -20,7 +20,7 @@ namespace Kentico.Xperience.Shopify.Orders
 
 
         /// <inheritdoc/>
-        public async Task<Order?> GetOrder(string sourceId)
+        public async Task<Order?> GetRecentOrder(string sourceId)
         {
             if (string.IsNullOrEmpty(sourceId))
             {

@@ -1,6 +1,5 @@
 ﻿using CMS.Activities;
 using Kentico.Xperience.Shopify.ShoppingCart;
-using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify.Activities
 {
@@ -53,23 +52,5 @@ namespace Kentico.Xperience.Shopify.Activities
                 ActivityValue = cartItem?.Quantity.ToString()
             });
         }
-
-
-        //private async Task<(ShopifyProductVariantItem? productVariant, ShopifyProductItem? product)> GetShopifyContentItems(string variantGraphQLId)
-        //{
-        //    var shopifyVariantCI = (await contentItemService.GetVariants([variantGraphQLId])).FirstOrDefault();
-        //    if (shopifyVariantCI == null)
-        //    {
-        //        return (null, null);
-        //    }
-
-        //    var shopifyProductCI = (await contentItemService.GetContentItems<ShopifyProductItem>(
-        //            global::Shopify.Product.CONTENT_TYPE_NAME,
-        //            (config) => config.Where(w => w.WhereEquals(nameof(ShopifyProductItem.ShopifyProductID), shopifyVariantCI.ShopifyProductID))
-        //                    .TopN(1)
-        //                    .WithLinkedItems(0))).FirstOrDefault();
-
-        //    return (shopifyVariantCI, shopifyProductCI);
-        //}
     }
 }

@@ -1,0 +1,26 @@
+﻿@using DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
+@model ShoppingCartItemViewModel
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="cart-item-image">
+            <img src="@Model.ImageUrl" alt="@Model.ItemName" title="@Model.ItemName">
+        </div>
+        <div class="cart-item-info">
+            @Model.ItemName
+        </div>
+        <form asp-controller="ShopifyShoppingCart" asp-action="Update" asp-antiforgery="true" method="post">
+            @Html.Kentico().PageData()
+            <div class="cart-item-amount">
+                <span>Qty</span>
+                <input type="hidden" name="@nameof(ShoppingCartItemViewModel.VariantGraphQLId)" value="@Model.VariantGraphQLId" />
+                <input type="number" class="add-to-cart-textbox" min="0" , name="@nameof(ShoppingCartItemViewModel.Quantity)" value="@Model.Quantity" />
+                <input type="submit" name="cartOperation" value="Update" class="btn btn-default" />
+                <input type="submit" name="cartOperation" value="Remove" class="btn btn-default" />
+            </div>
+        </form>
+
+        <span class="red field-validation-valid" data-valmsg-for="37" data-valmsg-replace="true"></span>
+    </div>
+</div>
+<hr />

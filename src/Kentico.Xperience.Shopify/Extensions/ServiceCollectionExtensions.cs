@@ -7,14 +7,16 @@ using Kentico.Xperience.Shopify.Synchronization.Products;
 using Kentico.Xperience.Shopify.Synchronization.Variants;
 
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.Hosting;
 using ShopifySharp.Extensions.DependencyInjection;
 
 namespace Kentico.Xperience.Shopify;
 public static class ServiceCollectionExtensions
 {
-    public static void RegisterShopifyServices(this IServiceCollection services)
+    public static void RegisterShopifyServices(this IHostApplicationBuilder builder)
     {
+        var services = builder.Services;
+
         // ShopifySharp dependency injection
         services.AddShopifySharpServiceFactories();
 
@@ -36,6 +38,9 @@ public static class ServiceCollectionExtensions
 
         // Add Storefront API HTTP client
         services.AddHttpClient(ShopifyConstants.STOREFRONT_API_CLIENT_NAME, SetupHttpClient);
+
+        // Add options monitor
+        services.Configure<ShopifyConfig>(builder.Configuration.GetSection(ShopifyConfig.SECTION_NAME));
     }
 
     private static void SetupHttpClient(IServiceProvider sp, HttpClient httpClient)

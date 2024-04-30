@@ -2,6 +2,7 @@
 using GraphQL.Client.Abstractions;
 
 using Kentico.Xperience.Shopify.ShoppingCart;
+using Kentico.Xperience.Shopify.ShoppingCart.GraphQLModels;
 using Kentico.Xperience.Shopify.Tests.Repositories;
 
 namespace Kentico.Xperience.Shopify.Tests.Mocks
@@ -175,12 +176,12 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
                     Id = "TestCartItemId",
                     Cost = new CartCost()
                     {
-                        TotalAmount = new ItemPrice()
+                        TotalAmount = new PriceDto()
                         {
                             Amount = 10m,
                             CurrencyCode = ShopifySharp.GraphQL.CurrencyCode.CZK
                         },
-                        SubtotalAmount = new ItemPrice()
+                        SubtotalAmount = new PriceDto()
                         {
                             Amount = 10m,
                             CurrencyCode = ShopifySharp.GraphQL.CurrencyCode.CZK
@@ -190,7 +191,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
                     {
                         Id = cartLineToAdd?.MerchandiseId ?? string.Empty,
                         Title = "New added variant name",
-                        Product = new CartProduct()
+                        Product = new VariantProduct()
                         {
                             Title = "Added product name"
                         }
@@ -231,7 +232,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
                 Quantity = quantity,
                 Cost = new CartCost()
                 {
-                    TotalAmount = new ItemPrice()
+                    TotalAmount = new PriceDto()
                     {
                         Amount = 10m,
                         CurrencyCode = ShopifySharp.GraphQL.CurrencyCode.CZK
@@ -241,7 +242,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
                 {
                     Id = merchandiseID ?? string.Empty,
                     Title = "Variant title",
-                    Product = new CartProduct()
+                    Product = new VariantProduct()
                     {
                         Title = "product title"
                     }

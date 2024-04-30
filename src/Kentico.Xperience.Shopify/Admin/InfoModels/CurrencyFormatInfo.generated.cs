@@ -26,7 +26,6 @@ namespace Kentico.Xperience.Shopify.Admin
         /// <summary>
         /// Type information.
         /// </summary>
-#warning "You will need to configure the type info."
         public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(IInfoProvider<CurrencyFormatInfo>), OBJECT_TYPE, "Shopify.CurrencyFormat", "CurrencyFormatID", null, null, "CurrencyCode", "CurrencyCode", null, null, null)
         {
             TouchCacheDependencies = true,

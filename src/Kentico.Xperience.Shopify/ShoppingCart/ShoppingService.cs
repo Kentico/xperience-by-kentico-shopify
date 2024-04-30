@@ -2,7 +2,6 @@
 using CMS.Core;
 
 using GraphQL;
-
 using Microsoft.AspNetCore.Http;
 
 namespace Kentico.Xperience.Shopify.ShoppingCart;
@@ -153,6 +152,50 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         return result;
     }
 
+    public async Task<CartOperationResult> AddDiscountCode(string discountCode)
+    {
+        var currentCart = await GetCurrentShoppingCart();
+        if (currentCart == null)
+        {
+            return new CartOperationResult(null, false);
+        }
+
+        var oldCodesList = currentCart.DiscountCodes.ToList();
+        string[] updatedCodesList = [.. oldCodesList, discountCode];
+
+        return await UpdateDiscountCodes(currentCart, updatedCodesList);
+    }
+
+    public async Task<CartOperationResult> RemoveDiscountCode(string discountCode)
+    {
+        var currentCart = await GetCurrentShoppingCart();
+        if (currentCart == null)
+        {
+            return new CartOperationResult(null, false);
+        }
+
+        string[] updatedCouponList = currentCart.DiscountCodes.Where(x => x != discountCode).ToArray();
+        return await UpdateDiscountCodes(currentCart, updatedCouponList);
+    }
+
+
+    private async Task<CartOperationResult> UpdateDiscountCodes(ShoppingCartInfo currentCart, string[] discountCodes)
+    {
+        string query = $"mutation cartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]) {{ cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {{ cart {CartObjectModel.MutationObjectScheme} userErrors {{ field message }} }} }}";
+
+        var cartResponse = await PostMutationAsync<UpdateDiscountCodesResponse>(query, new { currentCart.CartId, discountCodes });
+        var cart = cartResponse.Data?.CartDiscountCodesUpdate?.Cart;
+        bool success = ResponseIsOk(cartResponse.Errors, cart, cartResponse.Data?.CartDiscountCodesUpdate?.UserErrors);
+
+        if (cart == null)
+        {
+            return new CartOperationResult(null, false);
+        }
+
+        var shoppingCartInfo = new ShoppingCartInfo(cart);
+        UpdateCartCache(shoppingCartInfo);
+        return new CartOperationResult(shoppingCartInfo, success);
+    }
 
     private async Task<CartOperationResult> ExecuteAddItemMutation(ShoppingCartItemParameters parameters, string cartId)
     {

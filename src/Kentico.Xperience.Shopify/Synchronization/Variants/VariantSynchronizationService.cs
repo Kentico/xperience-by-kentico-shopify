@@ -115,6 +115,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
             SKU = variant.SKU,
             Weight = variant.Weight ?? 0,
             ShopifyMerchandiseID = variant.AdminGraphQLAPIId,
+            ShopifyProductID = variant.ProductId?.ToString() ?? string.Empty,
             Image = hasImage ? [new ContentItemReference() { Identifier = variantImageGuid }] : []
         };
     }

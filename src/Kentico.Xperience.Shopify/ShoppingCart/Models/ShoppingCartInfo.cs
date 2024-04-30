@@ -9,6 +9,7 @@ public class ShoppingCartInfo
     public CurrencyCode Currency { get; set; }
     public IEnumerable<ShoppingCartItem> Items { get; set; }
     public decimal GrandTotal { get; set; }
+    public IEnumerable<string> DiscountCodes { get; set; }
 
     internal ShoppingCartInfo(CartObjectModel shopifyCart)
     {
@@ -19,6 +20,7 @@ public class ShoppingCartInfo
         Currency = shopifyCart.Cost.TotalAmount.CurrencyCode;
         Items = cartItems.Select(CreateShoppingCartItem);
         GrandTotal = shopifyCart.Cost.TotalAmount.Amount;
+        DiscountCodes = shopifyCart.DiscountCodes?.Where(x => x.Applicable).Select(x => x.Code) ?? [];
     }
 
     private ShoppingCartItem CreateShoppingCartItem(CartLineNode node)

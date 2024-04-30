@@ -1,28 +1,23 @@
-﻿using ShopifySharp.GraphQL;
+﻿using Kentico.Xperience.Shopify.ShoppingCart.GraphQLModels;
 
 namespace Kentico.Xperience.Shopify.ShoppingCart;
 
 internal class CartObjectModel : IGraphQLObjectBase
 {
-    public static string? MutationObjectScheme => @"{ id, totalQuantity, checkoutUrl, lines(first: 250) { edges { node { id, quantity, cost { totalAmount { amount, currencyCode } } merchandise { ... on ProductVariant { id, title, product { title } } } } } } cost { totalAmount { amount currencyCode } subtotalAmount { amount currencyCode } } }, userErrors { code, field, message }";
-    public static string? QueryObjectScheme => @"{ id, totalQuantity, checkoutUrl, lines(first: 250) { edges { node { id, quantity, cost { totalAmount { amount, currencyCode } } merchandise { ... on ProductVariant { id, title, product { title } } } } } } cost { totalAmount { amount currencyCode } subtotalAmount { amount currencyCode } } }";
+    public static string? MutationObjectScheme => QueryObjectScheme + @", userErrors { code, field, message }";
+    public static string? QueryObjectScheme => @"{ id, buyerIdentity { countryCode } discountCodes { applicable, code } totalQuantity, checkoutUrl, lines(first: 250) { edges { node { id, quantity, cost { totalAmount { amount, currencyCode } } merchandise { ... on ProductVariant { id, title, product { title } } } } } } cost { totalAmount { amount currencyCode } subtotalAmount { amount currencyCode } } }";
     public required string Id { get; set; }
     public int TotalQuantity { get; set; }
     public required string CheckoutUrl { get; set; }
     public required CartCost Cost { get; set; }
     public CartLines? Lines { get; set; }
+    public IEnumerable<DiscountCode>? DiscountCodes { get; set; }
 }
 
 internal class CartCost
 {
-    public required ItemPrice TotalAmount { get; set; }
-    public ItemPrice? SubtotalAmount { get; set; }
-}
-
-internal class ItemPrice
-{
-    public required decimal Amount { get; set; }
-    public required CurrencyCode CurrencyCode { get; set; }
+    public required PriceDto TotalAmount { get; set; }
+    public PriceDto? SubtotalAmount { get; set; }
 }
 
 internal class CartLines
@@ -48,11 +43,12 @@ internal class Merchandise
 {
     public required string Id { get; set; }
     public required string Title { get; set; }
-    public required CartProduct Product { get; set; }
+    public required VariantProduct Product { get; set; }
 }
 
-internal class CartProduct
+public class DiscountCode
 {
-    public required string Title { set; get; }
+    public bool Applicable { get; set; }
+    public required string Code { get; set; }
 }
 

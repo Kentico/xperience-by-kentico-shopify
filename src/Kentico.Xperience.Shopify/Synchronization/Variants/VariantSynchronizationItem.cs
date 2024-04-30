@@ -1,7 +1,6 @@
 ﻿using CMS.ContentEngine;
 
 using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
-using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization.Interfaces;
 
 using Shopify;
 using Shopify.ContentTypes;
@@ -40,6 +39,12 @@ internal class VariantSynchronizationItem : ContentItemSynchronizationBase, ISyn
 
 
     /// <summary>
+    /// Related product ID.
+    /// </summary>
+    public required string ShopifyProductID { get; set; }
+
+
+    /// <summary>
     /// Image.
     /// </summary>
     public IEnumerable<ContentItemReference> Image { get; set; } = Enumerable.Empty<ContentItemReference>();
@@ -61,6 +66,7 @@ internal class VariantSynchronizationItem : ContentItemSynchronizationBase, ISyn
         SetPropsIfDiff(contentItem.SKU, SKU, nameof(ShopifyProductVariantItem.SKU), modifiedProps);
         SetPropsIfDiff(contentItem.Weight, Weight, nameof(ShopifyProductVariantItem.Weight), modifiedProps);
         SetPropsIfDiff(contentItem.ShopifyMerchandiseID, ShopifyMerchandiseID, nameof(ShopifyProductVariantItem.ShopifyMerchandiseID), modifiedProps);
+        SetPropsIfDiff(contentItem.ShopifyProductID, ShopifyProductID, nameof(ShopifyProductVariantItem.ShopifyProductID), modifiedProps);
 
         if (ReferenceModified(contentItem.Image, Image))
         {

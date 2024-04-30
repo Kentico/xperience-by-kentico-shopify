@@ -7,7 +7,7 @@ using Kentico.Xperience.Shopify.Admin;
     uiPageType: typeof(ShopifyCurrencyFormatsListing),
     name: "Shopify currencies formats",
     templateName: TemplateNames.LISTING,
-    order: 200)]
+    order: 1)]
 namespace Kentico.Xperience.Shopify.Admin
 {
     public class ShopifyCurrencyFormatsListing : ListingPage

@@ -1,5 +1,5 @@
 ﻿using Kentico.Xperience.Shopify.ShoppingCart;
-
+using Kentico.Xperience.Shopify.ShoppingCart.GraphQLModels;
 using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify.Tests.Repositories
@@ -22,18 +22,18 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
 
         private CartObjectModel GenerateCart1()
         {
-            // Create CartProduct instances
-            var product1 = new CartProduct { Title = "Panama Los Lajones Honey" };
-            var product2 = new CartProduct { Title = "Kenya Gakuyuni AA" };
+            // Create VariantProduct instances
+            var product1 = new VariantProduct { Title = "Panama Los Lajones Honey" };
+            var product2 = new VariantProduct { Title = "Kenya Gakuyuni AA" };
 
             // Create Merchandise instances
             var merchandise1 = new Merchandise { Id = "gid://shopify/ProductVariant/47401942581544", Title = "2 lb", Product = product1 };
             var merchandise2 = new Merchandise { Id = "gid://shopify/ProductVariant/47401957785896", Title = "Default Title", Product = product2 };
 
             // Create CartCost instances
-            var totalAmount1 = new ItemPrice { Amount = 3267.0m, CurrencyCode = CurrencyCode.CZK };
-            var totalAmount2 = new ItemPrice { Amount = 1272.0m, CurrencyCode = CurrencyCode.CZK };
-            var subtotalAmount = new ItemPrice { Amount = 4539.0m, CurrencyCode = CurrencyCode.CZK };
+            var totalAmount1 = new PriceDto { Amount = 3267.0m, CurrencyCode = CurrencyCode.CZK };
+            var totalAmount2 = new PriceDto { Amount = 1272.0m, CurrencyCode = CurrencyCode.CZK };
+            var subtotalAmount = new PriceDto { Amount = 4539.0m, CurrencyCode = CurrencyCode.CZK };
 
             var cost1 = new CartCost { TotalAmount = totalAmount1 };
             var cost2 = new CartCost { TotalAmount = totalAmount2 };
@@ -66,18 +66,18 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
 
         private CartObjectModel GenerateCart2()
         {
-            // Create CartProduct instances
-            var product1 = new CartProduct { Title = "Another Product Title" };
-            var product2 = new CartProduct { Title = "Yet Another Product Title" };
+            // Create VariantProduct instances
+            var product1 = new VariantProduct { Title = "Another Product Title" };
+            var product2 = new VariantProduct { Title = "Yet Another Product Title" };
 
             // Create Merchandise instances
             var merchandise1 = new Merchandise { Id = "gid://shopify/ProductVariant/123456789", Title = "Another Variant Title", Product = product1 };
             var merchandise2 = new Merchandise { Id = "gid://shopify/ProductVariant/987654321", Title = "Yet Another Variant Title", Product = product2 };
 
             // Create CartCost instances
-            var totalAmount1 = new ItemPrice { Amount = 1000.0m, CurrencyCode = CurrencyCode.USD };
-            var totalAmount2 = new ItemPrice { Amount = 500.0m, CurrencyCode = CurrencyCode.USD };
-            var subtotalAmount = new ItemPrice { Amount = 1500.0m, CurrencyCode = CurrencyCode.USD };
+            var totalAmount1 = new PriceDto { Amount = 1000.0m, CurrencyCode = CurrencyCode.USD };
+            var totalAmount2 = new PriceDto { Amount = 500.0m, CurrencyCode = CurrencyCode.USD };
+            var subtotalAmount = new PriceDto { Amount = 1500.0m, CurrencyCode = CurrencyCode.USD };
 
             var cost1 = new CartCost { TotalAmount = totalAmount1 };
             var cost2 = new CartCost { TotalAmount = totalAmount2 };
@@ -110,18 +110,18 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
 
         private CartObjectModel GenerateCart3()
         {
-            // Create CartProduct instances
-            var product1 = new CartProduct { Title = "Product X" };
-            var product2 = new CartProduct { Title = "Product Y" };
+            // Create VariantProduct instances
+            var product1 = new VariantProduct { Title = "Product X" };
+            var product2 = new VariantProduct { Title = "Product Y" };
 
             // Create Merchandise instances
             var merchandise1 = new Merchandise { Id = "gid://shopify/ProductVariant/1234567890", Title = "Variant X", Product = product1 };
             var merchandise2 = new Merchandise { Id = "gid://shopify/ProductVariant/9876543210", Title = "Variant Y", Product = product2 };
 
             // Create CartCost instances
-            var totalAmount1 = new ItemPrice { Amount = 500.0m, CurrencyCode = CurrencyCode.USD };
-            var totalAmount2 = new ItemPrice { Amount = 200.0m, CurrencyCode = CurrencyCode.USD };
-            var subtotalAmount = new ItemPrice { Amount = 700.0m, CurrencyCode = CurrencyCode.USD };
+            var totalAmount1 = new PriceDto { Amount = 500.0m, CurrencyCode = CurrencyCode.USD };
+            var totalAmount2 = new PriceDto { Amount = 200.0m, CurrencyCode = CurrencyCode.USD };
+            var subtotalAmount = new PriceDto { Amount = 700.0m, CurrencyCode = CurrencyCode.USD };
 
             var cost1 = new CartCost { TotalAmount = totalAmount1 };
             var cost2 = new CartCost { TotalAmount = totalAmount2 };
@@ -154,18 +154,18 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
 
         private CartObjectModel GenerateCart4()
         {
-            // Create CartProduct instances
-            var product1 = new CartProduct { Title = "Product A" };
-            var product2 = new CartProduct { Title = "Product B" };
+            // Create VariantProduct instances
+            var product1 = new VariantProduct { Title = "Product A" };
+            var product2 = new VariantProduct { Title = "Product B" };
 
             // Create Merchandise instances
             var merchandise1 = new Merchandise { Id = "gid://shopify/ProductVariant/1111111111", Title = "Variant A", Product = product1 };
             var merchandise2 = new Merchandise { Id = "gid://shopify/ProductVariant/2222222222", Title = "Variant B", Product = product2 };
 
             // Create CartCost instances
-            var totalAmount1 = new ItemPrice { Amount = 700.0m, CurrencyCode = CurrencyCode.USD };
-            var totalAmount2 = new ItemPrice { Amount = 300.0m, CurrencyCode = CurrencyCode.USD };
-            var subtotalAmount = new ItemPrice { Amount = 1000.0m, CurrencyCode = CurrencyCode.USD };
+            var totalAmount1 = new PriceDto { Amount = 700.0m, CurrencyCode = CurrencyCode.USD };
+            var totalAmount2 = new PriceDto { Amount = 300.0m, CurrencyCode = CurrencyCode.USD };
+            var subtotalAmount = new PriceDto { Amount = 1000.0m, CurrencyCode = CurrencyCode.USD };
 
             var cost1 = new CartCost { TotalAmount = totalAmount1 };
             var cost2 = new CartCost { TotalAmount = totalAmount2 };
@@ -198,7 +198,7 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
         private CartObjectModel GenerateCartWithoutLines()
         {
             // Create CartCost instance
-            var totalAmount = new ItemPrice { Amount = 0.0m, CurrencyCode = CurrencyCode.USD };
+            var totalAmount = new PriceDto { Amount = 0.0m, CurrencyCode = CurrencyCode.USD };
             var cost = new CartCost { TotalAmount = totalAmount };
 
             // Create CartObjectModel instance without lines

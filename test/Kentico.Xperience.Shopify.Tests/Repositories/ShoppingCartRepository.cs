@@ -6,7 +6,11 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
 {
     internal class ShoppingCartRepository
     {
+        private readonly DiscountCodesRepository discountCodesRepository = new();
+
         public IEnumerable<CartObjectModel> Carts { get; set; }
+
+        public CartObjectModel CartWithDiscountCode => GenerateCartWithDiscountCodes();
 
         public ShoppingCartRepository()
         {
@@ -16,8 +20,57 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
                 GenerateCart2(),
                 GenerateCart3(),
                 GenerateCart4(),
-                GenerateCartWithoutLines()
+                GenerateCartWithoutLines(),
+                GenerateCartWithDiscountCodes()
             ];
+        }
+
+
+        private CartObjectModel GenerateCartWithDiscountCodes()
+        {
+            // Create VariantProduct instances
+            var product1 = new VariantProduct { Title = "Panama Los Lajones Honey" };
+            var product2 = new VariantProduct { Title = "Kenya Gakuyuni AA" };
+
+            // Create Merchandise instances
+            var merchandise1 = new Merchandise { Id = "gid://shopify/ProductVariant/47401942581544", Title = "2 lb", Product = product1 };
+            var merchandise2 = new Merchandise { Id = "gid://shopify/ProductVariant/47401957785896", Title = "Default Title", Product = product2 };
+
+            // Create CartCost instances
+            var totalAmount1 = new PriceDto { Amount = 3267.0m, CurrencyCode = CurrencyCode.CZK };
+            var totalAmount2 = new PriceDto { Amount = 1272.0m, CurrencyCode = CurrencyCode.CZK };
+            var subtotalAmount = new PriceDto { Amount = 4539.0m, CurrencyCode = CurrencyCode.CZK };
+
+            var cost1 = new CartCost { TotalAmount = totalAmount1 };
+            var cost2 = new CartCost { TotalAmount = totalAmount2 };
+
+            // Create CartLineNode instances
+            var node1 = new CartLineNode { Id = "gid://shopify/CartLine/244da069-6219-4943-8741-a0c8690d461c?cart=Z2NwLXVzLWVhc3QxOjAxSFM5NUFDWUI4OTQ0N05HUVdKU0hXVFlN", Quantity = 3, Cost = cost1, Merchandise = merchandise1 };
+            var node2 = new CartLineNode { Id = "gid://shopify/CartLine/efb4b873-08b8-48dc-94d4-b026fdebfa07?cart=Z2NwLXVzLWVhc3QxOjAxSFM5NUFDWUI4OTQ0N05HUVdKU0hXVFlN", Quantity = 3, Cost = cost2, Merchandise = merchandise2 };
+
+            // Create CartLineEdge instances
+            var edge1 = new CartLineEdge { Node = node1 };
+            var edge2 = new CartLineEdge { Node = node2 };
+
+            // Create CartLines instance
+            var lines = new CartLines { Edges = [edge1, edge2] };
+
+            // Create CartCost instance
+            var cost = new CartCost { TotalAmount = totalAmount1, SubtotalAmount = subtotalAmount };
+
+            // Create CartObjectModel instance
+            return new CartObjectModel
+            {
+                Id = "gid://shopify/Cart/QEG7RER8JNC8WVhc3QxOjAxSAVCDUFDWUI4OTQ0N05A8EGKU0hXVFlN",
+                TotalQuantity = 6,
+                CheckoutUrl = "https://quickstart-3b0f1a15.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxSFM5NUFDWUI4OTQ0N05HUVdKU0hXVFlN?key=ca0127810e60f064542c8a70ee304b76",
+                Cost = cost,
+                Lines = lines,
+                DiscountCodes = [ new DiscountCode() {
+                    Code = discountCodesRepository.DiscountCodes.First(),
+                    Applicable = true
+                }]
+            };
         }
 
         private CartObjectModel GenerateCart1()

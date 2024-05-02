@@ -93,7 +93,7 @@ Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impos
 7. In the Headless channel app, create new Storefront. After that, storefront `Private access token` should be available.
 
 ### XByK set up
-1.  (optional)Setup your own settings to connect your Shopify instance. Use API tokens generated in the [generate shopify API credentials](#generate-shopify-api-credentials) section.
+1.  (optional)Setup your own settings to connect your Shopify instance. Use API tokens generated in the [generating shopify API credentials](#generating-shopify-api-credentials) section.
 ```json
 {  
   "CMSShopifyConfig": {

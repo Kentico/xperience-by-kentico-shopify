@@ -9,11 +9,11 @@
     <PackageVersion Include="GraphQL" Version="7.8.0" />
     <PackageVersion Include="GraphQL.Client" Version="6.0.2" />
     <PackageVersion Include="GraphQL.Client.Serializer.Newtonsoft" Version="6.0.2" />
-    <PackageVersion Include="Kentico.Xperience.Admin" Version="28.2.1" />
-    <PackageVersion Include="Kentico.Xperience.WebApp" Version="28.2.1" />
-    <PackageVersion Include="kentico.xperience.azurestorage" Version="28.2.1" />
-    <PackageVersion Include="kentico.xperience.imageprocessing" Version="28.2.1" />
-    <PackageVersion Include="Kentico.Xperience.Core" Version="28.2.1" />
+    <PackageVersion Include="Kentico.Xperience.Admin" Version="29.0.2" />
+    <PackageVersion Include="Kentico.Xperience.WebApp" Version="29.0.2" />
+    <PackageVersion Include="kentico.xperience.azurestorage" Version="29.0.2" />
+    <PackageVersion Include="kentico.xperience.imageprocessing" Version="29.0.2" />
+    <PackageVersion Include="Kentico.Xperience.Core" Version="29.0.2" />
     <PackageVersion Include="ShopifySharp" Version="6.13.0" />
     <PackageVersion Include="ShopifySharp.Extensions.DependencyInjection" Version="1.4.0" />
     <PackageVersion Include="Microsoft.Extensions.ApiDescription.Client" Version="7.0.2" />
@@ -24,6 +24,7 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="NUnit.Analyzers" Version="3.10.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageVersion Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 </Project>

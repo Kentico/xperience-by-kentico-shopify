@@ -126,7 +126,7 @@ builder.Services.RegisterShopifyServices(builder.Configuration);
 // Enable session state for appliation
 app.UseSession();
 ```
-5. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
+4. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
 ```powershell
 dotnet run --no-build --kxp-ci-restore
 ```

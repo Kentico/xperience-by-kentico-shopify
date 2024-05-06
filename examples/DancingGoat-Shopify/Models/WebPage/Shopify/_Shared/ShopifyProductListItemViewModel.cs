@@ -5,7 +5,7 @@ using Shopify;
 
 namespace DancingGoat.Models;
 
-public record ProductListItemViewModel
+public record ShopifyProductListItemViewModel
 {
     public string MainImageUrl { get; init; }
     public string ProductName { get; init; }
@@ -14,12 +14,12 @@ public record ProductListItemViewModel
     public string ListPrice { get; init; }
     public bool HasMultipleVariants { get; init; }
 
-    public static ProductListItemViewModel GetViewModel(Product product, WebPageUrl productUrl, ProductPriceModel priceModel)
+    public static ShopifyProductListItemViewModel GetViewModel(Product product, WebPageUrl productUrl, ProductPriceModel priceModel)
     {
         // TODO resolve currency
         string currency = "CZK";
         var mainImage = product.Images.FirstOrDefault() ?? product.Variants.FirstOrDefault(x => x.Image.Any())?.Image.FirstOrDefault();
-        return new ProductListItemViewModel()
+        return new ShopifyProductListItemViewModel()
         {
             MainImageUrl = mainImage?.ImageAsset.Url ?? string.Empty,
             ProductName = product.Title,

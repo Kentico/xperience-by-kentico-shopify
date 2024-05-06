@@ -11,14 +11,16 @@
 
 using System;
 using System.Collections.Generic;
+using CMS.ContentEngine;
 using CMS.Websites;
 
 namespace DancingGoat.Models
 {
-	/// <summary>
-	/// Represents a page of type <see cref="ShoppingCartPage"/>.
-	/// </summary>
-	public partial class ShoppingCartPage : IWebPageFieldsSource
+    /// <summary>
+    /// Represents a page of type <see cref="ShoppingCartPage"/>.
+    /// </summary>
+    [RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
+    public partial class ShoppingCartPage : IWebPageFieldsSource
 	{
 		/// <summary>
 		/// Code name of the content type.

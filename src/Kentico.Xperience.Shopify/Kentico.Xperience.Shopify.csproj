@@ -26,6 +26,7 @@
 		<PackageReference Include="Kentico.Xperience.Core" />
 		<PackageReference Include="ShopifySharp" />
 		<PackageReference Include="ShopifySharp.Extensions.DependencyInjection" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" />
 		<PackageReference Include="System.Linq.Async" />		
 	</ItemGroup>
 

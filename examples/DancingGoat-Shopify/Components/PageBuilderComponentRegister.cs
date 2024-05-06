@@ -1,5 +1,4 @@
-using DancingGoat;
-using DancingGoat.Components.Widgets;
+﻿using DancingGoat;
 using DancingGoat.Models;
 using DancingGoat.PageTemplates;
 using DancingGoat.Sections;

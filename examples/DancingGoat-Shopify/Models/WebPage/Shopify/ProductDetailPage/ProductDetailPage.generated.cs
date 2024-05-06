@@ -11,15 +11,17 @@
 
 using System;
 using System.Collections.Generic;
+using CMS.ContentEngine;
 using CMS.Websites;
 using Shopify;
 
 namespace DancingGoat.Models
 {
-	/// <summary>
-	/// Represents a page of type <see cref="ProductDetailPage"/>.
-	/// </summary>
-	public partial class ProductDetailPage : IWebPageFieldsSource
+    /// <summary>
+    /// Represents a page of type <see cref="ProductDetailPage"/>.
+    /// </summary>
+    [RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
+    public partial class ProductDetailPage : IWebPageFieldsSource
 	{
 		/// <summary>
 		/// Code name of the content type.

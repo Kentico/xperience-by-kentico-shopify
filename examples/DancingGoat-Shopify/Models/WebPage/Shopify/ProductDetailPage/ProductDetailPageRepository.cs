@@ -14,12 +14,11 @@ public class ProductDetailPageRepository : ShopifyContentRepositoryBase
     public ProductDetailPageRepository(
         IWebsiteChannelContext websiteChannelContext,
         IContentQueryExecutor executor,
-        IWebPageQueryResultMapper mapper,
         IProgressiveCache cache,
         IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever,
         ISettingsService settingsService,
         IConversionService conversionService)
-        : base(websiteChannelContext, executor, mapper, cache, webPageLinkedItemsDependencyRetriever)
+        : base(websiteChannelContext, executor, cache, webPageLinkedItemsDependencyRetriever)
     {
         this.conversionService = conversionService;
         this.settingsService = settingsService;

@@ -6,7 +6,7 @@ namespace DancingGoat.Models;
 public record CategoryPageViewModel
 {
     public string CategoryName { get; init; }
-    public IEnumerable<ProductListItemViewModel> Products { get; init; }
+    public IEnumerable<ShopifyProductListItemViewModel> Products { get; init; }
 
     public static CategoryPageViewModel GetViewModel(
         CategoryPage category,
@@ -15,7 +15,7 @@ public record CategoryPageViewModel
         IDictionary<Guid, WebPageUrl> productUrls,
         ILogger logger)
     {
-        var productListItems = new List<ProductListItemViewModel>();
+        var productListItems = new List<ShopifyProductListItemViewModel>();
         foreach (var product in products)
         {
             if (product.Product == null || !product.Product.Any())
@@ -36,16 +36,16 @@ public record CategoryPageViewModel
         return model;
     }
 
-    private static ProductListItemViewModel GetProductListItem(ProductDetailPage productPage, IDictionary<Guid, WebPageUrl> productUrls, IDictionary<string, ProductPriceModel> productPrices)
+    private static ShopifyProductListItemViewModel GetProductListItem(ProductDetailPage productPage, IDictionary<Guid, WebPageUrl> productUrls, IDictionary<string, ProductPriceModel> productPrices)
     {
         var product = productPage.Product.FirstOrDefault();
         if (product == null)
         {
-            return new ProductListItemViewModel();
+            return new ShopifyProductListItemViewModel();
         }
 
         productUrls.TryGetValue(productPage.SystemFields.WebPageItemGUID, out var url);
         productPrices.TryGetValue(product.ShopifyProductID, out var productPriceModel);
-        return ProductListItemViewModel.GetViewModel(product, url, productPriceModel);
+        return ShopifyProductListItemViewModel.GetViewModel(product, url, productPriceModel);
     }
 }

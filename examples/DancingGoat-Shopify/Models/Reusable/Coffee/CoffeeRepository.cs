@@ -21,8 +21,8 @@ namespace DancingGoat.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="CoffeeRepository"/> class that returns coffees.
         /// </summary>
-        public CoffeeRepository(IWebsiteChannelContext websiteChannelContext, IContentQueryExecutor executor, IWebPageQueryResultMapper mapper, IProgressiveCache cache, ILinkedItemsDependencyRetriever linkedItemsDependencyRetriever)
-            : base(websiteChannelContext, executor, mapper, cache)
+        public CoffeeRepository(IWebsiteChannelContext websiteChannelContext, IContentQueryExecutor executor, IProgressiveCache cache, ILinkedItemsDependencyRetriever linkedItemsDependencyRetriever)
+            : base(websiteChannelContext, executor, cache)
         {
             this.linkedItemsDependencyRetriever = linkedItemsDependencyRetriever;
         }

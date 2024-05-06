@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.contenttype>
+  <ClassContentTypeType>Website</ClassContentTypeType>
+  <ClassDisplayName>Shopping cart</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="ContentItemDataID" columntype="integer" enabled="true" guid="1fcb70a0-175c-40b9-9b5e-3aed9381ca92" isPK="true" />
+      <field column="ContentItemDataCommonDataID" columntype="integer" enabled="true" guid="f4952172-e187-419b-be87-900f2a39fa49" refobjtype="cms.contentitemcommondata" reftype="Required" system="true" />
+      <field column="ContentItemDataGUID" columntype="guid" enabled="true" guid="7e4d934e-a8be-4d53-9389-c8df9bac205b" isunique="true" system="true" />
+      <field allowempty="true" column="Title" columnprecision="0" columnsize="200" columntype="text" enabled="true" guid="909a8677-4b53-4b6b-838d-af147f8db764" visible="true">
+        <properties>
+          <explanationtextashtml>False</explanationtextashtml>
+          <fieldcaption>Title</fieldcaption>
+          <fielddescriptionashtml>False</fielddescriptionashtml>
+        </properties>
+        <settings>
+          <controlname>Kentico.Administration.TextInput</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>8d7e5286-cb75-4d8c-b33d-b5c863497c01</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassIconClass>xp-shopping-cart</ClassIconClass>
+  <ClassName>Shopify.ShoppingCartPage</ClassName>
+  <ClassTableName>Shopify_ShoppingCartPage</ClassTableName>
+  <ClassType>Content</ClassType>
+  <ClassWebPageHasUrl>True</ClassWebPageHasUrl>
+</cms.contenttype>

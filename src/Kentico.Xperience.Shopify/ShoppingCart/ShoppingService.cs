@@ -2,6 +2,7 @@
 using CMS.Core;
 
 using GraphQL;
+using Kentico.Xperience.Shopify.Activities;
 using Microsoft.AspNetCore.Http;
 
 namespace Kentico.Xperience.Shopify.ShoppingCart;
@@ -12,16 +13,19 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 
     private readonly IEventLogService eventLogService;
     private readonly IHttpContextAccessor httpContextAccessor;
+    private readonly IEcommerceActivityLogger activityLogger;
     private readonly IShoppingCartCacheService shoppingCartCacheService;
 
     public ShoppingService(
         IEventLogService eventLogService,
         IHttpContextAccessor httpContextAccessor,
         IGraphQLHttpClientFactory clientFactory,
+        IEcommerceActivityLogger activityLogger,
         IShoppingCartCacheService shoppingCartCacheService) : base(clientFactory)
     {
         this.eventLogService = eventLogService;
         this.httpContextAccessor = httpContextAccessor;
+        this.activityLogger = activityLogger;
         this.shoppingCartCacheService = shoppingCartCacheService;
     }
 
@@ -40,6 +44,15 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         var result = await UpdateCartItemInternal(cart.CartId, cartItemToUpdate, quantity);
         if (result.Success && result.Cart != null)
         {
+            if (quantity > cartItemToUpdate.Quantity)
+            {
+                activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, quantity);
+            }
+            else
+            {
+                activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, quantity);
+            }
+
             UpdateCartCache(result.Cart);
         }
 
@@ -64,6 +77,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         if (result.Success && result.Cart != null)
         {
             UpdateCartCache(result.Cart);
+            activityLogger.LogProductRemovedFromShoppingCartActivity(shopifyCartLine, shopifyCartLine.Quantity);
         }
 
         return result;
@@ -148,6 +162,9 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             {
                 StoreCartToCookiesAndSession(cart.CartId);
             }
+
+            var addedItem = cart.Items.FirstOrDefault(x => x.VariantGraphQLId == parameters.MerchandiseID);
+            activityLogger.LogProductAddedToShoppingCartActivity(addedItem, parameters.Quantity);
         }
         return result;
     }

@@ -119,14 +119,21 @@ Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impos
 // Registers Shopify services
 builder.Services.RegisterShopifyServices(builder.Configuration);
 ```
-3. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
+3. Enable session state for the application
+```csharp
+// Program.cs
+
+// Enable session state for appliation
+app.UseSession();
+```
+5. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
 ```powershell
 dotnet run --no-build --kxp-ci-restore
 ```
-4.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
-5. Start your livesite
-6. If `CMSShopifyConfig` is not filled in the step 1, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets, as shown in Step 1.
-7. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+5.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
+6. Start your livesite
+7. If `CMSShopifyConfig` is not filled in the step 1, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets, as shown in Step 1.
+8. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
 
 
 ### Dancing Goat example - setup

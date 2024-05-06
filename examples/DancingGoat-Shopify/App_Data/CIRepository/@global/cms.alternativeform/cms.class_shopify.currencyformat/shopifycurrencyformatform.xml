@@ -32,6 +32,9 @@
         <properties>
           <explanationtextashtml>False</explanationtextashtml>
           <fieldcaption>Currency price format</fieldcaption>
+          <fielddescription>
+            <![CDATA[Currency format will be used in decimal.ToString method to convert the price value to string.]]>
+          </fielddescription>
           <fielddescriptionashtml>False</fielddescriptionashtml>
         </properties>
       </field>

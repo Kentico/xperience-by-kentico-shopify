@@ -1,0 +1,18 @@
+﻿@using DancingGoat.Models
+@model ThankYouPageViewModel
+
+@{
+    ViewData["PageClass"] = "inverted no-bg";
+}
+
+<div class="col-md-6 col-lg-5">
+    <div class="thank-you-content">
+        <h2>
+            @HtmlLocalizer["Thank You!"]</h2>
+
+        <p>@HtmlLocalizer["Your order {0} was successfully processed. We will pack your items carefully and ship them to you right away.", Model.OrderName]</p>
+        <p>@HtmlLocalizer["You can review the order status"] <a href="@Model.OrderStatusUrl">@HtmlLocalizer["here"]</a></p>
+        <p>@HtmlLocalizer["If you have any questions or suggestions regarding the order process, call us at (+1) 773-740-4882."]</p>
+    </div>
+</div>
+<div class="clear"></div>

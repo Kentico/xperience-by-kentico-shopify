@@ -61,7 +61,7 @@ builder.Services.AddDancingGoatServices();
 
 ConfigureMembershipServices(builder.Services);
 
-builder.RegisterShopifyServices();
+builder.Services.RegisterShopifyServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -147,6 +147,4 @@ static void ConfigureMembershipServices(IServiceCollection services)
     });
 
     services.AddAuthorization();
-
-    services.AddSession();
 }

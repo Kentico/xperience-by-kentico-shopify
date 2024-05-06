@@ -9,8 +9,8 @@ namespace DancingGoat.Models
     {
         protected readonly IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever;
 
-        public ShopifyContentRepositoryBase(IWebsiteChannelContext websiteChannelContext, IContentQueryExecutor executor, IWebPageQueryResultMapper mapper, IProgressiveCache cache, IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever)
-            : base(websiteChannelContext, executor, mapper, cache)
+        public ShopifyContentRepositoryBase(IWebsiteChannelContext websiteChannelContext, IContentQueryExecutor executor, IProgressiveCache cache, IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever)
+            : base(websiteChannelContext, executor, cache)
         {
             this.webPageLinkedItemsDependencyRetriever = webPageLinkedItemsDependencyRetriever;
         }

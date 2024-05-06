@@ -5028,6 +5028,30 @@ li.dropdown a {
   left: 0;
   display: inline-block;
 }
+/*# Consent #*/
+.consent-item:not(:first-of-type) {
+  border-top: 1px solid #e7e7e7;
+}
+.consent-item .row {
+  margin: 0 32px 0 32px;
+  padding: 8px 0 0 0;
+}
+.consent-item .consent-heading {
+  margin: 0;
+}
+.cookie-consent {
+  font-size: 16px;
+  padding: 8px;
+  background: #E2D1BA;
+  color: #000000;
+}
+.cookie-consent .consent-text {
+  padding-bottom: 16px;
+}
+.cookie-consent .consent-buttons {
+  text-align: right;
+  margin: 0;
+}
 /*# Buttons #*/
 .btn {
   padding: 0.5rem 1rem;
@@ -5523,6 +5547,248 @@ dd.product-price--retail {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.radio,
+.ktc-radio,
+.checkbox,
+.ktc-checkbox {
+  display: block;
+}
+.radio label,
+.ktc-radio label,
+.checkbox label,
+.ktc-checkbox label {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  padding-left: 24px;
+  line-height: 20px;
+  font-weight: normal;
+}
+.radio label:before,
+.ktc-radio label:before,
+.checkbox label:before,
+.ktc-checkbox label:before,
+.radio label:after,
+.ktc-radio label:after,
+.checkbox label:after,
+.ktc-checkbox label:after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  line-height: 16px;
+  display: inline-block;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 2px;
+  background-color: #ffffff;
+}
+.radio label:after,
+.ktc-radio label:after,
+.checkbox label:after,
+.ktc-checkbox label:after {
+  background-color: transparent;
+}
+.radio input,
+.ktc-radio input,
+.checkbox input,
+.ktc-checkbox input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.radio input[disabled] + label,
+.ktc-radio input[disabled] + label,
+.checkbox input[disabled] + label,
+.ktc-checkbox input[disabled] + label,
+.radio input:active[disabled] + label,
+.ktc-radio input:active[disabled] + label,
+.checkbox input:active[disabled] + label,
+.ktc-checkbox input:active[disabled] + label {
+  cursor: not-allowed;
+}
+.radio input[disabled] + label:before,
+.ktc-radio input[disabled] + label:before,
+.checkbox input[disabled] + label:before,
+.ktc-checkbox input[disabled] + label:before,
+.radio input:active[disabled] + label:before,
+.ktc-radio input:active[disabled] + label:before,
+.checkbox input:active[disabled] + label:before,
+.ktc-checkbox input:active[disabled] + label:before,
+.radio input[disabled] + label:focus:before,
+.ktc-radio input[disabled] + label:focus:before,
+.checkbox input[disabled] + label:focus:before,
+.ktc-checkbox input[disabled] + label:focus:before,
+.radio input:active[disabled] + label:focus:before,
+.ktc-radio input:active[disabled] + label:focus:before,
+.checkbox input:active[disabled] + label:focus:before,
+.ktc-checkbox input:active[disabled] + label:focus:before,
+.radio input[disabled] + label:active:before,
+.ktc-radio input[disabled] + label:active:before,
+.checkbox input[disabled] + label:active:before,
+.ktc-checkbox input[disabled] + label:active:before,
+.radio input:active[disabled] + label:active:before,
+.ktc-radio input:active[disabled] + label:active:before,
+.checkbox input:active[disabled] + label:active:before,
+.ktc-checkbox input:active[disabled] + label:active:before {
+  color: #e5e5e5;
+}
+.radio input[disabled] + label:after,
+.ktc-radio input[disabled] + label:after,
+.checkbox input[disabled] + label:after,
+.ktc-checkbox input[disabled] + label:after,
+.radio input:active[disabled] + label:after,
+.ktc-radio input:active[disabled] + label:after,
+.checkbox input:active[disabled] + label:after,
+.ktc-checkbox input:active[disabled] + label:after {
+  color: #696663;
+}
+.radio input + label:before,
+.ktc-radio input + label:before,
+.checkbox input + label:before,
+.ktc-checkbox input + label:before,
+.radio input + label:after,
+.ktc-radio input + label:after,
+.checkbox input + label:after,
+.ktc-checkbox input + label:after {
+  font-family: "Core-icons";
+  font-size: 16px;
+  text-align: center;
+}
+.radio input + label:before,
+.ktc-radio input + label:before,
+.checkbox input + label:before,
+.ktc-checkbox input + label:before {
+  color: #bdbbbb;
+}
+.radio input + label:after,
+.ktc-radio input + label:after,
+.checkbox input + label:after,
+.ktc-checkbox input + label:after {
+  color: #497d04;
+}
+.radio input:focus + label:before,
+.ktc-radio input:focus + label:before,
+.checkbox input:focus + label:before,
+.ktc-checkbox input:focus + label:before,
+.radio input:active + label:before,
+.ktc-radio input:active + label:before,
+.checkbox input:active + label:before,
+.ktc-checkbox input:active + label:before {
+  color: #1175ae;
+}
+.Safari .checkbox label:after,
+.Safari .ktc-checkbox label:after {
+  height: 16px;
+}
+.Chrome .checkbox label:before,
+.Chrome .ktc-checkbox label:before,
+.Chrome .checkbox label:after,
+.Chrome .ktc-checkbox label:after {
+  height: 16px;
+}
+.radio input ~ label:before,
+.ktc-radio input ~ label:before {
+  content: "\e626";
+}
+.radio input:disabled ~ label:before,
+.ktc-radio input:disabled ~ label:before {
+  content: "\e6ac";
+}
+.radio input:checked ~ label:after,
+.ktc-radio input:checked ~ label:after {
+  content: "\e627";
+}
+.radio label:before,
+.ktc-radio label:before {
+  border-radius: 50%;
+}
+.checkbox input ~ label:before,
+.ktc-checkbox input ~ label:before {
+  content: "\e6ad";
+}
+.checkbox input:disabled ~ label:before,
+.ktc-checkbox input:disabled ~ label:before {
+  content: "\e6f0";
+}
+.checkbox input:checked ~ label:after,
+.ktc-checkbox input:checked ~ label:after {
+  content: "\e6b0";
+}
+.checkbox:not(.checkbox-no-label) label,
+.ktc-checkbox:not(.checkbox-no-label) label,
+.checkbox:not(.ktc-checkbox-no-label) label,
+.ktc-checkbox:not(.ktc-checkbox-no-label) label {
+  margin-right: 8px;
+}
+.radio-list-vertical,
+.ktc-radio-list-vertical,
+.checkbox-list-vertical,
+.ktc-checkbox-list-vertical {
+  margin-top: 6px;
+  margin-right: 8px;
+}
+.radio-list-vertical label:not(:first-of-type),
+.ktc-radio-list-vertical label:not(:first-of-type),
+.checkbox-list-vertical label:not(:first-of-type),
+.ktc-checkbox-list-vertical label:not(:first-of-type),
+.radio-list-vertical span:not(:first-of-type) label,
+.ktc-radio-list-vertical span:not(:first-of-type) label,
+.checkbox-list-vertical span:not(:first-of-type) label,
+.ktc-checkbox-list-vertical span:not(:first-of-type) label,
+.radio-list-vertical .radio + .radio,
+.ktc-radio-list-vertical .radio + .radio,
+.checkbox-list-vertical .radio + .radio,
+.ktc-checkbox-list-vertical .radio + .radio,
+.radio-list-vertical .ktc-radio + .ktc-radio,
+.ktc-radio-list-vertical .ktc-radio + .ktc-radio,
+.checkbox-list-vertical .ktc-radio + .ktc-radio,
+.ktc-checkbox-list-vertical .ktc-radio + .ktc-radio,
+.radio-list-vertical .checkbox + .checkbox,
+.ktc-radio-list-vertical .checkbox + .checkbox,
+.checkbox-list-vertical .checkbox + .checkbox,
+.ktc-checkbox-list-vertical .checkbox + .checkbox,
+.radio-list-vertical .ktc-checkbox + .ktc-checkbox,
+.ktc-radio-list-vertical .ktc-checkbox + .ktc-checkbox,
+.checkbox-list-vertical .ktc-checkbox + .ktc-checkbox,
+.ktc-checkbox-list-vertical .ktc-checkbox + .ktc-checkbox {
+  margin-top: 4px;
+}
+.radio-list-vertical.first-on-page,
+.ktc-radio-list-vertical.first-on-page,
+.checkbox-list-vertical.first-on-page,
+.ktc-checkbox-list-vertical.first-on-page {
+  margin-top: 0px;
+}
+.radio-list-horizontal .radio,
+.ktc-radio-list-horizontal .radio,
+.checkbox-list-horizontal .radio,
+.ktc-checkbox-list-horizontal .radio,
+.radio-list-horizontal .ktc-radio,
+.ktc-radio-list-horizontal .ktc-radio,
+.checkbox-list-horizontal .ktc-radio,
+.ktc-checkbox-list-horizontal .ktc-radio,
+.radio-list-horizontal .checkbox,
+.ktc-radio-list-horizontal .checkbox,
+.checkbox-list-horizontal .checkbox,
+.ktc-checkbox-list-horizontal .checkbox,
+.radio-list-horizontal .ktc-checkbox,
+.ktc-radio-list-horizontal .ktc-checkbox,
+.checkbox-list-horizontal .ktc-checkbox,
+.ktc-checkbox-list-horizontal .ktc-checkbox {
+  display: inline-block;
+}
+.radio-list-horizontal label,
+.ktc-radio-list-horizontal label,
+.checkbox-list-horizontal label,
+.ktc-checkbox-list-horizontal label {
+  margin-right: 16px;
 }
 /*# Checkout process inputs #*/
 .checkout-container input[type="text"],

@@ -14,12 +14,11 @@ public class CategoryPageRepository : ShopifyContentRepositoryBase
     public CategoryPageRepository(
         IWebsiteChannelContext websiteChannelContext,
         IContentQueryExecutor executor,
-        IWebPageQueryResultMapper mapper,
         IProgressiveCache cache,
         IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever,
         ISettingsService settingsService,
         IConversionService conversionService)
-        : base(websiteChannelContext, executor, mapper, cache, webPageLinkedItemsDependencyRetriever)
+        : base(websiteChannelContext, executor, cache, webPageLinkedItemsDependencyRetriever)
     {
         this.settingsService = settingsService;
         this.conversionService = conversionService;

@@ -15,10 +15,11 @@ using CMS.ContentEngine;
 
 namespace Shopify
 {
-	/// <summary>
-	/// Represents a content item of type <see cref="Image"/>.
-	/// </summary>
-	public partial class Image : IContentItemFieldsSource
+    /// <summary>
+    /// Represents a content item of type <see cref="Image"/>.
+    /// </summary>
+    [RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
+    public partial class Image : IContentItemFieldsSource
 	{
 		/// <summary>
 		/// Code name of the content type.

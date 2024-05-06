@@ -8,8 +8,9 @@ namespace Kentico.Xperience.Shopify.Orders
 {
     internal class ShopifyOrderService : ShopifyServiceBase, IShopifyOrderService
     {
-        private readonly IOrderService orderService;
+        private const string ORDERS_FIELDS = "customer,source_identifier,name,order_status_url,id,line_items,total_price_set,presentment_currency";
 
+        private readonly IOrderService orderService;
 
         public ShopifyOrderService(
             IOrderServiceFactory orderServiceFactory,
@@ -30,7 +31,7 @@ namespace Kentico.Xperience.Shopify.Orders
             var filter = new OrderListFilter()
             {
                 CreatedAtMin = DateTime.Now.AddDays(-1).Date,
-                Fields = "customer,source_identifier,name,order_status_url,id,line_items,total_price_set,presentment_currency"
+                Fields = ORDERS_FIELDS
             };
 
             var result = await orderService.ListAsync(filter);

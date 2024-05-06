@@ -48,8 +48,8 @@ The `IShoppingService` interface supports the following cart operations:
 
 
 #### Checkout
-The next step from shopping cart preview page(`Shopify.ShoppingCartPage`) is redirection to official Shopify store checkout page where user can complete the checkout and create the order. Checkout completion using Shopify API is not possible as whole checkout API will be removed from Shopify. To redirect user from Shopify thank you page to DancingGoat, following javascript for redirection needs to be inserted into Shopify order status page(you can set it in Shopify administration via `Settings` -> `Checkout` -> `Order status page` ->`Additional scripts`):
-```javascript
+The next step from shopping cart preview page(`Shopify.ShoppingCartPage`) is redirection to official Shopify store checkout page where user can complete the checkout and create the order. Checkout completion using Shopify API is not possible as whole checkout API will be removed from Shopify. To redirect user from Shopify thank you page to DancingGoat, following javascript tag for redirection needs to be inserted into Shopify order status page(you can set it in Shopify administration via `Settings` -> `Checkout` -> `Order status page` ->`Additional scripts`):
+```html
 <script>
 	/// Replace with delay in ms
 	const redirectionDelay = 5000;
@@ -93,7 +93,7 @@ Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impos
 7. In the Headless channel app, create new Storefront. After that, storefront `Private access token` should be available.
 
 ### XByK set up
-1.  (optional)Setup your own settings to connect your Shopify instance. Use API tokens generated in the [generate shopify API credentials](#generate-shopify-api-credentials) section.
+1.  (optional)Setup your own settings to connect your Shopify instance. Use API tokens generated in the [generating shopify API credentials](#generating-shopify-api-credentials) section.
 ```json
 {  
   "CMSShopifyConfig": {

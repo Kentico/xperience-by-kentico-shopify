@@ -17,11 +17,11 @@ using Shopify;
 
 namespace DancingGoat.Models
 {
-    /// <summary>
-    /// Represents a page of type <see cref="ProductDetailPage"/>.
-    /// </summary>
-    [RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
-    public partial class ProductDetailPage : IWebPageFieldsSource
+	/// <summary>
+	/// Represents a page of type <see cref="ProductDetailPage"/>.
+	/// </summary>
+	[RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
+	public partial class ProductDetailPage : IWebPageFieldsSource
 	{
 		/// <summary>
 		/// Code name of the content type.
@@ -32,6 +32,7 @@ namespace DancingGoat.Models
 		/// <summary>
 		/// Represents system properties for a web page item.
 		/// </summary>
+		[SystemField]
 		public WebPageFields SystemFields { get; set; }
 
 

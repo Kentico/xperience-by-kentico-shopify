@@ -18,9 +18,6 @@ namespace Kentico.Xperience.Shopify.Products
         private readonly IProductService productService;
         private readonly IShopifyInventoryService inventoryService;
         private readonly IShoppingService shoppingService;
-        private readonly IProgressiveCache progressiveCache;
-        private readonly ISettingsService settingsService;
-        private readonly IConversionService conversionService;
 
         private readonly Uri shopifyProductUrlBase;
         private readonly string[] _shopifyFields = ["title", "body_html", "handle", "images", "variants"];
@@ -32,16 +29,10 @@ namespace Kentico.Xperience.Shopify.Products
             IShopifyIntegrationSettingsService integrationSettingsService,
             IProductServiceFactory productServiceFactory,
             IShopifyInventoryService inventoryService,
-            IShoppingService shoppingService,
-            IProgressiveCache progressiveCache,
-            ISettingsService settingsService,
-            IConversionService conversionService) : base(integrationSettingsService)
+            IShoppingService shoppingService) : base(integrationSettingsService)
         {
-            this.progressiveCache = progressiveCache;
             this.inventoryService = inventoryService;
             this.shoppingService = shoppingService;
-            this.conversionService = conversionService;
-            this.settingsService = settingsService;
 
             productService = productServiceFactory.Create(shopifyCredentials);
 
@@ -98,10 +89,7 @@ namespace Kentico.Xperience.Shopify.Products
         private async Task<Dictionary<string, ProductVariantListModel>> GetProductVariantsInternal(string shopifyProductID, string currencyCode)
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
-            int cacheMinutes = conversionService.GetInteger(settingsService["CMSCacheMinutes"], 0);
-            var variants = await progressiveCache.LoadAsync(
-                async (cacheSettings) => await GetVariantsFromApi(shopifyProductID, currencyCode),
-                new CacheSettings(cacheMinutes, nameof(ProductVariant), shopifyProductID, "VariantsStatus", currencyCode));
+            var variants = await GetVariantsFromApi(shopifyProductID, currencyCode);
             if (cart != null)
             {
                 foreach (var variant in variants.Values)

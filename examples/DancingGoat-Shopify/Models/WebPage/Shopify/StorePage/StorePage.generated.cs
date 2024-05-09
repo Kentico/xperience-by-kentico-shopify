@@ -45,12 +45,12 @@ namespace DancingGoat.Models
 		/// <summary>
 		/// Bestsellers.
 		/// </summary>
-		public IEnumerable<Product> Bestsellers { get; set; }
+		public IEnumerable<WebPageRelatedItem> Bestsellers { get; set; }
 
 
 		/// <summary>
 		/// HotTips.
 		/// </summary>
-		public IEnumerable<Product> HotTips { get; set; }
+		public IEnumerable<WebPageRelatedItem> HotTips { get; set; }
 	}
 }

@@ -31,8 +31,22 @@ namespace DancingGoat.Controllers.Shopify
         public async Task<IActionResult> Index()
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
-            var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
-            var model = ShoppingCartContentViewModel.GetViewModel(cart, images);
+            ShoppingCartContentViewModel model = null;
+
+            if (cart == null)
+            {
+                model = new ShoppingCartContentViewModel()
+                {
+                    AppliedCoupons = [],
+                    CartItems = [],
+                    GrandTotal = string.Empty
+                };
+            }
+            else
+            {
+                var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
+                model = ShoppingCartContentViewModel.GetViewModel(cart, images);
+            }
 
             return View(model);
         }

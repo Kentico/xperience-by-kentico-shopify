@@ -54,6 +54,7 @@ public class ShopifyStoreController : Controller
 
     public async Task<IActionResult> Index()
     {
+        ViewData["PageClass"] = "inverted";
         var webPage = webPageDataContextRetriever.Retrieve().WebPage;
 
         var storePage = await storePageRepository.GetStorePage(webPage.WebPageItemID, webPage.LanguageName, HttpContext.RequestAborted);

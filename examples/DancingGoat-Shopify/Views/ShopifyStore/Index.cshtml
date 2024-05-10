@@ -16,19 +16,29 @@
             }
         </ul>
     </div>
-    <h2>@HtmlLocalizer["Bestsellers"]</h2>
-    <div class="col-md-8 col-lg-9 product-list">
-        @foreach (var product in Model.BestSellers)
-        {
-            <partial name="~/Views/Shared/DisplayTemplates/_ProductListItemView.cshtml" model="product" />
-        }
-    </div>
-
-    <h2>@HtmlLocalizer["Hot tips"]</h2>
-    <div class="col-md-8 col-lg-9 product-list">
-        @foreach (var product in Model.HotTips)
-        {
-            <partial name="~/Views/Shared/DisplayTemplates/_ProductListItemView.cshtml" model="product" />
-        }
-    </div>
 </div>
+@if (Model.BestSellers.Any())
+{
+    <h2>@HtmlLocalizer["Bestsellers"]</h2>
+    <div class="product-category">
+        <div class="col-md-8 col-lg-9 product-list">
+            @foreach (var product in Model.BestSellers)
+            {
+                <partial name="~/Views/Shared/DisplayTemplates/_ProductListItemView.cshtml" model="product" />
+            }
+        </div>
+    </div>
+}
+
+@if (Model.HotTips.Any())
+{
+    <h2>@HtmlLocalizer["Hot tips"]</h2>
+    <div class="product-category">
+        <div class="col-md-8 col-lg-9 product-list">
+            @foreach (var product in Model.HotTips)
+            {
+                <partial name="~/Views/Shared/DisplayTemplates/_ProductListItemView.cshtml" model="product" />
+            }
+        </div>
+    </div>
+}

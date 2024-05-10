@@ -17,34 +17,28 @@
           <controlname>Kentico.Administration.TextInput</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="Bestsellers" columnprecision="0" columntype="contentitemreference" enabled="true" guid="34bb16f0-b7f8-4c31-984d-db915429df43" visible="true">
+      <field allowempty="true" column="Bestsellers" columnprecision="0" columntype="webpages" enabled="true" guid="34bb16f0-b7f8-4c31-984d-db915429df43" visible="true">
         <properties>
           <explanationtextashtml>False</explanationtextashtml>
           <fieldcaption>Bestsellers</fieldcaption>
           <fielddescriptionashtml>False</fielddescriptionashtml>
         </properties>
         <settings>
-          <AllowedContentItemTypeIdentifiers>
-            <![CDATA[["57b30223-ca83-4d57-b271-1eb626a0fa02"]]]>
-          </AllowedContentItemTypeIdentifiers>
-          <controlname>Kentico.Administration.ContentItemSelector</controlname>
-          <MaximumItems>4</MaximumItems>
-          <SelectionType>contentTypes</SelectionType>
+          <controlname>Kentico.Administration.WebPageSelector</controlname>
+          <MaximumPages>4</MaximumPages>
+          <Sortable>False</Sortable>
         </settings>
       </field>
-      <field allowempty="true" column="HotTips" columnprecision="0" columntype="contentitemreference" enabled="true" guid="b9aeaea9-5520-47f7-84ad-77fc14960ade" visible="true">
+      <field allowempty="true" column="HotTips" columnprecision="0" columntype="webpages" enabled="true" guid="b9aeaea9-5520-47f7-84ad-77fc14960ade" visible="true">
         <properties>
           <explanationtextashtml>False</explanationtextashtml>
           <fieldcaption>Hot Tips</fieldcaption>
           <fielddescriptionashtml>False</fielddescriptionashtml>
         </properties>
         <settings>
-          <AllowedContentItemTypeIdentifiers>
-            <![CDATA[["57b30223-ca83-4d57-b271-1eb626a0fa02"]]]>
-          </AllowedContentItemTypeIdentifiers>
-          <controlname>Kentico.Administration.ContentItemSelector</controlname>
-          <MaximumItems>4</MaximumItems>
-          <SelectionType>contentTypes</SelectionType>
+          <controlname>Kentico.Administration.WebPageSelector</controlname>
+          <MaximumPages>4</MaximumPages>
+          <Sortable>False</Sortable>
         </settings>
       </field>
     </form>

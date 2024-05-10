@@ -2,6 +2,7 @@
 using DancingGoat.Controllers.Shopify;
 using DancingGoat.Models;
 using DancingGoat.Models.WebPage.Shopify.ShoppingCartPage;
+using GreenDonut;
 using Kentico.Content.Web.Mvc.Routing;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
@@ -32,6 +33,7 @@ namespace DancingGoat.Controllers.Shopify
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
             ShoppingCartContentViewModel model = null;
+            string[] errorMessages = TempData["ErrorMessages"] as string[] ?? [];
 
             if (cart == null)
             {
@@ -39,13 +41,14 @@ namespace DancingGoat.Controllers.Shopify
                 {
                     AppliedCoupons = [],
                     CartItems = [],
-                    GrandTotal = string.Empty
+                    GrandTotal = string.Empty,
+                    ErrorMessages = []
                 };
             }
             else
             {
                 var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
-                model = ShoppingCartContentViewModel.GetViewModel(cart, images);
+                model = ShoppingCartContentViewModel.GetViewModel(cart, images, errorMessages);
             }
 
             return View(model);
@@ -60,20 +63,16 @@ namespace DancingGoat.Controllers.Shopify
             var country = ShopifySharp.GraphQL.CountryCode.CZ;
             var operationEnum = Enum.Parse<CartOperation>(cartOperation);
 
-            if (operationEnum == CartOperation.Remove)
-            {
-                await shoppingService.RemoveCartItem(variantGraphQLId);
-            }
-            else
-            {
-                await shoppingService.UpdateCartItem(new ShoppingCartItemParameters()
+            var result = operationEnum == CartOperation.Remove
+                ? await shoppingService.RemoveCartItem(variantGraphQLId)
+                : await shoppingService.UpdateCartItem(new ShoppingCartItemParameters()
                 {
                     Country = country,
                     Quantity = quantity,
                     MerchandiseID = variantGraphQLId
                 });
-            }
 
+            AddErrorsToTempData(result);
             return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
         }
 
@@ -82,7 +81,9 @@ namespace DancingGoat.Controllers.Shopify
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddDiscountCode([FromForm] string discountCode)
         {
-            await shoppingService.AddDiscountCode(discountCode);
+            var result = await shoppingService.AddDiscountCode(discountCode);
+
+            AddErrorsToTempData(result);
             return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
         }
 
@@ -91,7 +92,9 @@ namespace DancingGoat.Controllers.Shopify
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> RemoveDiscountCode([FromForm] string discountCode)
         {
-            await shoppingService.RemoveDiscountCode(discountCode);
+            var result = await shoppingService.RemoveDiscountCode(discountCode);
+
+            AddErrorsToTempData(result);
             return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
         }
 
@@ -108,6 +111,15 @@ namespace DancingGoat.Controllers.Shopify
             var productsDict = products.ToLookup(x => x.ShopifyProductID, x => x.Images.FirstOrDefault()?.ImageAsset.Url);
 
             return variants.ToDictionary(x => x.ShopifyMerchandiseID, x => productsDict[x.ShopifyProductID].FirstOrDefault());
+        }
+
+
+        private void AddErrorsToTempData(CartOperationResult result)
+        {
+            if (!result.Success)
+            {
+                TempData["ErrorMessages"] = result.ErrorMessages.ToArray();
+            }
         }
     }
 }

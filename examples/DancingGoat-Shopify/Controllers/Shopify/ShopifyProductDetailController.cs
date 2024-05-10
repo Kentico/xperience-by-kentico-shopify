@@ -30,6 +30,11 @@ public class ShopifyProductDetailController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string variantID = null)
     {
+        return await Index(variantID, []);
+    }
+
+    public async Task<IActionResult> Index(string variantID, string[] errorMessages)
+    {
         // TODO - dynamic resolve country
         string country = "CZ";
         string currency = "CZK";
@@ -41,7 +46,7 @@ public class ShopifyProductDetailController : Controller
             return View(new ProductDetailViewModel());
         }
 
-        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, country, currency));
+        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, country, currency, errorMessages));
     }
 
     [HttpPost]
@@ -54,15 +59,10 @@ public class ShopifyProductDetailController : Controller
             Country = updateCartModel.CountryCode
         };
 
-        if (cartOperation == CartOperation.Remove)
-        {
-            await shoppingService.RemoveCartItem(cartItemParams.MerchandiseID);
-        }
-        else
-        {
-            await shoppingService.AddItemToCart(cartItemParams);
-        }
+        var result = cartOperation == CartOperation.Remove
+            ? await shoppingService.RemoveCartItem(cartItemParams.MerchandiseID)
+            : await shoppingService.AddItemToCart(cartItemParams);
 
-        return await Index(updateCartModel.SelectedVariant.ToString());
+        return await Index(updateCartModel.SelectedVariant.ToString(), result.ErrorMessages.ToArray());
     }
 }

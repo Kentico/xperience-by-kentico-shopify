@@ -40,4 +40,14 @@
     </div>
     <p>@HtmlLocalizer["Review your shopping cart and checkout"]</p>
     <a href="@Model.ShopifyCheckoutUrl" class="btn-primary checkout-button btn btn-default">@HtmlLocalizer["Go to shopify checkout page"]</a>
+
+    @if (Model.ErrorMessages.Any())
+    {
+        @foreach (var message in Model.ErrorMessages)
+        {
+            <span class="error-label">
+                @message
+            </span>
+        }
+    }
 </div>

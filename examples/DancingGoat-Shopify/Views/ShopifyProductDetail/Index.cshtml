@@ -70,6 +70,15 @@
                         }
                         <br />
                         <span>Currently <strong class="js-cartItemQuantity">@Model.VariantQuantity</strong> items in cart</span>
+                        @if (Model.ErrorMEssages.Any())
+                        {
+                            @foreach (var error in Model.ErrorMEssages)
+                            {
+                                <div class="error-label">
+                                    @error
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>

@@ -48,9 +48,9 @@
                             @Html.HiddenFor(m => m.CountryCode)
                             @Html.HiddenFor(m => m.SelectedVariantMerchandiseID, new { @class = "js-merchandiseId" })
                             <div class="cart-item-selector form-horizontal">
-                                <div class="form-group">
+                                <div class="form-group @(Model.Variants.Count() == 1 ? "hidden" : string.Empty)">
                                     <div class="editing-form-label-cell option-category-name control-label">
-                                        <label>Package</label>
+                                        <label>@HtmlLocalizer["Package"]</label>
                                     </div>
                                     @Html.DropDownList("SelectedVariant", Model.Variants, null, new { @class = "js-variantSelector" })
                                 </div>

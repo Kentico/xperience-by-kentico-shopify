@@ -27,7 +27,7 @@ public class ShoppingCartInfo
     {
         var merchandise = node.Merchandise;
         string name = merchandise.Product.Title;
-        if (string.Compare(merchandise.Title, "default title", StringComparison.InvariantCultureIgnoreCase) != 0)
+        if (string.Compare(merchandise.Title, ShopifyConstants.DEFAULT_VARIANT_NAME, StringComparison.InvariantCultureIgnoreCase) != 0)
         {
             name += $" ({merchandise.Title})";
         }

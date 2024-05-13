@@ -68,6 +68,6 @@ public class ShopifyProductDetailController : Controller
 
         TempData[ERROR_MESSAGES_KEY] = result.ErrorMessages.ToArray();
 
-        return Redirect($"{HttpContext.Request.Path.Value}?variantID={updateCartModel.SelectedVariant}");
+        return Redirect($"{HttpContext.Request.Path.Value ?? "/"}?variantID={updateCartModel.SelectedVariant}");
     }
 }

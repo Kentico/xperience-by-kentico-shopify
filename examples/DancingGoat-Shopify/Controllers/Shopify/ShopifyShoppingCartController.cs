@@ -1,12 +1,18 @@
-﻿using DancingGoat;
+﻿using CMS.Websites;
+using CMS.Websites.Routing;
+
+using DancingGoat;
 using DancingGoat.Controllers.Shopify;
 using DancingGoat.Models;
 using DancingGoat.Models.WebPage.Shopify.ShoppingCartPage;
+
 using Kentico.Content.Web.Mvc.Routing;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 using Kentico.Xperience.Shopify.Synchronization;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Shopify;
 using Shopify.ContentTypes;
 
@@ -18,21 +24,48 @@ namespace DancingGoat.Controllers.Shopify
     {
         private readonly IShoppingService shoppingService;
         private readonly IShopifyContentItemService contentItemService;
+        private readonly IWebPageUrlRetriever webPageUrlRetriever;
+        private readonly IWebsiteChannelContext websiteChannelContext;
+        private readonly IPreferredLanguageRetriever currentLanguageRetriever;
 
         public ShopifyShoppingCartController(
             IShoppingService shoppingService,
-            IShopifyContentItemService contentItemService)
+            IShopifyContentItemService contentItemService,
+            IWebPageUrlRetriever webPageUrlRetriever,
+            IWebsiteChannelContext websiteChannelContext,
+            IPreferredLanguageRetriever currentLanguageRetriever)
         {
             this.shoppingService = shoppingService;
             this.contentItemService = contentItemService;
+            this.webPageUrlRetriever = webPageUrlRetriever;
+            this.websiteChannelContext = websiteChannelContext;
+            this.currentLanguageRetriever = currentLanguageRetriever;
         }
 
 
         public async Task<IActionResult> Index()
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
-            var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
-            var model = ShoppingCartContentViewModel.GetViewModel(cart, images);
+            ShoppingCartContentViewModel model = null;
+            string[] errorMessages = TempData["ErrorMessages"] as string[] ?? [];
+            string language = currentLanguageRetriever.Get();
+            string storePageUrl = (await webPageUrlRetriever.Retrieve(DancingGoatConstants.STORE_PAGE_PATH, websiteChannelContext.WebsiteChannelName, language)).RelativePath;
+            if (cart == null)
+            {
+                model = new ShoppingCartContentViewModel()
+                {
+                    AppliedCoupons = [],
+                    CartItems = [],
+                    GrandTotal = string.Empty,
+                    ErrorMessages = [],
+                    StorePageUrl = storePageUrl
+                };
+            }
+            else
+            {
+                var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
+                model = ShoppingCartContentViewModel.GetViewModel(cart, images, errorMessages, storePageUrl);
+            }
 
             return View(model);
         }
@@ -46,21 +79,17 @@ namespace DancingGoat.Controllers.Shopify
             var country = ShopifySharp.GraphQL.CountryCode.CZ;
             var operationEnum = Enum.Parse<CartOperation>(cartOperation);
 
-            if (operationEnum == CartOperation.Remove)
-            {
-                await shoppingService.RemoveCartItem(variantGraphQLId);
-            }
-            else
-            {
-                await shoppingService.UpdateCartItem(new ShoppingCartItemParameters()
+            var result = operationEnum == CartOperation.Remove
+                ? await shoppingService.RemoveCartItem(variantGraphQLId)
+                : await shoppingService.UpdateCartItem(new ShoppingCartItemParameters()
                 {
                     Country = country,
                     Quantity = quantity,
                     MerchandiseID = variantGraphQLId
                 });
-            }
 
-            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+            AddErrorsToTempData(result);
+            return Redirect(await GetCartUrl());
         }
 
         [HttpPost]
@@ -68,8 +97,10 @@ namespace DancingGoat.Controllers.Shopify
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddDiscountCode([FromForm] string discountCode)
         {
-            await shoppingService.AddDiscountCode(discountCode);
-            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+            var result = await shoppingService.AddDiscountCode(discountCode);
+
+            AddErrorsToTempData(result);
+            return Redirect(await GetCartUrl());
         }
 
         [HttpPost]
@@ -77,8 +108,10 @@ namespace DancingGoat.Controllers.Shopify
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> RemoveDiscountCode([FromForm] string discountCode)
         {
-            await shoppingService.RemoveDiscountCode(discountCode);
-            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+            var result = await shoppingService.RemoveDiscountCode(discountCode);
+
+            AddErrorsToTempData(result);
+            return Redirect(await GetCartUrl());
         }
 
 
@@ -95,5 +128,19 @@ namespace DancingGoat.Controllers.Shopify
 
             return variants.ToDictionary(x => x.ShopifyMerchandiseID, x => productsDict[x.ShopifyProductID].FirstOrDefault());
         }
+
+
+        private void AddErrorsToTempData(CartOperationResult result)
+        {
+            if (!result.Success)
+            {
+                TempData["ErrorMessages"] = result.ErrorMessages.ToArray();
+            }
+        }
+
+        private async Task<string> GetCartUrl() => (await webPageUrlRetriever.Retrieve(
+            DancingGoatConstants.SHOPPING_CART_PATH,
+            websiteChannelContext.WebsiteChannelName,
+            currentLanguageRetriever.Get())).RelativePath;
     }
 }

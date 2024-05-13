@@ -1,7 +1,8 @@
-﻿using Kentico.Forms.Web.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Kentico.Forms.Web.Mvc;
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Xperience.Shopify.Components.FormComponents;
-using System.ComponentModel.DataAnnotations;
 
 namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
 {

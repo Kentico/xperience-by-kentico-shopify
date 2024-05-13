@@ -1,5 +1,6 @@
 ﻿using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products;
+
 using ShopifySharp;
 using ShopifySharp.Factories;
 using ShopifySharp.Filters;

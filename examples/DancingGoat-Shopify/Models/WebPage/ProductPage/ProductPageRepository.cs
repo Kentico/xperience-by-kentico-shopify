@@ -34,7 +34,7 @@ namespace DancingGoat.Models
 
 
         /// <summary>
-        /// Returns list of <see cref="ProductPage"/> web pages.
+        /// Returns list of <see cref="IProductPage"/> web pages.
         /// </summary>
         public async Task<IEnumerable<IProductPage>> GetProducts(string treePath, string languageName, IEnumerable<IProductFields> linkedProducts, bool includeSecuredItems = true, CancellationToken cancellationToken = default)
         {

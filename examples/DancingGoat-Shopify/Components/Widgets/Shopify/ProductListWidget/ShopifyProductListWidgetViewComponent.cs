@@ -1,9 +1,12 @@
 ﻿using DancingGoat.Components.Widgets.Shopify.ProductListWidget;
+
 using Kentico.PageBuilder.Web.Mvc;
-using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.Products;
+using Kentico.Xperience.Shopify.Products.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+
 using ShopifySharp.GraphQL;
 
 [assembly: RegisterWidget(ShopifyProductListWidgetViewComponent.IDENTIFIER, typeof(ShopifyProductListWidgetViewComponent), "Shopify product list", typeof(ShopifyProductListWidgetProperties), Description = "Displays products from shopify", IconClass = "icon-chain")]

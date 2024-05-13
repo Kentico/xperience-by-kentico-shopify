@@ -3,7 +3,9 @@ using CMS.Core;
 using CMS.Helpers;
 
 using GraphQL;
+
 using Kentico.Xperience.Shopify.Activities;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Kentico.Xperience.Shopify.ShoppingCart;
@@ -137,7 +139,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartCreate?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
     }
 
     public async Task<CartOperationResult> AddItemToCart(ShoppingCartItemParameters parameters)
@@ -222,7 +225,9 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 
         var shoppingCartInfo = new ShoppingCartInfo(cart);
         UpdateCartCache(shoppingCartInfo);
-        return new CartOperationResult(shoppingCartInfo, success);
+
+        var errorMessages = cartResponse.Data?.CartDiscountCodesUpdate?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(shoppingCartInfo, success, errorMessages);
     }
 
     private async Task<CartOperationResult> ExecuteAddItemMutation(ShoppingCartItemParameters parameters, string cartId)
@@ -248,7 +253,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartLinesAdd?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
     }
 
     private async Task<CartOperationResult> UpdateCartItemInternal(string cartId, ShoppingCartItem cartItem, int newQuantity)
@@ -273,7 +279,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartLinesUpdate?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
     }
 
     private async Task<CartOperationResult> RemoveCartItemInternal(string shoppingCartId, string shopifyCartLineId)
@@ -289,7 +296,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartLinesRemove?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
 
     }
 

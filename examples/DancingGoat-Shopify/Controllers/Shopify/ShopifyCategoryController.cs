@@ -6,9 +6,9 @@ using DancingGoat;
 using DancingGoat.Models;
 
 using Kentico.Content.Web.Mvc;
+using Kentico.Content.Web.Mvc.Routing;
 using Kentico.Xperience.Shopify.Products;
 using Kentico.Xperience.Shopify.Products.Models;
-using Kentico.Content.Web.Mvc.Routing;
 
 using Microsoft.AspNetCore.Mvc;
 

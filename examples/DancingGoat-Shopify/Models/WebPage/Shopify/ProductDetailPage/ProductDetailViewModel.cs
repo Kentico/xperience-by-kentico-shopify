@@ -26,7 +26,9 @@ public record ProductDetailViewModel
 
     public string SelectedVariantMerchandiseID { get; init; }
 
-    public static ProductDetailViewModel GetViewModel(ProductDetailPage page, string selectedVariantID, string country, string currency)
+    public string[] ErrorMessages { get; init; }
+
+    public static ProductDetailViewModel GetViewModel(ProductDetailPage page, string selectedVariantID, string country, string currency, string[] errorMessages)
     {
         var product = page.Product.First();
         var selectedVariant = product.Variants.FirstOrDefault(x => x.ShopifyVariantID == selectedVariantID) ?? product.Variants.First();
@@ -53,6 +55,7 @@ public record ProductDetailViewModel
             CurrencyCode = currency,
             VariantQuantity = 0,
             SelectedVariantMerchandiseID = selectedVariant.ShopifyMerchandiseID,
+            ErrorMessages = errorMessages
         };
     }
 }

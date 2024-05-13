@@ -26,7 +26,7 @@ public record ProductDetailViewModel
 
     public string SelectedVariantMerchandiseID { get; init; }
 
-    public string[] ErrorMEssages { get; init; }
+    public string[] ErrorMessages { get; init; }
 
     public static ProductDetailViewModel GetViewModel(ProductDetailPage page, string selectedVariantID, string country, string currency, string[] errorMessages)
     {
@@ -55,7 +55,7 @@ public record ProductDetailViewModel
             CurrencyCode = currency,
             VariantQuantity = 0,
             SelectedVariantMerchandiseID = selectedVariant.ShopifyMerchandiseID,
-            ErrorMEssages = errorMessages
+            ErrorMessages = errorMessages
         };
     }
 }

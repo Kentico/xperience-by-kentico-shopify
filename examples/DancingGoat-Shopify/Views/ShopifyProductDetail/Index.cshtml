@@ -77,9 +77,9 @@
                         }
                         <br />
                         <span>@HtmlLocalizer["Currently"] <strong class="js-cartItemQuantity">@Model.VariantQuantity</strong> @HtmlLocalizer["items in cart"]</span>
-                        @if (Model.ErrorMEssages.Any())
+                        @if (Model.ErrorMessages.Any())
                         {
-                            @foreach (var error in Model.ErrorMEssages)
+                            @foreach (var error in Model.ErrorMessages)
                             {
                                 <div class="error-label">
                                     @error

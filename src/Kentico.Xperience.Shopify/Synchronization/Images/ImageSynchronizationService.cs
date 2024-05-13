@@ -5,6 +5,7 @@ using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
 using Kentico.Xperience.Shopify.ReusableContentTypes;
 
 using ShopifySharp;
+
 using Path = System.IO.Path;
 
 namespace Kentico.Xperience.Shopify.Synchronization.Images;

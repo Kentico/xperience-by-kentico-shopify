@@ -1,4 +1,5 @@
 ﻿using CMS.Activities;
+
 using Kentico.Xperience.Shopify.ShoppingCart;
 
 namespace Kentico.Xperience.Shopify.Activities

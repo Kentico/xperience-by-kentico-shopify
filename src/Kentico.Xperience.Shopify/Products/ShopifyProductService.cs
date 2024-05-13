@@ -1,7 +1,4 @@
-﻿using CMS.Core;
-using CMS.Helpers;
-
-using Kentico.Xperience.Shopify.Config;
+﻿using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 

@@ -3,7 +3,9 @@ using CMS.Core;
 using CMS.Helpers;
 
 using GraphQL;
+
 using Kentico.Xperience.Shopify.Activities;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Kentico.Xperience.Shopify.ShoppingCart;

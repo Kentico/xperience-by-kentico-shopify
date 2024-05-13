@@ -1,4 +1,6 @@
-﻿using DancingGoat;
+﻿using CMS.Websites;
+using CMS.Websites.Routing;
+using DancingGoat;
 using DancingGoat.Controllers.Shopify;
 using DancingGoat.Models;
 using DancingGoat.Models.WebPage.Shopify.ShoppingCartPage;
@@ -19,13 +21,22 @@ namespace DancingGoat.Controllers.Shopify
     {
         private readonly IShoppingService shoppingService;
         private readonly IShopifyContentItemService contentItemService;
+        private readonly IWebPageUrlRetriever webPageUrlRetriever;
+        private readonly IWebsiteChannelContext websiteChannelContext;
+        private readonly IPreferredLanguageRetriever currentLanguageRetriever;
 
         public ShopifyShoppingCartController(
             IShoppingService shoppingService,
-            IShopifyContentItemService contentItemService)
+            IShopifyContentItemService contentItemService,
+            IWebPageUrlRetriever webPageUrlRetriever,
+            IWebsiteChannelContext websiteChannelContext,
+            IPreferredLanguageRetriever currentLanguageRetriever)
         {
             this.shoppingService = shoppingService;
             this.contentItemService = contentItemService;
+            this.webPageUrlRetriever = webPageUrlRetriever;
+            this.websiteChannelContext = websiteChannelContext;
+            this.currentLanguageRetriever = currentLanguageRetriever;
         }
 
 
@@ -34,7 +45,8 @@ namespace DancingGoat.Controllers.Shopify
             var cart = await shoppingService.GetCurrentShoppingCart();
             ShoppingCartContentViewModel model = null;
             string[] errorMessages = TempData["ErrorMessages"] as string[] ?? [];
-
+            string language = currentLanguageRetriever.Get();
+            string storePageUrl = (await webPageUrlRetriever.Retrieve(DancingGoatConstants.STORE_PAGE_PATH, websiteChannelContext.WebsiteChannelName, language)).RelativePath;
             if (cart == null)
             {
                 model = new ShoppingCartContentViewModel()
@@ -42,13 +54,14 @@ namespace DancingGoat.Controllers.Shopify
                     AppliedCoupons = [],
                     CartItems = [],
                     GrandTotal = string.Empty,
-                    ErrorMessages = []
+                    ErrorMessages = [],
+                    StorePageUrl = storePageUrl
                 };
             }
             else
             {
                 var images = await GetCartItemsImages(cart.Items.Select(x => x.VariantGraphQLId));
-                model = ShoppingCartContentViewModel.GetViewModel(cart, images, errorMessages);
+                model = ShoppingCartContentViewModel.GetViewModel(cart, images, errorMessages, storePageUrl);
             }
 
             return View(model);
@@ -73,7 +86,7 @@ namespace DancingGoat.Controllers.Shopify
                 });
 
             AddErrorsToTempData(result);
-            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+            return Redirect(await GetCartUrl());
         }
 
         [HttpPost]
@@ -84,7 +97,7 @@ namespace DancingGoat.Controllers.Shopify
             var result = await shoppingService.AddDiscountCode(discountCode);
 
             AddErrorsToTempData(result);
-            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+            return Redirect(await GetCartUrl());
         }
 
         [HttpPost]
@@ -95,7 +108,7 @@ namespace DancingGoat.Controllers.Shopify
             var result = await shoppingService.RemoveDiscountCode(discountCode);
 
             AddErrorsToTempData(result);
-            return Redirect(DancingGoatConstants.SHOPPING_CART_PATH);
+            return Redirect(await GetCartUrl());
         }
 
 
@@ -121,5 +134,10 @@ namespace DancingGoat.Controllers.Shopify
                 TempData["ErrorMessages"] = result.ErrorMessages.ToArray();
             }
         }
+
+        private async Task<string> GetCartUrl() => (await webPageUrlRetriever.Retrieve(
+            DancingGoatConstants.SHOPPING_CART_PATH,
+            websiteChannelContext.WebsiteChannelName,
+            currentLanguageRetriever.Get())).RelativePath;
     }
 }

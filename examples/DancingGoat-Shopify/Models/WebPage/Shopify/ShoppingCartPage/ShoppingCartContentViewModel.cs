@@ -10,8 +10,13 @@ namespace DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
         public IEnumerable<string> AppliedCoupons { get; set; }
         public string ShopifyCheckoutUrl { get; set; }
         public string[] ErrorMessages { get; set; }
+        public string StorePageUrl { get; set; }
 
-        public static ShoppingCartContentViewModel GetViewModel(ShoppingCartInfo cart, Dictionary<string, string> productImages, string[] errorMessages)
+        public static ShoppingCartContentViewModel GetViewModel(
+            ShoppingCartInfo cart,
+            Dictionary<string, string> productImages,
+            string[] errorMessages,
+            string storePageUrl)
         {
             return new ShoppingCartContentViewModel()
             {
@@ -27,7 +32,8 @@ namespace DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
                     CartItemId = x.ShopifyCartItemId,
                     ItemPrice = x.Price.FormatPrice(cart.Currency),
                 }) ?? [],
-                ErrorMessages = errorMessages
+                ErrorMessages = errorMessages,
+                StorePageUrl = storePageUrl
             };
         }
 

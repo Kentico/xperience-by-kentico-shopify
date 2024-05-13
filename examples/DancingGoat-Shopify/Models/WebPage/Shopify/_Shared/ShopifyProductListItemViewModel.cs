@@ -1,6 +1,8 @@
 ﻿using CMS.Websites;
+
 using Kentico.Xperience.Shopify;
 using Kentico.Xperience.Shopify.Products.Models;
+
 using Shopify;
 
 namespace DancingGoat.Models;

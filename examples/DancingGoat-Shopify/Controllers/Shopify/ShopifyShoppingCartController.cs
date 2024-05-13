@@ -1,15 +1,18 @@
 ﻿using CMS.Websites;
 using CMS.Websites.Routing;
+
 using DancingGoat;
 using DancingGoat.Controllers.Shopify;
 using DancingGoat.Models;
 using DancingGoat.Models.WebPage.Shopify.ShoppingCartPage;
-using GreenDonut;
+
 using Kentico.Content.Web.Mvc.Routing;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 using Kentico.Xperience.Shopify.Synchronization;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Shopify;
 using Shopify.ContentTypes;
 

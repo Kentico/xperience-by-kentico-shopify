@@ -1,7 +1,9 @@
-﻿using CMS.Websites.Routing;
-using CMS.Websites;
+﻿using CMS.Websites;
+using CMS.Websites.Routing;
+
 using Kentico.Content.Web.Mvc.Routing;
 using Kentico.Xperience.Shopify.ShoppingCart;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace DancingGoat.Components.ViewComponents.ShopifyCart

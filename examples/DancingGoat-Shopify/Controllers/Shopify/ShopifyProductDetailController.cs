@@ -14,6 +14,8 @@ namespace Shopify.Controllers;
 
 public class ShopifyProductDetailController : Controller
 {
+    private const string ERROR_MESSAGES_KEY = "ErrorMessages";
+
     private readonly ProductDetailPageRepository productDetailPageRepository;
     private readonly IWebPageDataContextRetriever webPageDataContextRetriever;
     private readonly IShoppingService shoppingService;
@@ -30,14 +32,15 @@ public class ShopifyProductDetailController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string variantID = null)
     {
-        return await Index(variantID, []);
-    }
-
-    public async Task<IActionResult> Index(string variantID, string[] errorMessages)
-    {
         // TODO - dynamic resolve country
         string country = "CZ";
         string currency = "CZK";
+
+        if (!TempData.TryGetValue(ERROR_MESSAGES_KEY, out object tempDataErrors) || tempDataErrors is not string[] errorMessages)
+        {
+            errorMessages = [];
+        }
+
         var webPage = webPageDataContextRetriever.Retrieve().WebPage;
         var productDetail = await productDetailPageRepository.GetProductDetailPage(webPage.WebPageItemID, webPage.LanguageName, HttpContext.RequestAborted);
 
@@ -63,6 +66,8 @@ public class ShopifyProductDetailController : Controller
             ? await shoppingService.RemoveCartItem(cartItemParams.MerchandiseID)
             : await shoppingService.AddItemToCart(cartItemParams);
 
-        return await Index(updateCartModel.SelectedVariant.ToString(), result.ErrorMessages.ToArray());
+        TempData[ERROR_MESSAGES_KEY] = result.ErrorMessages.ToArray();
+
+        return Redirect($"{HttpContext.Request.Path.Value}?variantID={updateCartModel.SelectedVariant}");
     }
 }

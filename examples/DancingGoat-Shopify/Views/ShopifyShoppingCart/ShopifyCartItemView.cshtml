@@ -12,7 +12,7 @@
         <form asp-controller="ShopifyShoppingCart" asp-action="Update" asp-antiforgery="true" method="post">
             @Html.Kentico().PageData()
             <div class="cart-item-amount">
-                <span>Qty</span>
+                <span>@HtmlLocalizer["Qty"]</span>
                 <input type="hidden" name="@nameof(ShoppingCartItemViewModel.VariantGraphQLId)" value="@Model.VariantGraphQLId" />
                 <input type="number" class="add-to-cart-textbox" min="0" , name="@nameof(ShoppingCartItemViewModel.Quantity)" value="@Model.Quantity" />
                 <input type="submit" name="cartOperation" value="Update" class="btn btn-default" />

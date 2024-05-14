@@ -21,8 +21,8 @@ Summary of libraries which are supported by the following versions Xperince by K
 | Library                            | Xperience Version | Library Version |
 |----------------------------------- |-------------------| --------------- |
 | Kentico.Xperience.Ecommerce.Common | \>= 28.2.1        | 1.0.0           |
-| Kentico.Xperience.Shopify          | \>= 28.2.1        | 1.0.0           |
-| Kentico.Xperience.Shopify.Rcl      | \>= 28.2.1        | 1.0.0           |
+| Kentico.Xperience.Shopify          | \>= 29.0.2        | 1.0.0           |
+| Kentico.Xperience.Shopify.Rcl      | \>= 29.0.2        | 1.0.0           |
 
 ### Dependencies
 - [ASP.NET Core 8.0](https://dotnet.microsoft.com/en-us/download)

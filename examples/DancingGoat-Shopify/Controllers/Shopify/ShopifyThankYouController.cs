@@ -48,7 +48,7 @@ namespace DancingGoat.Controllers.Shopify
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
             var order = await orderService.GetRecentOrder(sourceId);
-            if (order != null)
+            if (order != null && cart != null)
             {
                 UpdateCurrentContact(order);
                 LogPurchaseActivity(order, cart);

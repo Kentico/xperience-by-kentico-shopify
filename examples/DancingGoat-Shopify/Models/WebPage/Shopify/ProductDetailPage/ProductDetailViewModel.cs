@@ -53,7 +53,7 @@ public record ProductDetailViewModel
             ShopifyProductId = product.ShopifyProductID,
             CountryCode = country,
             CurrencyCode = currency,
-            VariantQuantity = 0,
+            VariantQuantity = 1,
             SelectedVariantMerchandiseID = selectedVariant.ShopifyMerchandiseID,
             ErrorMessages = errorMessages
         };

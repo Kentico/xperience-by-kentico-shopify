@@ -57,11 +57,11 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         {
             if (quantity > cartItemToUpdate.Quantity)
             {
-                activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, quantity);
+                activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, quantity - cartItemToUpdate.Quantity);
             }
             else
             {
-                activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, quantity);
+                activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, cartItemToUpdate.Quantity - quantity);
             }
 
             UpdateCartCache(result.Cart);

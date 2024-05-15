@@ -68,7 +68,7 @@
                             </div>
                             <div class="add-to-cart-container">
                                 <label class="units-label">@HtmlLocalizer["Qty"]</label>
-                                @Html.EditorFor(m => m.VariantQuantity, new { htmlAttributes = new { @class = "add-to-cart-textbox", @min = "0" } })
+                                @Html.EditorFor(m => m.VariantQuantity, new { htmlAttributes = new { @class = "add-to-cart-textbox", @min = "1" } })
                                 <button type="submit" name="cartOperation" value="Add" class="js-addToCartBtn btn btn-default">@HtmlLocalizer["Add to cart"]</button>
                             </div>
                             <div>

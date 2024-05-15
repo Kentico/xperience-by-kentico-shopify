@@ -1,4 +1,6 @@
-﻿using DancingGoat;
+﻿using System.Text;
+
+using DancingGoat;
 using DancingGoat.Models;
 
 using Kentico.Content.Web.Mvc;
@@ -58,19 +60,32 @@ public class ShopifyProductDetailController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(UpdateCartModel updateCartModel, CartOperation cartOperation)
     {
-        var cartItemParams = new ShoppingCartItemParameters()
+        if (updateCartModel.VariantQuantity <= 0)
         {
-            Quantity = updateCartModel.VariantQuantity,
-            MerchandiseID = updateCartModel.SelectedVariantMerchandiseID,
-            Country = updateCartModel.CountryCode
-        };
+            TempData[ERROR_MESSAGES_KEY] = new string[] { $"Cannot add {updateCartModel.VariantQuantity} items to cart. Minimum quantity is 1." };
+        }
+        else
+        {
+            var cartItemParams = new ShoppingCartItemParameters()
+            {
+                Quantity = updateCartModel.VariantQuantity,
+                MerchandiseID = updateCartModel.SelectedVariantMerchandiseID,
+                Country = updateCartModel.CountryCode
+            };
 
-        var result = cartOperation == CartOperation.Remove
-            ? await shoppingService.RemoveCartItem(cartItemParams.MerchandiseID)
-            : await shoppingService.AddItemToCart(cartItemParams);
+            var result = cartOperation == CartOperation.Remove
+                ? await shoppingService.RemoveCartItem(cartItemParams.MerchandiseID)
+                : await shoppingService.AddItemToCart(cartItemParams);
 
-        TempData[ERROR_MESSAGES_KEY] = result.ErrorMessages.ToArray();
+            TempData[ERROR_MESSAGES_KEY] = result.ErrorMessages.ToArray();
+        }
 
-        return Redirect($"{HttpContext.Request.Path.Value ?? "/"}?variantID={updateCartModel.SelectedVariant}");
+        var sb = new StringBuilder($"{HttpContext.Request.Path.Value ?? "/"}");
+        if (updateCartModel.SelectedVariant != 0)
+        {
+            sb.Append($"?variantID={updateCartModel.SelectedVariant}");
+        }
+
+        return Redirect(sb.ToString());
     }
 }

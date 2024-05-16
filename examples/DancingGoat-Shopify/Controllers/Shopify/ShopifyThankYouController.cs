@@ -21,10 +21,6 @@ namespace DancingGoat.Controllers.Shopify
 {
     public class ShopifyThankYouController : Controller
     {
-        private const string CACHE_KEY_FORMAT = $"{nameof(ShoppingCartInfo)}|{{0}}";
-        private const string CART_ID_KEY = "CMSShoppingCart";
-
-
         private readonly IShopifyOrderService orderService;
         private readonly ICountryInfoProvider countryInfoProvider;
         private readonly IShoppingService shoppingService;
@@ -54,8 +50,7 @@ namespace DancingGoat.Controllers.Shopify
                 LogPurchaseActivity(order, cart);
             }
 
-            // TODO - use cache service created in unit tests branch after tests will be merged into main branch.
-            RemoveCartFromCookiesAndCache();
+            shoppingService.RemoveCurrentShoppingCart();
 
             var model = ThankYouPageViewModel.GetModel(order);
 
@@ -101,25 +96,6 @@ namespace DancingGoat.Controllers.Shopify
             }
 
             currentContact.Update();
-        }
-
-
-        private void RemoveCartFromCookiesAndCache()
-        {
-            string cartId = HttpContext.Session.GetString(CART_ID_KEY);
-            if (string.IsNullOrEmpty(cartId))
-            {
-                HttpContext.Request.Cookies.TryGetValue(CART_ID_KEY, out cartId);
-            }
-
-            if (cartId != null)
-            {
-                string cacheKey = string.Format(CACHE_KEY_FORMAT, cartId);
-                CacheHelper.Remove(cacheKey, false, false);
-            }
-
-            HttpContext.Response.Cookies.Delete(CART_ID_KEY);
-            HttpContext.Session.Remove(CART_ID_KEY);
         }
     }
 }

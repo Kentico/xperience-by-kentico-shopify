@@ -37,5 +37,8 @@ namespace Kentico.Xperience.Shopify.ShoppingCart
                 async (_) => await retriveCartFunc(cartId),
                 new CacheSettings(cacheMinutes, CacheKey(cartId)));
         }
+
+
+        public void RemoveShoppingCartCache(string cartId) => CacheHelper.Remove(CacheKey(cartId), false, false);
     }
 }

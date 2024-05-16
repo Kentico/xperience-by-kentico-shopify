@@ -1,5 +1,6 @@
 ﻿
 using CMS.Core;
+using CMS.Helpers;
 
 using GraphQL;
 
@@ -196,6 +197,25 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 
         string[] updatedCouponList = currentCart.DiscountCodes.Where(x => x != discountCode).ToArray();
         return await UpdateDiscountCodes(currentCart, updatedCouponList);
+    }
+
+    public void RemoveCurrentShoppingCart()
+    {
+        var httpContext = httpContextAccessor.HttpContext;
+        if (httpContext == null)
+        {
+            return;
+        }
+
+        string? cartId = GetCurrentShoppingCartId();
+
+        if (!string.IsNullOrEmpty(cartId))
+        {
+            shoppingCartCacheService.RemoveShoppingCartCache(cartId);
+        }
+
+        httpContext.Response.Cookies.Delete(CART_ID_KEY);
+        httpContext.Session.Remove(CART_ID_KEY);
     }
 
 

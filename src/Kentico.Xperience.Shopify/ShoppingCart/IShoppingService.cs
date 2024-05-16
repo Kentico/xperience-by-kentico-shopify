@@ -47,5 +47,12 @@ public interface IShoppingService
     /// <param name="discountCode"></param>
     /// <returns></returns>
     Task<CartOperationResult> RemoveDiscountCode(string discountCode);
+
+
+    /// <summary>
+    /// Remove current shopping cart from cache, session and cookies.
+    /// </summary>
+    /// <returns></returns>
+    void RemoveCurrentShoppingCart();
 }
 

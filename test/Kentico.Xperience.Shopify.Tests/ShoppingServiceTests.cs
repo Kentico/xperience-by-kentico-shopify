@@ -7,6 +7,7 @@ using Kentico.Xperience.Shopify.Tests.Mocks;
 using GraphQL.Client.Abstractions;
 using ShopifySharp.GraphQL;
 using Kentico.Xperience.Shopify.Tests.Repositories;
+using Kentico.Xperience.Shopify.Activities;
 
 namespace Kentico.Xperience.Shopify.Tests
 {
@@ -28,6 +29,7 @@ namespace Kentico.Xperience.Shopify.Tests
         {
             mocker.Setup<IGraphQLHttpClientFactory, IGraphQLClient>(c => c.CreateGraphQLHttpClient()).Returns(new GraphQLHttpClientMock());
             mocker.Use<IShoppingCartCacheService>(new ShoppingCartCacheServiceMock());
+            mocker.Use<IEcommerceActivityLogger>(new EcommerceActivityLoggerMock());
         }
 
 

@@ -1,6 +1,4 @@
 ﻿using GraphQL;
-using GraphQL.Client.Http;
-using GraphQL.Client.Serializer.Newtonsoft;
 
 namespace Kentico.Xperience.Shopify.ShoppingCart
 {

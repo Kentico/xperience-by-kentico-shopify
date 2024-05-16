@@ -11,7 +11,6 @@ internal class CartObjectModel : IGraphQLObjectBase
     public required string CheckoutUrl { get; set; }
     public required CartCost Cost { get; set; }
     public CartLines? Lines { get; set; }
-    public required BuyerIdentity BuyerIdentity { get; set; }
     public IEnumerable<DiscountCode>? DiscountCodes { get; set; }
 }
 

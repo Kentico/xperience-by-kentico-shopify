@@ -30,6 +30,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IImageSynchronizationService, ImageSynchronizationService>();
         services.AddScoped<IProductSynchronizationService, ProductSynchronizationService>();
         services.AddScoped<IVariantSynchronizationService, VariantSynchronizationService>();
+        services.AddScoped<IGraphQLHttpClientFactory, GraphQLHttpClientFactory>();
+        services.AddScoped<IShoppingCartCacheService, ShoppingCartCacheService>();
         services.AddScoped<IShoppingService, ShoppingService>();
         services.AddScoped<IShopifyIntegrationSettingsService, ShopifyIntegrationSettingsService>();
         services.AddScoped<IEcommerceActivityLogger, EcommerceActivityLogger>();

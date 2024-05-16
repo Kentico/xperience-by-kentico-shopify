@@ -38,6 +38,7 @@ namespace Kentico.Xperience.Shopify.Tests
             DiscountCodesRepository = new DiscountCodesRepository();
         }
 
+
         [Test]
         public async Task GetCurrentShoppingCart_ExistingCartIdInSession_ShouldReturnCart()
         {
@@ -63,7 +64,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task GetCurrentShoppingCart_NoCartIdInSession_ShouldRetrunNull()
+        public async Task GetCurrentShoppingCart_NoCartIdInSession_ShouldReturnNull()
         {
             SetHttpContext();
             var shoppingService = mocker.CreateInstance<ShoppingService>();
@@ -191,7 +192,7 @@ namespace Kentico.Xperience.Shopify.Tests
 
 
         [Test]
-        public async Task SRemoveCartItem_CartContainsItem_ShouldRemoveCartItem()
+        public async Task RemoveCartItem_CartContainsItem_ShouldRemoveCartItem()
         {
             var shoppingCart = new ShoppingCartInfo(CartRepository.Carts.First());
             SetHttpContext(shoppingCart);

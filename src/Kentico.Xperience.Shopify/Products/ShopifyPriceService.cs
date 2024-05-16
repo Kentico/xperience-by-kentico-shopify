@@ -27,7 +27,6 @@ internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
 
     private async Task<IDictionary<string, ProductPriceModel>> GetProductsPriceInternal(IEnumerable<string> shopifyProductIds)
     {
-        // TODO resolve currency
         string currency = CurrencyCode.CZK.ToString();
         var dict = new Dictionary<string, ProductPriceModel>();
 

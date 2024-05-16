@@ -15,11 +15,11 @@ using CMS.ContentEngine;
 
 namespace Shopify
 {
-    /// <summary>
-    /// Represents a content item of type <see cref="ProductVariant"/>.
-    /// </summary>
-    [RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
-    public partial class ProductVariant : IContentItemFieldsSource
+	/// <summary>
+	/// Represents a content item of type <see cref="ProductVariant"/>.
+	/// </summary>
+	[RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
+	public partial class ProductVariant : IContentItemFieldsSource
 	{
 		/// <summary>
 		/// Code name of the content type.
@@ -30,6 +30,7 @@ namespace Shopify
 		/// <summary>
 		/// Represents system properties for a content item.
 		/// </summary>
+		[SystemField]
 		public ContentItemFields SystemFields { get; set; }
 
 

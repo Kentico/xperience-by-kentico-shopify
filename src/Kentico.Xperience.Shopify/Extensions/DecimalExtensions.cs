@@ -3,6 +3,7 @@
 using CMS.Core;
 
 using Kentico.Xperience.Shopify.Config;
+
 using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify

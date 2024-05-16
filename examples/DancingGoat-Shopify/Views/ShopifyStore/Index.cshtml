@@ -2,8 +2,10 @@
 
 @model StorePageViewModel
 
+@{
+    ViewData["PageClass"] = "inverted";
+}
 <div class="sub-menu row">
-    <h1>@Model.Title</h1>
     <div class="store-menu-list row">
         <ul>
             @foreach(var category in Model.Categories)
@@ -17,3 +19,28 @@
         </ul>
     </div>
 </div>
+@if (Model.BestSellers.Any())
+{
+    <h2>@HtmlLocalizer["Bestsellers"]</h2>
+    <div class="product-category">
+        <div class="col-md-8 col-lg-9 product-list">
+            @foreach (var product in Model.BestSellers)
+            {
+                <partial name="~/Views/Shared/DisplayTemplates/_ProductListItemView.cshtml" model="product" />
+            }
+        </div>
+    </div>
+}
+
+@if (Model.HotTips.Any())
+{
+    <h2>@HtmlLocalizer["Hot tips"]</h2>
+    <div class="product-category">
+        <div class="col-md-8 col-lg-9 product-list">
+            @foreach (var product in Model.HotTips)
+            {
+                <partial name="~/Views/Shared/DisplayTemplates/_ProductListItemView.cshtml" model="product" />
+            }
+        </div>
+    </div>
+}

@@ -7,8 +7,10 @@ using Kentico.Xperience.Shopify.Synchronization;
 using Kentico.Xperience.Shopify.Synchronization.Images;
 using Kentico.Xperience.Shopify.Synchronization.Products;
 using Kentico.Xperience.Shopify.Synchronization.Variants;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using ShopifySharp.Extensions.DependencyInjection;
 
 namespace Kentico.Xperience.Shopify;

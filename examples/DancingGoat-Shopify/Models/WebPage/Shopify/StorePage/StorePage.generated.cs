@@ -13,14 +13,15 @@ using System;
 using System.Collections.Generic;
 using CMS.ContentEngine;
 using CMS.Websites;
+using Shopify;
 
 namespace DancingGoat.Models
 {
-    /// <summary>
-    /// Represents a page of type <see cref="StorePage"/>.
-    /// </summary>
-    [RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
-    public partial class StorePage : IWebPageFieldsSource
+	/// <summary>
+	/// Represents a page of type <see cref="StorePage"/>.
+	/// </summary>
+	[RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
+	public partial class StorePage : IWebPageFieldsSource
 	{
 		/// <summary>
 		/// Code name of the content type.
@@ -31,6 +32,7 @@ namespace DancingGoat.Models
 		/// <summary>
 		/// Represents system properties for a web page item.
 		/// </summary>
+		[SystemField]
 		public WebPageFields SystemFields { get; set; }
 
 
@@ -38,5 +40,17 @@ namespace DancingGoat.Models
 		/// StoreName.
 		/// </summary>
 		public string StoreName { get; set; }
+
+
+		/// <summary>
+		/// Bestsellers.
+		/// </summary>
+		public IEnumerable<WebPageRelatedItem> Bestsellers { get; set; }
+
+
+		/// <summary>
+		/// HotTips.
+		/// </summary>
+		public IEnumerable<WebPageRelatedItem> HotTips { get; set; }
 	}
 }

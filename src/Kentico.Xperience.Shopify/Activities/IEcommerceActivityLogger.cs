@@ -1,5 +1,4 @@
 ﻿using Kentico.Xperience.Shopify.ShoppingCart;
-using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify.Activities
 {

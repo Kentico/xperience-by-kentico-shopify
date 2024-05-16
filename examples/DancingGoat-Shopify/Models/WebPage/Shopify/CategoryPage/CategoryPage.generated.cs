@@ -16,11 +16,11 @@ using CMS.Websites;
 
 namespace DancingGoat.Models
 {
-    /// <summary>
-    /// Represents a page of type <see cref="CategoryPage"/>.
-    /// </summary>
-    [RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
-    public partial class CategoryPage : IWebPageFieldsSource
+	/// <summary>
+	/// Represents a page of type <see cref="CategoryPage"/>.
+	/// </summary>
+	[RegisterContentTypeMapping(CONTENT_TYPE_NAME)]
+	public partial class CategoryPage : IWebPageFieldsSource
 	{
 		/// <summary>
 		/// Code name of the content type.
@@ -31,6 +31,7 @@ namespace DancingGoat.Models
 		/// <summary>
 		/// Represents system properties for a web page item.
 		/// </summary>
+		[SystemField]
 		public WebPageFields SystemFields { get; set; }
 
 

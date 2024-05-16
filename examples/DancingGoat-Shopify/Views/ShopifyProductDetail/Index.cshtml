@@ -2,6 +2,10 @@
 
 @model ProductDetailViewModel
 
+@{
+    ViewData["PageClass"] = "inverted no-bg";
+}
+
 <div class="product-detail-wrapper js-productDetail" data-product-id="@Model.ShopifyProductId" data-currency-code="@Model.CurrencyCode" data-selected-variant="@Model.SelectedShopifyVariantId">
     <article class="product-detail">
         <div class="row">
@@ -24,8 +28,11 @@
                     @Html.Raw(Model.DescriptionHTML)
                 </div>
                 <div class="product-detail-properties row">
-                    <h4>Parameters</h4>
-                    @Html.Raw(Model.ParametersSection)
+                    @if (!string.IsNullOrEmpty(Model.ParametersSection))
+                    {
+                        <h4>@HtmlLocalizer["Parameters"]</h4>
+                        @Html.Raw(Model.ParametersSection)
+                    }
                 </div>
             </div>
             <div class="col-lg-4 col-md-5 product-detail-right col-md-offset-1 col-lg-offset-1 js-cartSection hidden">
@@ -48,28 +55,37 @@
                             @Html.HiddenFor(m => m.CountryCode)
                             @Html.HiddenFor(m => m.SelectedVariantMerchandiseID, new { @class = "js-merchandiseId" })
                             <div class="cart-item-selector form-horizontal">
-                                <div class="form-group">
+                                <div class="form-group @(Model.Variants.Count() == 1 ? "hidden" : string.Empty)">
                                     <div class="editing-form-label-cell option-category-name control-label">
-                                        <label>Package</label>
+                                        <label>@HtmlLocalizer["Package"]</label>
                                     </div>
                                     @Html.DropDownList("SelectedVariant", Model.Variants, null, new { @class = "js-variantSelector" })
                                 </div>
                             </div>
                             <div class="total-price-container row">
-                                <span class="total-price-label">Price</span>
+                                <span class="total-price-label">@HtmlLocalizer["Price"]</span>
                                 <span id="js-price" class="total-price"></span>
                             </div>
                             <div class="add-to-cart-container">
-                                <label class="units-label">Qty</label>
-                                @Html.EditorFor(m => m.VariantQuantity, new { htmlAttributes = new { @class = "add-to-cart-textbox", @min = "0" } })
-                                <button type="submit" name="cartOperation" value="Add" class="js-addToCartBtn btn btn-default">Add to cart</button>
+                                <label class="units-label">@HtmlLocalizer["Qty"]</label>
+                                @Html.EditorFor(m => m.VariantQuantity, new { htmlAttributes = new { @class = "add-to-cart-textbox", @min = "1" } })
+                                <button type="submit" name="cartOperation" value="Add" class="js-addToCartBtn btn btn-default">@HtmlLocalizer["Add to cart"]</button>
                             </div>
                             <div>
-                                <button type="submit" name="cartOperation" value="Remove" class="js-removeFromCartBtn btn-link">Remove from cart</button>
+                                <button type="submit" name="cartOperation" value="Remove" class="js-removeFromCartBtn btn-link">@HtmlLocalizer["Remove from cart"]</button>
                             </div>
                         }
                         <br />
-                        <span>Currently <strong class="js-cartItemQuantity">@Model.VariantQuantity</strong> items in cart</span>
+                        <span>@HtmlLocalizer["Currently"] <strong class="js-cartItemQuantity">@Model.VariantQuantity</strong> @HtmlLocalizer["items in cart"]</span>
+                        @if (Model.ErrorMessages.Any())
+                        {
+                            @foreach (var error in Model.ErrorMessages)
+                            {
+                                <div class="error-label">
+                                    @error
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>

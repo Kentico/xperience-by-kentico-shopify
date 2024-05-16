@@ -1,15 +1,19 @@
-﻿using DancingGoat;
-using Kentico.Content.Web.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc;
+﻿using CMS.ContactManagement;
+using CMS.Globalization;
+using CMS.Helpers;
+
+using DancingGoat;
 using DancingGoat.Controllers.Shopify;
 using DancingGoat.Models;
-using Kentico.Xperience.Shopify.Orders;
-using CMS.ContactManagement;
-using CMS.Globalization;
-using ShopifySharp;
-using Kentico.Xperience.Shopify.ShoppingCart;
-using CMS.Helpers;
+
+using Kentico.Content.Web.Mvc.Routing;
 using Kentico.Xperience.Shopify.Activities;
+using Kentico.Xperience.Shopify.Orders;
+using Kentico.Xperience.Shopify.ShoppingCart;
+
+using Microsoft.AspNetCore.Mvc;
+
+using ShopifySharp;
 
 [assembly: RegisterWebPageRoute(ThankYouPage.CONTENT_TYPE_NAME, typeof(ShopifyThankYouController), WebsiteChannelNames = new[] { DancingGoatConstants.WEBSITE_CHANNEL_NAME })]
 
@@ -44,7 +48,7 @@ namespace DancingGoat.Controllers.Shopify
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
             var order = await orderService.GetRecentOrder(sourceId);
-            if (order != null)
+            if (order != null && cart != null)
             {
                 UpdateCurrentContact(order);
                 LogPurchaseActivity(order, cart);

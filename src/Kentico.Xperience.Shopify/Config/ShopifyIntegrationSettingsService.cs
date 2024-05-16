@@ -2,6 +2,7 @@
 using CMS.Helpers;
 
 using Kentico.Xperience.Shopify.Admin;
+
 using Microsoft.Extensions.Options;
 
 namespace Kentico.Xperience.Shopify.Config

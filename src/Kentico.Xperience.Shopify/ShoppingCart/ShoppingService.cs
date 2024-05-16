@@ -2,7 +2,9 @@
 using CMS.Core;
 
 using GraphQL;
+
 using Kentico.Xperience.Shopify.Activities;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Kentico.Xperience.Shopify.ShoppingCart;
@@ -46,11 +48,11 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         {
             if (quantity > cartItemToUpdate.Quantity)
             {
-                activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, quantity);
+                activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, quantity - cartItemToUpdate.Quantity);
             }
             else
             {
-                activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, quantity);
+                activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, cartItemToUpdate.Quantity - quantity);
             }
 
             UpdateCartCache(result.Cart);
@@ -125,7 +127,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartCreate?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
     }
 
 
@@ -211,7 +214,9 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
 
         var shoppingCartInfo = new ShoppingCartInfo(cart);
         UpdateCartCache(shoppingCartInfo);
-        return new CartOperationResult(shoppingCartInfo, success);
+
+        var errorMessages = cartResponse.Data?.CartDiscountCodesUpdate?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(shoppingCartInfo, success, errorMessages);
     }
 
     private async Task<CartOperationResult> ExecuteAddItemMutation(ShoppingCartItemParameters parameters, string cartId)
@@ -237,7 +242,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartLinesAdd?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
     }
 
 
@@ -263,7 +269,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartLinesUpdate?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
     }
 
 
@@ -280,7 +287,8 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, success);
         }
 
-        return new CartOperationResult(new ShoppingCartInfo(cart), success);
+        var errorMessages = cartResponse.Data?.CartLinesRemove?.UserErrors?.Select(x => x.Message ?? string.Empty) ?? [];
+        return new CartOperationResult(new ShoppingCartInfo(cart), success, errorMessages);
 
     }
 

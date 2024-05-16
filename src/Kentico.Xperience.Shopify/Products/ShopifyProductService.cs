@@ -1,7 +1,4 @@
-﻿using CMS.Core;
-using CMS.Helpers;
-
-using Kentico.Xperience.Shopify.Config;
+﻿using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 
@@ -82,7 +79,6 @@ namespace Kentico.Xperience.Shopify.Products
         {
             var filter = new ListFilter<Product>(filterParams?.PageInfo, filterParams?.Limit, ShopifyFields);
             var result = await productService.ListAsync(filter, true);
-            // TODO set currency dynamically
             return CreateResultModel(result, "USD");
         }
 

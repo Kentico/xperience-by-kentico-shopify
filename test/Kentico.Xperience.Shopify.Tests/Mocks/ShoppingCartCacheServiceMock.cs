@@ -8,6 +8,11 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
             => retriveCartFunc(cartId);
 
 
+        public void RemoveShoppingCartCache(string cartId)
+        {
+        }
+
+
         public void UpdateCartCache(ShoppingCartInfo cart)
         {
         }

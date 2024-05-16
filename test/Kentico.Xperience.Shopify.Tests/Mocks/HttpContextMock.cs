@@ -174,7 +174,13 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
         public void Clear() => throw new NotImplementedException();
         public Task CommitAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
         public Task LoadAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
-        public void Remove(string key) => throw new NotImplementedException();
+        public void Remove(string key)
+        {
+            if (Variables.ContainsKey(key))
+            {
+                Variables.Remove(key);
+            }
+        }
         #endregion
     }
 }

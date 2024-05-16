@@ -461,6 +461,26 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        [Test]
+        public async Task RemoveCurrentShoppingCart_CartExists_ShouldRemoveCart()
+        {
+            SetHttpContext(new ShoppingCartInfo(CartRepository.Carts.First()));
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+
+            var shoppingCart = await shoppingService.GetCurrentShoppingCart();
+            if (shoppingCart == null)
+            {
+                AssertCartIsNull();
+                return;
+            }
+
+            shoppingService.RemoveCurrentShoppingCart();
+            shoppingCart = await shoppingService.GetCurrentShoppingCart();
+
+            Assert.That(shoppingCart, Is.Null);
+        }
+
+
         private void AssertCartIsNull() => Assert.Fail("Returned shopping cart was null");
 
 

@@ -2,6 +2,9 @@
 
 namespace Kentico.Xperience.Shopify.Activities
 {
+    /// <summary>
+    /// Interface for logging ecommerce activities.
+    /// </summary>
     public interface IEcommerceActivityLogger
     {
         /// <summary>

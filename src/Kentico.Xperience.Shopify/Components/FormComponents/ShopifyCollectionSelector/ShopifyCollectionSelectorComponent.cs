@@ -5,18 +5,31 @@ using Kentico.Xperience.Shopify.Products;
 
 [assembly: RegisterFormComponent(ShopifyCollectionSelectorComponent.IDENTIFIER, typeof(ShopifyCollectionSelectorComponent), "Shopify collections dropdown", IconClass = "icon-menu")]
 namespace Kentico.Xperience.Shopify.Components.FormComponents;
+
+/// <summary>
+/// Form component for selecting Shopify collections.
+/// </summary>
 public class ShopifyCollectionSelectorComponent : SelectorFormComponent<ShopifyCollectionSelectorProperties>
 {
     private readonly IShopifyCollectionService collectionService;
 
+    /// <summary>
+    /// The identifier of the Shopify collection selector component.
+    /// </summary>
     public const string IDENTIFIER = "Kentico.Xperience.Shopify.ShopifyCollectionSelector";
 
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ShopifyCollectionSelectorComponent"/> class.
+    /// </summary>
+    /// <param name="collectionService">The service for interacting with Shopify collections.</param>
     public ShopifyCollectionSelectorComponent(IShopifyCollectionService collectionService)
     {
         this.collectionService = collectionService;
     }
 
-    // Retrieves data to be displayed in the selector
+
+    /// <inheritdoc />
     protected override IEnumerable<HtmlOptionItem> GetHtmlOptions()
     {
         var collections = collectionService.GetCollectionListing().GetAwaiter().GetResult();

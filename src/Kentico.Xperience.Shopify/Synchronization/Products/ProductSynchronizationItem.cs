@@ -6,10 +6,18 @@ using Shopify;
 using Shopify.ContentTypes;
 
 namespace Kentico.Xperience.Shopify.Synchronization.Products;
+
+/// <summary>
+/// Item for synchronizing products.
+/// </summary>
 public class ProductSynchronizationItem : ContentItemSynchronizationBase, ISynchronizationItem<ShopifyProductItem>
 {
+    /// <inheritdoc/>
     public override string ContentTypeName => Product.CONTENT_TYPE_NAME;
+
+    /// <inheritdoc/>
     protected override string DisplayNameInternal => Title;
+
 
     /// <summary>
     /// Title.
@@ -36,6 +44,7 @@ public class ProductSynchronizationItem : ContentItemSynchronizationBase, ISynch
     /// </summary>
     public IEnumerable<ContentItemReference> Variants { get; set; } = Enumerable.Empty<ContentItemReference>();
 
+    /// <inheritdoc/>
     public bool GetModifiedProperties(ShopifyProductItem contentItem, out Dictionary<string, object?> modifiedProps)
     {
         modifiedProps = [];

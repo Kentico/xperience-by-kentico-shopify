@@ -2,14 +2,41 @@
 
 namespace Kentico.Xperience.Shopify.ShoppingCart;
 
+/// <summary>
+/// Information about a shopping cart.
+/// </summary>
 public class ShoppingCartInfo
 {
+    /// <summary>
+    /// The ID of the shopping cart.
+    /// </summary>
     public string CartId { get; set; }
+
+    /// <summary>
+    /// The URL of the shopping cart.
+    /// </summary>
     public string CartUrl { get; set; }
+
+    /// <summary>
+    /// The currency of the shopping cart.
+    /// </summary>
     public CurrencyCode Currency { get; set; }
+
+    /// <summary>
+    /// The items in the shopping cart.
+    /// </summary>
     public IEnumerable<ShoppingCartItem> Items { get; set; }
+
+    /// <summary>
+    /// The grand total of the shopping cart.
+    /// </summary>
     public decimal GrandTotal { get; set; }
+
+    /// <summary>
+    /// The discount codes applied to the shopping cart.
+    /// </summary>
     public IEnumerable<string> DiscountCodes { get; set; }
+
 
     internal ShoppingCartInfo(CartObjectModel shopifyCart)
     {
@@ -43,11 +70,38 @@ public class ShoppingCartInfo
     }
 }
 
+
+/// <summary>
+/// Item in a shopping cart.
+/// </summary>
 public class ShoppingCartItem
 {
+    /// <summary>
+    /// ID of the shopping cart item.
+    /// </summary>
     public required string ShopifyCartItemId { get; set; }
+
+
+    /// <summary>
+    /// Name of the shopping cart item.
+    /// </summary>
     public required string Name { get; set; }
+
+
+    /// <summary>
+    /// Price of the shopping cart item.
+    /// </summary>
     public required decimal Price { get; set; }
+
+
+    /// <summary>
+    /// GraphQL ID of the shopping cart item variant.
+    /// </summary>
     public required string VariantGraphQLId { get; set; }
+
+
+    /// <summary>
+    /// Quantity of the shopping cart item.
+    /// </summary>
     public required int Quantity { get; set; }
 }

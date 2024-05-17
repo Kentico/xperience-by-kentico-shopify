@@ -1,5 +1,8 @@
 ﻿namespace Kentico.Xperience.Shopify.ShoppingCart;
 
+/// <summary>
+/// Service for managing shopping cart operations.
+/// </summary>
 public interface IShoppingService
 {
     /// <summary>

@@ -2,6 +2,9 @@
 
 namespace Kentico.Xperience.Shopify.Orders
 {
+    /// <summary>
+    /// Service for managing orders from Shopify store.
+    /// </summary>
     public interface IShopifyOrderService
     {
         /// <summary>

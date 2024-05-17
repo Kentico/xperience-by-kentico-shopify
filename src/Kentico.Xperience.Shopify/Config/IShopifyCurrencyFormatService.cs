@@ -1,5 +1,8 @@
 ﻿namespace Kentico.Xperience.Shopify.Config
 {
+    /// <summary>
+    /// Service for managing currency formats.
+    /// </summary>
     public interface IShopifyCurrencyFormatService
     {
         /// <summary>

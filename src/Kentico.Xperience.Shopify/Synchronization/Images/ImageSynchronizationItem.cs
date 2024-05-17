@@ -6,12 +6,18 @@ using Kentico.Xperience.Shopify.ReusableContentTypes;
 using Shopify;
 
 namespace Kentico.Xperience.Shopify.Synchronization.Images;
+
+
+/// <summary>
+/// Image synchronization item.
+/// </summary>
 public class ImageSynchronizationItem : ContentItemSynchronizationBase, ISynchronizationItem<ShopifyImageItem>
 {
     /// <summary>
     /// Image name.
     /// </summary>
     public string ImageName { get; set; } = string.Empty;
+
 
     /// <summary>
     /// Image.
@@ -31,10 +37,15 @@ public class ImageSynchronizationItem : ContentItemSynchronizationBase, ISynchro
     public string ShopifyImageID { get; set; } = string.Empty;
 
 
+    /// <inheritdoc/>
     public override string ContentTypeName => Image.CONTENT_TYPE_NAME;
 
+
+    /// <inheritdoc/>
     protected override string DisplayNameInternal => ImageName;
 
+
+    /// <inheritdoc/>
     public bool GetModifiedProperties(ShopifyImageItem contentItem, out Dictionary<string, object?> modifiedProps)
     {
         modifiedProps = [];

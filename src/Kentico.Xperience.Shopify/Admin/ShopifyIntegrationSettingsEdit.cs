@@ -12,24 +12,32 @@ using Kentico.Xperience.Shopify.Admin;
 
 namespace Kentico.Xperience.Shopify.Admin
 {
+    /// <summary>
+    /// Page for editing Shopify integration settings.
+    /// </summary>
     public class ShopifyIntegrationSettingsEdit : ModelEditPage<ShopifyIntegrationSettingsModel>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShopifyIntegrationSettingsEdit"/> class.
+        /// </summary>
         public ShopifyIntegrationSettingsEdit(Xperience.Admin.Base.Forms.Internal.IFormItemCollectionProvider formItemCollectionProvider, IFormDataBinder formDataBinder) : base(formItemCollectionProvider, formDataBinder)
         {
         }
 
         private IntegrationSettingsInfo? settingsInfo;
-
         private IntegrationSettingsInfo? SettingsInfo => settingsInfo ??= IntegrationSettingsInfo.Provider.Get()
             .TopN(1)
             .FirstOrDefault();
-
         private ShopifyIntegrationSettingsModel? model;
 
 
+        /// <summary>
+        /// Gets or sets the model for Shopify integration settings.
+        /// </summary>
         protected override ShopifyIntegrationSettingsModel Model => model ??= CreateShopifySettingsModel(SettingsInfo);
 
 
+        /// <inheritdoc/>
         public override Task ConfigurePage()
         {
             PageConfiguration.Headline = "It is recommended to use appsettings.json or user secrets to store API credentials. Use this primarly for developement.";
@@ -37,6 +45,7 @@ namespace Kentico.Xperience.Shopify.Admin
         }
 
 
+        /// <inheritdoc/>
         protected override Task<ICommandResponse> ProcessFormData(ShopifyIntegrationSettingsModel model, ICollection<IFormItem> formItems)
         {
             var info = SettingsInfo ?? new IntegrationSettingsInfo();
@@ -50,6 +59,7 @@ namespace Kentico.Xperience.Shopify.Admin
 
             return base.ProcessFormData(model, formItems);
         }
+
 
         private ShopifyIntegrationSettingsModel CreateShopifySettingsModel(IntegrationSettingsInfo? integrationSettings)
         {

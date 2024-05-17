@@ -9,15 +9,38 @@ namespace Shopify.ContentTypes;
 /// </summary>
 public class ShopifyProductItem : Product, IContentItemBase
 {
+    /// <summary>
+    /// Display name of the product.
+    /// </summary>
     public string DisplayName => Title;
 
+
+    /// <summary>
+    /// Content type name.
+    /// </summary>
     public string ContentTypeName => CONTENT_TYPE_NAME;
 
+
+    /// <summary>
+    /// Gets or sets the variants of the product.
+    /// </summary>
     public new IEnumerable<ShopifyProductVariantItem> Variants { get; set; } = Enumerable.Empty<ShopifyProductVariantItem>();
 
+
+    /// <summary>
+    /// Images of the product.
+    /// </summary>
     public new IEnumerable<ShopifyImageItem> Images { get; set; } = Enumerable.Empty<ShopifyImageItem>();
 
+
+    /// <summary>
+    /// Shopify object ID of the product.
+    /// </summary>
     public string ShopifyObjectID => ShopifyProductID;
 
+
+    /// <summary>
+    /// Content item identifier.
+    /// </summary>
     public int ContentItemIdentifier => SystemFields.ContentItemID;
 }

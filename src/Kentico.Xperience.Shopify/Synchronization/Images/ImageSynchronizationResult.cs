@@ -1,5 +1,5 @@
 ﻿namespace Kentico.Xperience.Shopify.Synchronization.Images;
-public class ImageSynchronizationResult
+internal class ImageSynchronizationResult
 {
     /// <summary>
     /// Dictionary where key is shopify variant ID and value is GUID of image content item.

@@ -2,6 +2,9 @@
 
 namespace Kentico.Xperience.Shopify.Products;
 
+/// <summary>
+/// Service for getting product prices from Shopify store.
+/// </summary>
 public interface IShopifyPriceService
 {
     /// <summary>

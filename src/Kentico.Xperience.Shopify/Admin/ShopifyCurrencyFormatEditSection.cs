@@ -10,6 +10,9 @@ using Kentico.Xperience.Shopify.Admin;
     order: 400)]
 namespace Kentico.Xperience.Shopify.Admin
 {
+    /// <summary>
+    /// Page for editing section for currency format objects.
+    /// </summary>
     public class ShopifyCurrencyFormatEditSection : EditSectionPage<CurrencyFormatInfo>
     {
     }

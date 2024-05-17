@@ -1,5 +1,8 @@
 ﻿namespace Kentico.Xperience.Shopify.Products
 {
+    /// <summary>
+    /// Service for managing currencies.
+    /// </summary>
     public interface IShopifyCurrencyService
     {
         /// <summary>

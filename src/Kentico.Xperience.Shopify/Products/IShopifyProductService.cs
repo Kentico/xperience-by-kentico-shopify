@@ -6,6 +6,9 @@ using ShopifySharp.Lists;
 
 namespace Kentico.Xperience.Shopify.Products
 {
+    /// <summary>
+    /// Service for retrieving products from Shopify store.
+    /// </summary>
     public interface IShopifyProductService
     {
         /// <summary>

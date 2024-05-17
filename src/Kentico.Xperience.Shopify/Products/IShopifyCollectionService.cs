@@ -2,6 +2,9 @@
 
 namespace Kentico.Xperience.Shopify.Products
 {
+    /// <summary>
+    /// Interface for interacting with Shopify collections.
+    /// </summary>
     public interface IShopifyCollectionService
     {
         /// <summary>

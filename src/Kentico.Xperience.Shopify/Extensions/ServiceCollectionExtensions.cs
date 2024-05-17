@@ -14,8 +14,17 @@ using Microsoft.Extensions.DependencyInjection;
 using ShopifySharp.Extensions.DependencyInjection;
 
 namespace Kentico.Xperience.Shopify;
+
+/// <summary>
+/// Extension methods for registering Shopify services.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Registers Shopify services with the dependency injection container.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
+    /// <param name="configuration">The <see cref="IConfigurationManager"/> to use for configuration.</param>
     public static void RegisterShopifyServices(this IServiceCollection services, IConfigurationManager configuration)
     {
         // ShopifySharp dependency injection

@@ -46,9 +46,20 @@ internal class Merchandise
     public required VariantProduct Product { get; set; }
 }
 
+
+/// <summary>
+/// Discount code entity.
+/// </summary>
 public class DiscountCode
 {
+    /// <summary>
+    /// Indicates if the discount code is applicable.
+    /// </summary>
     public bool Applicable { get; set; }
+
+    /// <summary>
+    /// Required discount code.
+    /// </summary>
     public required string Code { get; set; }
 }
 

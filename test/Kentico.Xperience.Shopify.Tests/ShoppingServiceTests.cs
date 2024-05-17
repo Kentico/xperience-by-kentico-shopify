@@ -11,6 +11,9 @@ using Kentico.Xperience.Shopify.Activities;
 
 namespace Kentico.Xperience.Shopify.Tests
 {
+    /// <summary>
+    /// <see cref="ShoppingService"/> unit tests.
+    /// </summary>
     [TestFixture]
     public class ShoppingServiceTests
     {
@@ -18,12 +21,19 @@ namespace Kentico.Xperience.Shopify.Tests
         private ShoppingCartRepository CartRepository { get; set; }
         private DiscountCodesRepository DiscountCodesRepository { get; set; }
 
+
+        /// <summary>
+        /// Create <see cref="ShoppingServiceTests"/> instance.
+        /// </summary>
         public ShoppingServiceTests()
         {
             mocker = new AutoMocker();
         }
 
 
+        /// <summary>
+        /// One time tests setup. Add mocks to dependency injection container.
+        /// </summary>
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
@@ -33,6 +43,10 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Set up before each test.
+        /// Create shopping cart and discount codes repository mocks.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -41,6 +55,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Get existing shopping cart stored in session.
+        /// </summary>
         [Test]
         public async Task GetCurrentShoppingCart_ExistingCartIdInSession_ShouldReturnCart()
         {
@@ -65,6 +82,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Get shopping cart without any data stored in session.
+        /// </summary>
         [Test]
         public async Task GetCurrentShoppingCart_NoCartIdInSession_ShouldReturnNull()
         {
@@ -76,6 +96,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Set negative quantity to shopping cart item.
+        /// </summary>
         [Test]
         public async Task UpdateCartItem_SetNegativeQuantity_ShouldRemoveCartItem()
         {
@@ -111,6 +134,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Try remove shopping cart item when no shopping cart is stored in session.
+        /// </summary>
         [Test]
         public async Task RemoveCartItem_NoCartIdInSession_ShouldRetrunNull()
         {
@@ -127,6 +153,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Update non existing shopping cart item.
+        /// </summary>
         [Test]
         public async Task UpdateCartItem_AddNewCartItem_ShouldAddItemToCart()
         {
@@ -161,6 +190,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Update existing shopping cart item.
+        /// </summary>
         [Test]
         public async Task UpdateCartItem_UpdatedProductAlreadyInCart_ShouldUpdateExistingCartItem()
         {
@@ -193,6 +225,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Remove existing shopping cart item.
+        /// </summary>
         [Test]
         public async Task RemoveCartItem_CartContainsItem_ShouldRemoveCartItem()
         {
@@ -216,6 +251,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Remove non existing shopping cart item.
+        /// </summary>
         [Test]
         public async Task RemoveCartItem_CartDoesNotContainItem_ShouldReturnUnmodifiedCart()
         {
@@ -244,6 +282,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Add new shopping cart item to existing shopping cart.
+        /// </summary>
         [Test]
         public async Task AddItemToCart_ExistingCartIdStoredInSession_ShouldAddItemToCart()
         {
@@ -276,6 +317,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Add product to shopping cart when no shopping cart is stored in session.
+        /// </summary>
         [Test]
         public async Task AddItemToCart_NoExistingCartIdInSession_ShouldReturnNewCartWithProduct()
         {
@@ -303,6 +347,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Add discount code to existing shopping cart.
+        /// </summary>
         [Test]
         public async Task AddDiscountCode_ExistingCartIdInSession_ShouldAddDiscountCode()
         {
@@ -329,6 +376,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Add invalid discount code to existing shopping cart.
+        /// </summary>
         [Test]
         public async Task AddDiscountCode_NonExistingDiscountCode_ShouldIgnoreDiscountCode()
         {
@@ -353,6 +403,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Add valid discount code to the cart that already contains the same discount code.
+        /// </summary>
         [Test]
         public async Task AddDiscountCode_CartAlreadyContainsAnotherCode_ShouldAddDiscountCode()
         {
@@ -381,6 +434,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Add invalid discount code to shopping cart.
+        /// </summary>
         [Test]
         public async Task AddNonExistingDiscountCode_CartHasAnotherDiscountCode_ShouldIgnoreCode()
         {
@@ -407,6 +463,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Remove valid discount code from existing shopping cart.
+        /// </summary>
         [Test]
         public async Task RemoveExistingDiscountCode_CartContainsDiscountCode_ShouldRemoveCode()
         {
@@ -434,6 +493,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Remove non-existing discount code from shopping cart.
+        /// </summary>
         [Test]
         public async Task RemoveNonExistingDiscountCode_CartContainsAnotherDiscountCode_ShouldIgnoreCode()
         {
@@ -461,6 +523,9 @@ namespace Kentico.Xperience.Shopify.Tests
         }
 
 
+        /// <summary>
+        /// Remove whole shopping cart from session.
+        /// </summary>
         [Test]
         public async Task RemoveCurrentShoppingCart_CartExists_ShouldRemoveCart()
         {

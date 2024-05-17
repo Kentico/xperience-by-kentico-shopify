@@ -40,7 +40,7 @@ public interface IShoppingService
     /// Add discount code to current shopping cart.
     /// </summary>
     /// <param name="discountCode">Discount code.</param>
-    /// <returns></returns>
+    /// <returns><see cref="CartOperationResult"/> with updated shopping cart if operation was successful.</returns>
     Task<CartOperationResult> AddDiscountCode(string discountCode);
 
 
@@ -48,14 +48,13 @@ public interface IShoppingService
     /// Remove discount code from current shopping cart.
     /// </summary>
     /// <param name="discountCode">Discount code.</param>
-    /// <returns></returns>
+    /// <returns><see cref="CartOperationResult"/> with updated shopping cart if operation was successful.</returns>
     Task<CartOperationResult> RemoveDiscountCode(string discountCode);
 
 
     /// <summary>
     /// Remove current shopping cart from cache, session and cookies.
     /// </summary>
-    /// <returns></returns>
     void RemoveCurrentShoppingCart();
 }
 

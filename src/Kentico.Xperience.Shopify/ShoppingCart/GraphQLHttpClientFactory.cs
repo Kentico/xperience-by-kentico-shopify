@@ -13,6 +13,7 @@ namespace Kentico.Xperience.Shopify.ShoppingCart
             httpClient = httpClientFactory.CreateClient(ShopifyConstants.STOREFRONT_API_CLIENT_NAME);
         }
 
+        /// <inheritdoc/>
         public IGraphQLClient CreateGraphQLHttpClient() => new GraphQLHttpClient(new GraphQLHttpClientOptions(), new NewtonsoftJsonSerializer(), httpClient);
     }
 }

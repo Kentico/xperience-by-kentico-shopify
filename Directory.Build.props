@@ -9,8 +9,8 @@
     <VersionSuffix>prerelease-1</VersionSuffix>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <PackageProjectUrl>https://github.com/Kentico/xperience-by-kentico-ecommerce</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/Kentico/xperience-by-kentico-ecommerce/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/Kentico/xperience-by-kentico-shopify</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/Kentico/xperience-by-kentico-shopify/releases</PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>xperience;kentico;aspnetcore;ecommerce</PackageTags>

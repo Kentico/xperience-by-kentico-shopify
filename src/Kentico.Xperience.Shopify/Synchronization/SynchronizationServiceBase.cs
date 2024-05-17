@@ -21,10 +21,10 @@ internal abstract class SynchronizationServiceBase
     /// <summary>
     /// Remove content items from <paramref name="contentItems"/> that are not included in <paramref name="shopifyItems"/>.
     /// </summary>
-    /// <param name="contentItems"></param>
-    /// <param name="shopifyItems"></param>
-    /// <param name="languageName"></param>
-    /// <param name="userID"></param>
+    /// <param name="contentItems">Existing content items.</param>
+    /// <param name="shopifyItems">Items retrieved from Shopify.</param>
+    /// <param name="languageName">Content items language.</param>
+    /// <param name="userID">User ID used to add/modify/delete content items.</param>
     /// <returns>List of deleted ContentItemIDs</returns>
     protected async Task<IEnumerable<int>> DeleteNonExistingItems(IEnumerable<IContentItemBase>? contentItems, IEnumerable<ShopifyObject> shopifyItems, string languageName, int userID)
     {

@@ -10,7 +10,7 @@ namespace Kentico.Xperience.Shopify.Products
         /// <summary>
         /// Get all product collections from Shopify store.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of collections retrieved from Shopify store.</returns>
         Task<IEnumerable<CollectionListingModel>> GetCollectionListing();
     }
 }

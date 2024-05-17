@@ -329,9 +329,9 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
     /// <summary>
     /// Check and log response errors into kentico event log.
     /// </summary>
-    /// <param name="responseErrors"></param>
-    /// <param name="cart"></param>
-    /// <param name="cartUserErrors"></param>
+    /// <param name="responseErrors">Array of errors or NULL if no errors occured.</param>
+    /// <param name="cart">Retrieved shopping cart from response.</param>
+    /// <param name="cartUserErrors">Cart opertaion errors.</param>
     /// <returns>True if no error occured, otherwise false.</returns>
     private bool ResponseIsOk(GraphQLError[]? responseErrors, CartObjectModel? cart, IEnumerable<CartUserError>? cartUserErrors)
     {

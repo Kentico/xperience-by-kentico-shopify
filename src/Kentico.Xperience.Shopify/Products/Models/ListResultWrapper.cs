@@ -2,6 +2,7 @@
 {
     /// <summary>
     /// Generic wrapper class for a list result.
+    /// Wrapper is used for pagination.
     /// </summary>
     /// <typeparam name="T">The type of items in the list.</typeparam>
     public class ListResultWrapper<T>

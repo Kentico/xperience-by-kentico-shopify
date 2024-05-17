@@ -14,7 +14,6 @@ internal interface IProductSynchronizationService
     /// <param name="languageName">Language name</param>
     /// <param name="userID">User ID</param>
     /// <param name="existingProduct">Shopify product equivallent stored as content item</param>
-    /// <returns></returns>
     Task ProcessProduct(Product product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, int userID, ShopifyProductItem? existingProduct);
 
     /// <summary>
@@ -23,8 +22,7 @@ internal interface IProductSynchronizationService
     /// </summary>
     /// <param name="contentItemProducts">Products retrieved from content hub</param>
     /// <param name="shopifyProducts">Products retrieved from Shopify</param>
-    /// <param name="languageName"></param>
-    /// <param name="userID"></param>
-    /// <returns></returns>
+    /// <param name="languageName">Content items language.</param>
+    /// <param name="userID">User ID used to delete content items.</param>
     Task DeleteNonExistingProducts(IEnumerable<ShopifyProductItem> contentItemProducts, IEnumerable<Product> shopifyProducts, string languageName, int userID);
 }

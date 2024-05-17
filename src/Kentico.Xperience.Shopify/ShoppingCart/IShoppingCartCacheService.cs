@@ -15,7 +15,7 @@
         /// </summary>
         /// <param name="cartId">Shopping cart GraphQL ID</param>
         /// <param name="retriveCartFunc">Function to retrieve shopping cart.</param>
-        /// <returns></returns>
+        /// <returns>Current shopping cart or NULL if no shopping cart with given ID exists.</returns>
         Task<ShoppingCartInfo?> LoadAsync(string cartId, Func<string, Task<ShoppingCartInfo?>> retriveCartFunc);
 
 

@@ -28,10 +28,10 @@ namespace Kentico.Xperience.Shopify.Products
         /// In order to return default value, the API call needs to be wrapped
         /// into try catch block.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="func"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Object of this type will be returned.</typeparam>
+        /// <param name="func">Function to be executed inside try catch block.</param>
+        /// <param name="defaultValue">Function to get default value if <see cref="ShopifyHttpException"/> is thrown.</param>
+        /// <returns>Result of <paramref name="func"/> or result of <paramref name="defaultValue"/> if <see cref="ShopifyHttpException"/> is thrown.</returns>
         protected async Task<T> TryCatch<T>(Func<Task<T>> func, Func<T> defaultValue)
         {
             try

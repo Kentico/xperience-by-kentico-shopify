@@ -79,7 +79,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
     /// If value is null or empty, content item with given ID belongs to Shopify product.
     /// </param>
     /// <param name="contentItems">Image content items.</param>
-    /// <returns></returns>
+    /// <returns>Images that should be assigned to particular variants and products.</returns>
     private ImageSynchronizationResult GetSyncResult(Dictionary<int, IEnumerable<string>?> contentItemKvp, IEnumerable<ShopifyImageItem> contentItems)
     {
         var syncResult = new ImageSynchronizationResult();
@@ -105,10 +105,10 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
     /// <summary>
     /// Create new <see cref="ShopifyImageItem"/> items in content hub and appends them into <paramref name="syncResult"/>.
     /// </summary>
-    /// <param name="shopifyImages"></param>
-    /// <param name="languageName"></param>
-    /// <param name="userID"></param>
-    /// <param name="syncResult"></param>
+    /// <param name="shopifyImages">List of retrieved images from Shopify.</param>
+    /// <param name="languageName">Content items language.</param>
+    /// <param name="userID">User ID used to add content items.</param>
+    /// <param name="syncResult">List of variant and product images.</param>
     /// <returns>Created content items.</returns>
     private async Task<IEnumerable<ShopifyImageItem>> CreateNewImages(IEnumerable<ProductImage> shopifyImages, string languageName, int userID, ImageSynchronizationResult syncResult)
     {

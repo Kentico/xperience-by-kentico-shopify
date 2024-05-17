@@ -13,7 +13,7 @@
     <PackageReleaseNotes>https://github.com/Kentico/xperience-by-kentico-shopify/releases</PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>xperience;kentico;aspnetcore;ecommerce</PackageTags>
+    <PackageTags>xperience;kentico;aspnetcore;shopify</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -22,6 +22,8 @@ namespace DancingGoat.Controllers.Shopify
 {
     public class ShopifyShoppingCartController : Controller
     {
+        private const string ERROR_MESSAGES_KEY = "ErrorMessages";
+
         private readonly IShoppingService shoppingService;
         private readonly IShopifyContentItemService contentItemService;
         private readonly IWebPageUrlRetriever webPageUrlRetriever;
@@ -47,7 +49,7 @@ namespace DancingGoat.Controllers.Shopify
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
             ShoppingCartContentViewModel model = null;
-            string[] errorMessages = TempData["ErrorMessages"] as string[] ?? [];
+            string[] errorMessages = TempData[ERROR_MESSAGES_KEY] as string[] ?? [];
             string language = currentLanguageRetriever.Get();
             string storePageUrl = (await webPageUrlRetriever.Retrieve(DancingGoatConstants.STORE_PAGE_PATH, websiteChannelContext.WebsiteChannelName, language)).RelativePath;
             if (cart == null)
@@ -77,9 +79,9 @@ namespace DancingGoat.Controllers.Shopify
         public async Task<IActionResult> Update([FromForm] string variantGraphQLId, [FromForm] int quantity, [FromForm] string cartOperation)
         {
             var country = ShopifySharp.GraphQL.CountryCode.CZ;
-            var operationEnum = Enum.Parse<CartOperation>(cartOperation);
-
-            var result = operationEnum == CartOperation.Remove
+            if (Enum.TryParse<CartOperation>(cartOperation, out var operationEnum))
+            {
+                var result = operationEnum == CartOperation.Remove
                 ? await shoppingService.RemoveCartItem(variantGraphQLId)
                 : await shoppingService.UpdateCartItem(new ShoppingCartItemParameters()
                 {
@@ -88,7 +90,13 @@ namespace DancingGoat.Controllers.Shopify
                     MerchandiseID = variantGraphQLId
                 });
 
-            AddErrorsToTempData(result);
+                AddErrorsToTempData(result);
+            }
+            else
+            {
+                TempData[ERROR_MESSAGES_KEY] = new string[] { $"Invalid operation name {cartOperation}." };
+            }
+
             return Redirect(await GetCartUrl());
         }
 
@@ -134,7 +142,7 @@ namespace DancingGoat.Controllers.Shopify
         {
             if (!result.Success)
             {
-                TempData["ErrorMessages"] = result.ErrorMessages.ToArray();
+                TempData[ERROR_MESSAGES_KEY] = result.ErrorMessages.ToArray();
             }
         }
 

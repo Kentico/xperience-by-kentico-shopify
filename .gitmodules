@@ -1,4 +1,4 @@
 [submodule "submodules/xperience-by-kentico-ecommerce-common"]
 	path = submodules/xperience-by-kentico-ecommerce-common
 	url = https://github.com/Kentico/xperience-by-kentico-ecommerce-common.git
-	branch = feat/ecomm_common_library
+	branch = main

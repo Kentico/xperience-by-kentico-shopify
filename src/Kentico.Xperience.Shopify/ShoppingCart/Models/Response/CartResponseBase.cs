@@ -5,9 +5,3 @@ internal class CartResponseBase
     public IEnumerable<CartUserError>? UserErrors { get; set; }
 }
 
-internal class CartUserError
-{
-    public IEnumerable<string>? Field { get; set; }
-    public string? Message { get; set; }
-}
-

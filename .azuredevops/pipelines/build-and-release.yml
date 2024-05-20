@@ -48,7 +48,7 @@ stages:
             value: Release
 
           - name: slnPath
-            value: src/Kentico.Xperience.K13Ecommerce.Libs.sln
+            value: src/Kentico.Xperience.Shopify.Libs.sln
 
         steps:
           - checkout: self
@@ -86,15 +86,12 @@ stages:
             parameters:
               Configuration: $(Configuration)
               artifacts:
-                - K13Ecommerce:
+                - Shopify:
                   artifactName: "Kentico-Xperience-Shopify"
                   projectPath: "src/Kentico.Xperience.Shopify"
-                - StoreApi:
+                - ShopifyRcl:
                   artifactName: "Kentico-Xperience-Shopify-Rcl"
                   projectPath: "src/Kentico.Xperience.Shopify.Rcl"
-                - StoreRcl:
-                  artifactName: "Kentico-Xperience-Store-Rcl"
-                  projectPath: "src/Kentico.Xperience.Store.Rcl"
 
   - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
       - stage: PublishNuGetPackages

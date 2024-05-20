@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Product>Xperience by Kentico Shopify</Product>
 		<Title>$(Product)</Title>
-		<Description>Xperience By Kentico - Shopify integration</Description>
+		<Description>Xperience by Kentico - Shopify integration</Description>
 		<PackageId>Kentico.Xperience.Shopify</PackageId>
 		<RootNamespace>Kentico.Xperience.Shopify</RootNamespace>
 		<PackageTags>$(PackageTags);dynamics</PackageTags>

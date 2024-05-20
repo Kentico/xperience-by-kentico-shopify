@@ -2,15 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "npm",
-      "script": "install",
-      "path": "examples/DancingGoat-Shopify/Admin/Client",
-      "group": "clean",
-      "problemMatcher": [],
-      "label": "npm: install - examples/DancingGoat-Shopify/Admin/Client",
-      "detail": "install dependencies from package"
-    },
-    {
       "type": "dotnet",
       "task": "build",
       "problemMatcher": ["$msCompile"],
@@ -34,32 +25,6 @@
       "problemMatcher": ["$msCompile"],
       "group": "clean",
       "label": "dotnet: clean"
-    },
-    {
-      "type": "npm",
-      "script": "build",
-      "path": "examples/DancingGoat-Shopify/Admin/Client",
-      "group": "build",
-      "problemMatcher": [],
-      "label": "npm: build - examples/DancingGoat-Shopify/Admin/Client",
-      "detail": "webpack --mode=production"
-    },
-    {
-      "type": "npm",
-      "script": "build:dev",
-      "path": "examples/DancingGoat-Shopify/Admin/Client",
-      "group": "build",
-      "problemMatcher": [],
-      "label": "npm: build:dev - examples/DancingGoat-Shopify/Admin/Client",
-      "detail": "webpack --mode=development"
-    },
-    {
-      "type": "npm",
-      "script": "start",
-      "path": "examples/DancingGoat-Shopify/Admin/Client",
-      "problemMatcher": [],
-      "label": "npm: start - examples/DancingGoat-Shopify/Admin/Client",
-      "detail": "webpack serve --mode development"
     },
     {
       "label": "dotnet: watch DancingGoat",

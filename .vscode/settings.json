@@ -33,8 +33,6 @@
 
   "dotnet.defaultSolution": "Kentico.Xperience.Shopify.sln",
 
-  "eslint.workingDirectories": ["./examples/DancingGoat-Shopify/Admin/Client"],
-
   "files.associations": {
     ".azuredevops/**/*.yml": "azure-pipelines"
   }

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Product>Xperience by Kentico Shopify</Product>
+		<Title>$(Product)</Title>
+		<Description>Xperience By Kentico - Shopify integration</Description>
+		<PackageId>Kentico.Xperience.Shopify</PackageId>
+		<RootNamespace>Kentico.Xperience.Shopify</RootNamespace>
+		<PackageTags>$(PackageTags);dynamics</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="CMS.AssemblyDiscoverableAttribute">
+		</AssemblyAttribute>
+	</ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Kentico.Xperience.Shopify.Tests"/>
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="GraphQL" />
+		<PackageReference Include="GraphQL.Client" />
+		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" />
+		<PackageReference Include="Kentico.Xperience.Admin" />
+		<PackageReference Include="Kentico.Xperience.Core" />
+		<PackageReference Include="ShopifySharp" />
+		<PackageReference Include="ShopifySharp.Extensions.DependencyInjection" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" />
+		<PackageReference Include="System.Linq.Async" />		
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Components\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\submodules\xperience-by-kentico-ecommerce-common\src\Kentico.Xperience.Ecommerce.Common\Kentico.Xperience.Ecommerce.Common.csproj" />
+	</ItemGroup>
+</Project>

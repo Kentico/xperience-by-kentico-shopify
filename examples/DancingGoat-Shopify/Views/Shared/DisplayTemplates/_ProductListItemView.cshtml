@@ -1,0 +1,29 @@
+﻿@using DancingGoat.Models
+
+@model ShopifyProductListItemViewModel
+
+<div class="col-md-4 col-lg-3">
+    <article class="product-tile">
+        <a href="@Model.ProductDetailUrl">
+            <h1 class="product-heading">@Model.ProductName</h1>
+            <figure class="product-tile-image">
+                <img src="@Model.MainImageUrl" alt="@Model.ProductName" title="@Model.ProductName">
+            </figure>
+            <div class="product-tile-info">
+                <span class="product-tile-price">
+                    @if (Model.HasMultipleVariants)
+                    {
+                        <small>@HtmlLocalizer["from"]</small>
+                    }
+                    @Model.Price
+                </span>
+                @if (!string.IsNullOrEmpty(Model.ListPrice) && !Model.HasMultipleVariants)
+                {
+                    <span class="product-tile-list-price">
+                        @Model.ListPrice
+                    </span>
+                }
+            </div>
+        </a>
+    </article>
+</div>

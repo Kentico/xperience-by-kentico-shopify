@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<om.activitytype>
+  <ActivityTypeDisplayName>Purchased product</ActivityTypeDisplayName>
+  <ActivityTypeEnabled>True</ActivityTypeEnabled>
+  <ActivityTypeIsCustom>True</ActivityTypeIsCustom>
+  <ActivityTypeManualCreationAllowed>False</ActivityTypeManualCreationAllowed>
+  <ActivityTypeName>custom_purchasedproduct</ActivityTypeName>
+</om.activitytype>

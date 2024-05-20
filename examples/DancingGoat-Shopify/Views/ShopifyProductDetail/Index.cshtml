@@ -1,0 +1,100 @@
+﻿@using DancingGoat.Models
+
+@model ProductDetailViewModel
+
+@{
+    ViewData["PageClass"] = "inverted no-bg";
+}
+
+<div class="product-detail-wrapper js-productDetail" data-product-id="@Model.ShopifyProductId" data-currency-code="@Model.CurrencyCode" data-selected-variant="@Model.SelectedShopifyVariantId">
+    <article class="product-detail">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-detail-header">
+                    <h2>@Model.ProductName</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="col-lg-7 col-md-6">
+                @foreach (var image in Model.Images)
+                {
+                    <figure class="image">
+                        <img src="@image.ImageUrl" alt="@image.Alt" title="@image.Title" />
+                    </figure>
+                }
+                <div class="description row">
+                    @Html.Raw(Model.DescriptionHTML)
+                </div>
+                <div class="product-detail-properties row">
+                    @if (!string.IsNullOrEmpty(Model.ParametersSection))
+                    {
+                        <h4>@HtmlLocalizer["Parameters"]</h4>
+                        @Html.Raw(Model.ParametersSection)
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-5 product-detail-right col-md-offset-1 col-lg-offset-1 js-cartSection hidden">
+                <div class="product-price">
+                    <div class="cart-item-selector-container">
+                        <div class="stock-container">
+                            <span id="stockMessage" class="stock"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="price-details">
+                            <div class="row discount-price hidden">
+                                <div class="col-xs-6">List price</div>
+                                <div id="js-listPrice" class="col-xs-6"></div>
+                            </div>
+                        </div>
+                        @using (Html.BeginForm("AddToCart"))
+                        {
+                            @Html.HiddenFor(m => m.CountryCode)
+                            @Html.HiddenFor(m => m.SelectedVariantMerchandiseID, new { @class = "js-merchandiseId" })
+                            <div class="cart-item-selector form-horizontal">
+                                <div class="form-group @(Model.Variants.Count() == 1 ? "hidden" : string.Empty)">
+                                    <div class="editing-form-label-cell option-category-name control-label">
+                                        <label>@HtmlLocalizer["Package"]</label>
+                                    </div>
+                                    @Html.DropDownList("SelectedVariant", Model.Variants, null, new { @class = "js-variantSelector" })
+                                </div>
+                            </div>
+                            <div class="total-price-container row">
+                                <span class="total-price-label">@HtmlLocalizer["Price"]</span>
+                                <span id="js-price" class="total-price"></span>
+                            </div>
+                            <div class="add-to-cart-container">
+                                <label class="units-label">@HtmlLocalizer["Qty"]</label>
+                                @Html.EditorFor(m => m.VariantQuantity, new { htmlAttributes = new { @class = "add-to-cart-textbox", @min = "1" } })
+                                <button type="submit" name="cartOperation" value="Add" class="js-addToCartBtn btn btn-default">@HtmlLocalizer["Add to cart"]</button>
+                            </div>
+                            <div>
+                                <button type="submit" name="cartOperation" value="Remove" class="js-removeFromCartBtn btn-link">@HtmlLocalizer["Remove from cart"]</button>
+                            </div>
+                        }
+                        <br />
+                        <span>@HtmlLocalizer["Currently"] <strong class="js-cartItemQuantity">@Model.VariantQuantity</strong> @HtmlLocalizer["items in cart"]</span>
+                        @if (Model.ErrorMessages.Any())
+                        {
+                            @foreach (var error in Model.ErrorMessages)
+                            {
+                                <div class="error-label">
+                                    @error
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+    <div class="clear"></div>
+</div> 
+
+@section scripts 
+{
+    <script type="text/javascript" src="~/Scripts/productDetail.js" ></script>  
+}

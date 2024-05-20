@@ -31,11 +31,7 @@
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
 
-  "dotnet.defaultSolution": "Kentico.Xperience.RepoTemplate.sln",
-
-  "eslint.workingDirectories": [
-    "./src/Kentico.Xperience.RepoTemplate/Admin/Client"
-  ],
+  "dotnet.defaultSolution": "Kentico.Xperience.Shopify.sln",
 
   "files.associations": {
     ".azuredevops/**/*.yml": "azure-pipelines"

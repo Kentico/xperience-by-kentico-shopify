@@ -8,10 +8,10 @@
       "name": ".NET Core Launch (web)",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Kentico.Xperience.RepoTemplate.Sample/bin/Debug/net6.0/DancingGoat.dll",
+      "preLaunchTask": "dotnet: build",
+      "program": "${workspaceFolder}/examples/DancingGoat-Shopify/bin/Debug/net8.0/DancingGoat.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Kentico.Xperience.RepoTemplate.Sample",
+      "cwd": "${workspaceFolder}/examples/DancingGoat-Shopify",
       "stopAtEntry": false,
       "serverReadyAction": {
         "action": "openExternally",
@@ -21,7 +21,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "sourceFileMap": {
-        "/Views": "${workspaceFolder}/Views"
+        "/Views": "${workspaceFolder}/examples/DancingGoat-Shopify/Views"
       }
     },
     {

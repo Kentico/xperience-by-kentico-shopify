@@ -16,7 +16,7 @@ This integration connects your Shopify store with the Xperience by Kentico appli
 
 ## Library Version Matrix
 
-Summary of libraries which are supported by the following versions Xperince by Kentico / Kentico Xperience 13
+Summary of libraries which are supported by the following versions Xperince by Kentico
 
 ### Shopify integration
 

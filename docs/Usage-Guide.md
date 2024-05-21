@@ -92,19 +92,20 @@ Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impos
 6. In the `Apps and sales channels` install the Headless channel from the [Shopify App Store](https://apps.shopify.com/headless).
 7. In the Headless channel app, create new Storefront. After that, storefront `Private access token` should be available.
 
-### XByK set up
-1.  (optional)Setup your own settings to connect your Shopify instance. Use API tokens generated in the [generating shopify API credentials](#generating-shopify-api-credentials) section.
+### Xperience by Kentico set up
+1. Fill settings to connect your Shopify instance(this step can be skipped if the settings will be filled directly in the Xperience by Kentico administration)
 ```json
 {  
   "CMSShopifyConfig": {
-    "ShopifyUrl": "https://quickstart-xxxxxxxxxx.myshopify.com/",
+    "ShopifyUrl": "https://your-shopify-store-url.com/",
     "AdminApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "StorefrontApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "StorefrontApiVersion": "YYYY-MM"
   }
 }
 ```
-
+Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
+If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
 **Setting description**
 | Setting              | Description                                                                      |
 | -------------------- | -------------------------------------------------------------------------------- |
@@ -131,9 +132,8 @@ app.UseSession();
 dotnet run --no-build --kxp-ci-restore
 ```
 5.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
-6. Start your livesite
-7. If `CMSShopifyConfig` is not filled in the step 1, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets, as shown in Step 1.
-8. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+6. Start your Xperience project.
+7. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
 
 
 ### Dancing Goat example - setup

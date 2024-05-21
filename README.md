@@ -48,6 +48,7 @@ dotnet add package Kentico.Xperience.Shopify.Rcl
 }
 ```
 Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
+If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
 5. Add library to the application services
 ```csharp
 // Program.cs
@@ -73,8 +74,7 @@ This will restore following items:
 - Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
 8.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
 9. Start your livesite
-10. If `CMSShopifyConfig` is not filled in the step 2, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets, as shown in Step 1.
-11. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+10. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
 ## Full Instructions
 
 View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.

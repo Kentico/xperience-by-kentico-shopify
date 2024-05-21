@@ -15,12 +15,11 @@ Shopify API can return maximum of 250 items in one API request. For larger numbe
 
 
 ### Shopify products synchronization
-Synchronization running in background thread worker periodically and is implemented  in `ShopifySynchronizationWorker` class. It runs every 15 minutes but this can be changed by modifying `_defaultInterval` property. The time between executions needs to be in milliseconds. All synchronization items are stored as content items:
+Synchronization running in background thread worker periodically and is implemented  in [ShopifySynchronizationWorker.cs](../src/Kentico.Xperience.Shopify/Synchronization/ShopifySynchronizationWorker.cs) class. It runs every 15 minutes but this can be changed by modifying `_defaultInterval` property of the `ShopifySynchronizationWorker` class. The time between executions needs to be specified in milliseconds. To change interfal between synchronizations, change value of this property. All synchronization items are stored as content items:
 - `Shopify Image`: image asset that belongs either to product or product variant
 - `Shopify Product Variant`: representation of product variant containing the title, SKU number, weight and collection of `Shopify Image` content items related to this product variant.
 - `Shopify Product`: the product itself containing title, description, collection of related images as `Shopify Image` content items and list of `Shopify Product Variant` content items. This content type also includes field Product parameters that editors can modify and it won't be overwritten by synchronization.
-
-Price data and product availibility is not synchronized. These values are always retrieved directly from Shopify.
+Note: Price data and product availibility is not synchronized. These values are always retrieved directly from Shopify using Admin REST API everytime product detail page is loaded.
 
 It is not recommended to update any fields of these content items as it will be always overwritten when the synchronization is executed.
 

@@ -73,14 +73,16 @@ This script will redirect the user to the Xperience by Kentico Thank you page af
 - `Product added to shopping cart`
 ```csharp
 // Log product was added to shopping cart.
-activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, oldQuantity - cartItemToUpdate.Quantity);
+// Old quantity was higher than new quantity.
+activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, newQuantity - cartItemToUpdate.Quantity);
 ```
 - `Product removed from shopping cart`
 ```csharp
 // Log product was removed from shopping cart.
-activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, cartItemToUpdate.Quantity - oldQuantity);
+// Old quantity was lower than new quantity
+activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, cartItemToUpdate.Quantity - newQuantity);
 ```
-- `Product purchased` and `Made a purchase`
+- `Product purchased` and `Made a purchase` after new order was created
 ```csharp
 // Log purchase activity and purchased products after order was created.
 activityLogger.LogPurchaseActivity(order.TotalPriceSet.PresentmentMoney.Amount, order.Id, order.PresentmentCurrency);
@@ -89,6 +91,7 @@ foreach (var lineItem in cart.Items)
 	activityLogger.LogPurchasedProductActivity(lineItem);
 }
 ```
+More examples can be found in [ShoppingService.cs](./src/Kentico.Xperience.Shopify/ShoppingCart/ShoppingService.cs) and [ShopifyThankYouController.cs](.examples/DancingGoat-Shopify/Controllers/Shopify/ShopifyThankYouController.cs).
 
 #### Limitations
 Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impossible to use.

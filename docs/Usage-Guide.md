@@ -19,13 +19,14 @@ Synchronization running in background thread worker periodically and is implemen
 - `Shopify Image`: image asset that belongs either to product or product variant
 - `Shopify Product Variant`: representation of product variant containing the title, SKU number, weight and collection of `Shopify Image` content items related to this product variant.
 - `Shopify Product`: the product itself containing title, description, collection of related images as `Shopify Image` content items and list of `Shopify Product Variant` content items. This content type also includes field Product parameters that editors can modify and it won't be overwritten by synchronization.
-Note: Price data and product availibility is not synchronized. These values are always retrieved directly from Shopify using Admin REST API everytime product detail page is loaded.
-
+Note: Price data and product availability is not synchronized since these values are changed very often and it is necessary to have them up to date. These values are always retrieved directly from Shopify using Admin REST API everytime product detail page is loaded.
 It is not recommended to update any fields of these content items as it will be always overwritten when the synchronization is executed.
 
 #### Limitations
 Currently products are synchronized only in default content culture.
 
+### Benefits of products synchronization
+Constantly querying all product data directly from Shopify can lead to performance bottlenecks, especially when there is a large product catalog. Synchronizing the data to Xperience by Kentico application reduces the load on Shopify's API and improves the overall performance of the application. Having products stored as content items allows to create additional properties without modifying the products in Shopify.
 
 ### E-commerce Integration Overview
 E-commerce integration is implemented via `IShoppingService` interface, that provides methods for all e-commerce actions(for example updating shopping cart items). Each action is then sent to Shopify using [GraphQL Storefront API](https://shopify.dev/docs/api/storefront).

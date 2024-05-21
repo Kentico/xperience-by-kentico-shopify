@@ -29,7 +29,7 @@ Currently products are synchronized only in default content culture.
 
 
 ### E-commerce Integration Overview
-E-commerce integration is implemented via `IShoppingService` interface, that provides methods for all e-commerce actions. Each action is then sent to Shopify using GraphQL Storefront API.
+E-commerce integration is implemented via `IShoppingService` interface, that provides methods for all e-commerce actions(for example updating shopping cart items). Each action is then sent to Shopify using [GraphQL Storefront API](https://shopify.dev/docs/api/storefront).
 
 #### Shopping Cart Management
 When a user adds their first item to the shopping cart, a shopping cart instance is created. Each shopping cart is assigned a unique identifier known as the `CartId`. This `CartId` is generated within Shopify upon cart creation. To maintain session persistence, the `CartId` is stored both in cookies and the HTTP session, utilizing the key `CMSShoppingCart`. 

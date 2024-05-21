@@ -91,7 +91,7 @@ foreach (var lineItem in cart.Items)
 	activityLogger.LogPurchasedProductActivity(lineItem);
 }
 ```
-More examples can be found in [ShoppingService.cs](./src/Kentico.Xperience.Shopify/ShoppingCart/ShoppingService.cs) and [ShopifyThankYouController.cs](.examples/DancingGoat-Shopify/Controllers/Shopify/ShopifyThankYouController.cs).
+More examples can be found in [ShoppingService.cs](~/src/Kentico.Xperience.Shopify/ShoppingCart/ShoppingService.cs) and [ShopifyThankYouController.cs](~/examples/DancingGoat-Shopify/Controllers/Shopify/ShopifyThankYouController.cs).
 
 #### Limitations
 Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impossible to use.

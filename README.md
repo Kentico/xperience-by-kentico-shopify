@@ -74,10 +74,14 @@ This will restore following items:
 - Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
 8.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
 9. Start your livesite
-10. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+10. Add currency formats in the [Shopify configuration module](#shopify-configuration-module). It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
 ## Full Instructions
 
 View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
+
+## Shopify configuration module
+In this module, administrators can set Shopify API credentials and add currency formats. If Shopify API credentials are filled both in this module and JSON settings(appsettings.json/user secrets), values from JSON settings will be used.
+![Shopify integration module overview](./images/screenshots/shopify_integration_module.jpg "Shopify integration module overview")
 
 ## Codebase overview
 Repository contains solution with Xperience by Kentico integration to Shopify. It shows the connection to the Shopify headless API and shows the implementation of a simple e-shop on Xperience by Kentico (extended Dancing Goat sample site). The solution consists of these parts:

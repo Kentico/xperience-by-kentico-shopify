@@ -39,7 +39,7 @@ The `IShoppingService` interface supports the following cart operations:
 - Add/remove discount code
 - Get current shopping cart
 
-#### E-commerce page types
+#### E-commerce content types
 - `Shopify.StorePage`: The main page showcasing a list of product categories.
 - `Shopify.CategoryPage`: Dedicated pages for specific product categories.
 - `Shopify.ProductDetailPage`: Each product listed in the store has its own detail page. This page is then linked to category page(one product can be in multiple categories).
@@ -91,42 +91,6 @@ Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impos
 	- Add following Admin API access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`.
 6. In the `Apps and sales channels` install the Headless channel from the [Shopify App Store](https://apps.shopify.com/headless).
 7. In the Headless channel app, create new Storefront. After that, storefront `Private access token` should be available.
-
-### Xperience by Kentico set up
-1. Fill settings to connect your Shopify instance(this step can be skipped if the settings will be filled directly in the Xperience by Kentico administration)
-```json
-{  
-  "CMSShopifyConfig": {
-    "ShopifyUrl": "https://your-shopify-store-url.com/",
-    "AdminApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "StorefrontApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "StorefrontApiVersion": "YYYY-MM"
-  }
-}
-```
-If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
-2. Add library to the application services.
-```csharp
-// Program.cs
-
-// Registers Shopify services
-builder.Services.RegisterShopifyServices(builder.Configuration);
-```
-3. Enable session state for the application
-```csharp
-// Program.cs
-
-// Enable session state for appliation
-app.UseSession();
-```
-4. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
-```powershell
-dotnet run --no-build --kxp-ci-restore
-```
-5.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
-6. Start your Xperience project.
-7. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
-
 
 ### Dancing Goat example - setup
 1. Go to `./examples/DancingGoat-Shopify` folder and run CI restore for content types, product related pages and shopping cart page

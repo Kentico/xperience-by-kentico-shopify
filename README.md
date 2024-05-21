@@ -29,14 +29,15 @@ Summary of libraries which are supported by the following versions Xperince by K
 - [Xperience by Kentico](https://docs.kentico.com/changelog)
 
 ## Quick Start
-1. Install Headless channel into the Shopify store and [create storefront](https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/getting-started) and redeem private Storefront API token.
-2. Create [custom application](https://help.shopify.com/en/manual/apps/app-types/custom-apps#create-and-install-a-custom-app) in the Shopify administration and redeem Admin API access token. Set following access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`
-3. Add these packages to your Xperience by Kentico application using the .NET CLI
+1. Redeem API access tokens(more details in [Usage-Guide.md](./docs/Usage-Guide.md#generating-shopify-api-credentials)).
+- Install Headless channel into the Shopify store and [create storefront](https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/getting-started) and redeem private Storefront API token.
+- Create [custom application](https://help.shopify.com/en/manual/apps/app-types/custom-apps#create-and-install-a-custom-app) in the Shopify administration and redeem Admin API access token. Set following access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`
+2. Add these packages to your Xperience by Kentico application using the .NET CLI
 ```powershell
 dotnet add package Kentico.Xperience.Shopify
 dotnet add package Kentico.Xperience.Shopify.Rcl
 ```
-4. Fill settings to connect your Shopify instance(this step can be skipped if the settings will be filled directly in the Xperience by Kentico administration)
+3. Fill settings to connect your Shopify instance(this step can be skipped if the settings will be filled directly in the Xperience by Kentico administration)
 ```json
 {  
   "CMSShopifyConfig": {
@@ -47,8 +48,6 @@ dotnet add package Kentico.Xperience.Shopify.Rcl
   }
 }
 ```
-Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
-If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
 **Setting description**
 | Setting              | Description                                                                      |
 | -------------------- | -------------------------------------------------------------------------------- |
@@ -56,21 +55,24 @@ If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience b
 | AdminApiToken        | Access token for the Admin API calls                                             |
 | StorefrontApiToken   | Access token for the Storefront API calls                                        |
 | StorefrontApiVersion | Storefront API version that will be used in API calls. Must be in format YYYY-MM |
-5. Add library to the application services
+
+Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
+If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to [Shopify configuration module](#shopify-configuration-module) in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
+4. Add library to the application services
 ```csharp
 // Program.cs
 
 // Registers Shopify services
 builder.Services.RegisterShopifyServices(builder.Configuration);
 ```
-6. Enable session state for the application
+5. Enable session state for the application
 ```csharp
 // Program.cs
 
 // Enable session state for appliation
 app.UseSession();
 ```
-7. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
+6. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
 ```powershell
 dotnet run --no-build --kxp-ci-restore
 ```
@@ -79,9 +81,9 @@ This will restore following items:
 - Content types: Shopify product, Shopify Product Variant, Shopify Image.
 - Shopify integration module for setting API credentials and adding currency codes.
 - Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
-8.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
-9. Start your livesite
-10. Add currency formats in the [Shopify configuration module](#shopify-configuration-module). It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+7.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
+8. Start your livesite
+9. Add currency formats in the [Shopify configuration module](#shopify-configuration-module). It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
 ## Full Instructions
 
 View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.

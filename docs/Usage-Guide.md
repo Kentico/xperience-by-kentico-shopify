@@ -36,7 +36,7 @@ When a user adds their first item to the shopping cart, a shopping cart instance
 
 The `IShoppingService` interface supports the following cart operations:
 - Add/update/remove cart items
-- Add/remove discount code
+- Add/remove discount code(works with all discount types)
 - Get current shopping cart
 
 #### E-commerce content types
@@ -66,14 +66,29 @@ The next step from shopping cart preview page(`Shopify.ShoppingCartPage`) is red
         }, redirectionDelay);
 </script>
 ```
-This script will redirect the user to the XByK thank you page after 5 seconds. You can adjust the timespan and URL by modifying the `redirectionDelay` and `thankYouPageUrl` constants, respectively. The redirection will occur exclusively from the Shopify thank you page, ensuring users can still check their order status in the future. Query parameter `sourceId` is then used to retrieve created order, update XByK contact information based on the order information and log purchase activity.
+This script will redirect the user to the Xperience by Kentico Thank you page after 5 seconds. You can adjust the timespan and URL by modifying the `redirectionDelay` and `thankYouPageUrl` constants, respectively. The redirection will occur exclusively from the Shopify thank you page, ensuring users can still check their order status in the future. Query parameter `sourceId` is then used to retrieve created order, update XByK contact information based on the order information and log purchase activity.
 
 ### E-commerce activity tracking
 `IEcommerceActivityLogger` interface provides tracking of these e-commerce activities:
 - `Product added to shopping cart`
+```csharp
+// Log product was added to shopping cart.
+activityLogger.LogProductAddedToShoppingCartActivity(cartItemToUpdate, oldQuantity - cartItemToUpdate.Quantity);
+```
 - `Product removed from shopping cart`
-- `Product purchased`
-- `Made a purchase`
+```csharp
+// Log product was removed from shopping cart.
+activityLogger.LogProductRemovedFromShoppingCartActivity(cartItemToUpdate, cartItemToUpdate.Quantity - oldQuantity);
+```
+- `Product purchased` and `Made a purchase`
+```csharp
+// Log purchase activity and purchased products after order was created.
+activityLogger.LogPurchaseActivity(order.TotalPriceSet.PresentmentMoney.Amount, order.Id, order.PresentmentCurrency);
+foreach (var lineItem in cart.Items)
+{
+	activityLogger.LogPurchasedProductActivity(lineItem);
+}
+```
 
 #### Limitations
 Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impossible to use.
@@ -83,7 +98,7 @@ Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impos
 
 ### Generating shopify API credentials
 1. Log in to your shopify store administration.
-2. Go to `Settings` ->`Apps and sales channels`.
+2. Go to `Settings` -> `Apps and sales channels`.
 3. Click on `Develop apps`.
 4. Click on `Create an app` and fill the app name.
 5. Configure Admin API scopes.

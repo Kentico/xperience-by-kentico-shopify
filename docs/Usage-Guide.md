@@ -104,15 +104,7 @@ Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impos
   }
 }
 ```
-Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
 If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
-**Setting description**
-| Setting              | Description                                                                      |
-| -------------------- | -------------------------------------------------------------------------------- |
-| ShopifyUrl           | URL of the Shopify store                                                         |
-| AdminApiToken        | Access token for the Admin API calls                                             |
-| StorefrontApiToken   | Access token for the Storefront API calls                                        |
-| StorefrontApiVersion | Storefront API version that will be used in API calls. Must be in format YYYY-MM |
 2. Add library to the application services.
 ```csharp
 // Program.cs

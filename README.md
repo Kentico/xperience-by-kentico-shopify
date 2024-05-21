@@ -49,6 +49,13 @@ dotnet add package Kentico.Xperience.Shopify.Rcl
 ```
 Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
 If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
+**Setting description**
+| Setting              | Description                                                                      |
+| -------------------- | -------------------------------------------------------------------------------- |
+| ShopifyUrl           | URL of the Shopify store                                                         |
+| AdminApiToken        | Access token for the Admin API calls                                             |
+| StorefrontApiToken   | Access token for the Storefront API calls                                        |
+| StorefrontApiVersion | Storefront API version that will be used in API calls. Must be in format YYYY-MM |
 5. Add library to the application services
 ```csharp
 // Program.cs
@@ -80,7 +87,7 @@ This will restore following items:
 View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
 
 ## Shopify configuration module
-In this module, administrators can set Shopify API credentials and add currency formats. If Shopify API credentials are filled both in this module and JSON settings(appsettings.json/user secrets), values from JSON settings will be used.
+In this module, administrators can set Shopify API credentials and add currency formats. If Shopify API credentials are filled both in this module and JSON settings(appsettings.json/user secrets), values from JSON settings will be used. Module can be found under the `Configuration` category.
 ![Shopify integration module overview](./images/screenshots/shopify_integration_module.jpg "Shopify integration module overview")
 
 ## Codebase overview

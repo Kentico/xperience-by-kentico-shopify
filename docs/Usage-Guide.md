@@ -40,11 +40,11 @@ The `IShoppingService` interface supports the following cart operations:
 - Get current shopping cart
 
 #### E-commerce content types
-- `Shopify.StorePage`: The main page showcasing a list of product categories.
-- `Shopify.CategoryPage`: Dedicated pages for specific product categories.
-- `Shopify.ProductDetailPage`: Each product listed in the store has its own detail page. This page is then linked to category page(one product can be in multiple categories).
+- `Shopify.ProductDetailPage`: Each product content item that is listed in the store has its own detail page. This page can be then linked to category page(one product can be in multiple categories). Related product content item is defined in `Related product` field.
+- `Shopify.CategoryPage`: Dedicated pages for specific product categories. Page displays list of products that are assigned to this category. Product can be added into category using `Products` field of the category page.
+- `Shopify.StorePage`: The main page showcasing a list of product categories and preselected products. Page displays list of all the child category pages and also preselected products marked as Bestsellers and Hot tips(if any selected).
 - `Shopify.ShoppingCartPage`: A preview page displaying the contents of the shopping cart, providing users with an overview of their selected items before proceeding to checkout. Users are also able to modify shopping cart items and add or remove coupon codes from shopping cart.
-- `Shopify.ThankYouPage`: Upon successful completion of an order, users are redirected to the thank-you page.
+- `Shopify.ThankYouPage`: Upon successful completion of an order, users are redirected to the thank-you page. This page is used for tracking purchase custom activities.
 
 
 #### Checkout

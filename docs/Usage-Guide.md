@@ -8,7 +8,7 @@ Main part of the integration is in `Kentico.Xperience.Shopify` class library. Fo
 Class library consists of 3 main parts - Product listing widget, Shopify products synchronization and the e-commerce integration.
 
 ### Product listing widget
-Product listing widget is standalone widget that displays Shopify products using the Admin REST API. Products displayed in this widget can be filtered by collection(Shopify equivalent to product category). Widget properties also contain currency selector and maximum number of retrieved products. Each product has a button that will redirect user to the product detail page on the Shopify store website.
+Product listing widget is standalone widget that displays Shopify products using the Admin REST API. This widget requires only to have Shopify configuration set up in `appsettings.json`,`user secrets` or `Shopify configuration module`(no products need to be synchronized). Everything is loaded directly from the Shopify store. Products displayed in this widget can be filtered by collection(Shopify equivalent to product category). Widget properties also contain currency selector and maximum number of retrieved products. Each product has a button that will redirect user to the product detail page on the Shopify store website.
 
 #### Limitations
 Shopify API can return maximum of 250 items in one API request. For larger number of products, pagination needs to be implemented.
@@ -94,8 +94,8 @@ foreach (var lineItem in cart.Items)
 More examples can be found in [ShoppingService.cs](../src/Kentico.Xperience.Shopify/ShoppingCart/ShoppingService.cs) and [ShopifyThankYouController.cs](../examples/DancingGoat-Shopify/Controllers/Shopify/ShopifyThankYouController.cs).
 
 #### Limitations
-Since Shopify identifiers are using `long` data type,  `ActivityItemID` is impossible to use.
-
+Since Shopify identifiers are using `long` data type, `ActivityItemID` is impossible to use. The activity itself is tracked correctly but any tracking or analytics features that rely on `ActivityItemID` will not work as expected.
+If storing `ActivityItemID` value is necessary, there can be implemented generation of a custom identifier within the Xperience by Kentico application that maps to the Shopify long identifier. Then, this custom identifier could be used as `ActivityItemID`.
 
 ## Setup
 

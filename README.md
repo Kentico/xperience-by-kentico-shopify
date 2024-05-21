@@ -18,26 +18,23 @@ This integration connects your Shopify store with the Xperience by Kentico appli
 
 Summary of libraries which are supported by the following versions Xperince by Kentico
 
-| Library                            | Xperience Version | Library Version |
-|----------------------------------- |-------------------| --------------- |
-| Kentico.Xperience.Ecommerce.Common | \>= 28.2.1        | 1.0.0           |
-| Kentico.Xperience.Shopify          | \>= 29.0.2        | 1.0.0           |
-| Kentico.Xperience.Shopify.Rcl      | \>= 29.0.2        | 1.0.0           |
+| Library                            | Xperience by Kentico Version | Library Version |
+|----------------------------------- |------------------------------| --------------- |
+| Kentico.Xperience.Ecommerce.Common | \>= 29.0.1                   | 1.0.0           |
+| Kentico.Xperience.Shopify          | \>= 29.0.2                   | 1.0.0           |
+| Kentico.Xperience.Shopify.Rcl      | \>= 29.0.2                   | 1.0.0           |
 
 ### Dependencies
 - [ASP.NET Core 8.0](https://dotnet.microsoft.com/en-us/download)
-- [Xperience by Kentico](https://docs.xperience.io/xp/changelog)
+- [Xperience by Kentico](https://docs.kentico.com/changelog)
 
-## Package Installation
-Add these packages to your XbyK application using the .NET CLI
-
+## Quick Start
+1. Add these packages to your Xperience by Kentico application using the .NET CLI
 ```powershell
 dotnet add package Kentico.Xperience.Shopify
 dotnet add package Kentico.Xperience.Shopify.Rcl
 ```
-
-## Quick Start
-1. Fill settings to connect your Shopify instance(optional)
+2. Fill settings to connect your Shopify instance(this step can be skipped if the settings will be filled directly in the Xperience by Kentico administration)
 ```json
 {  
   "CMSShopifyConfig": {
@@ -48,34 +45,34 @@ dotnet add package Kentico.Xperience.Shopify.Rcl
   }
 }
 ```
-2. Add library to the application services
+3. Add library to the application services
 ```csharp
 // Program.cs
 
 // Registers Shopify services
 builder.Services.RegisterShopifyServices(builder.Configuration);
 ```
-3. Enable session state for the application
+4. Enable session state for the application
 ```csharp
 // Program.cs
 
 // Enable session state for appliation
 app.UseSession();
 ```
-4. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
+5. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
 ```powershell
 dotnet run --no-build --kxp-ci-restore
 ```
-5.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
-6. Start your livesite
-7. If `CMSShopifyConfig` is not filled in the step 1, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets, as shown in Step 1.
-8. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+6.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
+7. Start your livesite
+8. If `CMSShopifyConfig` is not filled in the step 2, go to Shopify configuration module in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets, as shown in Step 1.
+9. Add currency formats in the Shopify configuration module. It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
 ## Full Instructions
 
 View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
 
 ## Codebase overview
-Repository contains solution with Xperience By Kentico integration to Shopify. It shows the connection to the Shopify headless API and shows the implementation of a simple e-shop on XByK (extended Dancing Goat sample site). The solution consists of these parts:
+Repository contains solution with Xperience by Kentico integration to Shopify. It shows the connection to the Shopify headless API and shows the implementation of a simple e-shop on Xperience by Kentico (extended Dancing Goat sample site). The solution consists of these parts:
 - Kentico.Xperience.Shopify - class library that contains all services necessary for this integration.
 - Kentico.Xperience.Shopify.Rcl - razor class library for selector components(used in standalone product listing widget).
 - DancingGoat - Sample Dancing Goat site.

@@ -12,6 +12,8 @@ Repository contains solution with Xperience By Kentico integration to Shopify. I
 ## Screenshots
 
 ![Products in content hub](./images/screenshots/products_content_hub.jpg "Products in content hub")
+![Product detail page](./images/screenshots/product_detail_page.png "Product detail page")
+![Shopping cart page](./images/screenshots/shopping_cart_page.png "Shopping cart page")
 
 ## Library Version Matrix
 

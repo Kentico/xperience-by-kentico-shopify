@@ -45,6 +45,7 @@ dotnet add package Kentico.Xperience.Shopify.Rcl
   }
 }
 ```
+Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
 3. Add library to the application services
 ```csharp
 // Program.cs

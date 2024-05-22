@@ -23,7 +23,7 @@ Note: Price data and product availability is not synchronized since these values
 It is not recommended to update any fields of these content items as it will be always overwritten when the synchronization is executed.
 
 #### Limitations
-Currently products are synchronized only in default content culture.
+Currently, product synchronization creates content items (products, variants, images) only in english culture. Multicultural synchronization is not implemented.
 
 ### Benefits of products synchronization
 Constantly querying all product data directly from Shopify can lead to performance bottlenecks, especially when there is a large product catalog. Synchronizing the data to Xperience by Kentico application reduces the load on Shopify's API and improves the overall performance of the application. Having products stored as content items allows to create additional properties without modifying the products in Shopify.
@@ -35,9 +35,9 @@ E-commerce integration is implemented via `IShoppingService` interface, that pro
 When a user adds their first item to the shopping cart, a shopping cart instance is created. Each shopping cart is assigned a unique identifier known as the `CartId`. This `CartId` is generated within Shopify upon cart creation. To maintain session persistence, the `CartId` is stored both in cookies and the HTTP session, utilizing the key `CMSShoppingCart`. 
 
 The `IShoppingService` interface supports the following cart operations:
-- Add/update/remove cart items
-- Add/remove discount code(works with all discount types)
-- Get current shopping cart
+- Add/update/remove cart items(example in the [ShopifyShoppingCartController](../examples/DancingGoat-Shopify/Controllers/Shopify/ShopifyShoppingCartController.cs) method `Update` and in the [ShopifyProductDetailController](../examples/DancingGoat-Shopify/Controllers/Shopify/ShopifyProductDetailController.cs) method `Index` for HTTP POST request)
+- Add/remove discount code. This operation works with all discount types(example in the [ShopifyShoppingCartController](../examples/DancingGoat-Shopify/Controllers/Shopify/ShopifyShoppingCartController.cs) methods`AddDiscountCode` and `RemoveDiscountCode`.
+- Get current shopping cart(example in [ShopifyCartViewComponent](../examples/DancingGoat-Shopify/Components/ViewComponents/ShopifyCart/ShopifyCartViewComponent.cs) method `InvokeAsync`)
 
 #### E-commerce content types
 - `Shopify.ProductDetailPage`: Each product content item that is listed in the store has its own detail page. This page can be then linked to category page(one product can be in multiple categories). Related product content item is defined in `Related product` field.

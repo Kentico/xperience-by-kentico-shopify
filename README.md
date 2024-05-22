@@ -81,8 +81,10 @@ This will restore following items:
 - Content types used for [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization): Shopify product, Shopify Product Variant, Shopify Image(more info in [Usage-Guide.md](./docs/Usage-Guide.md#e-commerce-content-types).
 - [Shopify integration module](#shopify-configuration-module) for setting API credentials and adding currency codes.
 - Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
+
 This CI repository does not contain any other objects than objects related to Shopify integration so it can be merged into already existing CI repository. 
-Using CD is not recommended for restoring `Product detail` pages and content items that were created by [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization). This is because the `Shopify product` content item is connected to `Product detail page`. Therefore, both `Product detail page` and `Shopify product` content item will be restored. However, the synchronization already created the same `Shopify product` content item, using CD restore will result in duplicate `Shopify product` content items.
+Using CD is not recommended for restoring `Product detail` pages and content items that were created by [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization). This is because the `Shopify product` content item is connected to Product detail page. Therefore, both Product detail page and Shopify product content item will be restored. However, the synchronization already created the same Shopify product content item, using CD restore will result in duplicate Shopify product content items.
+
 7.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](./examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
 8. Start your livesite
 9. Add currency formats in the [Shopify configuration module](#shopify-configuration-module). It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).

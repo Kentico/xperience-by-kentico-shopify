@@ -77,9 +77,9 @@ app.UseSession();
 dotnet run --no-build --kxp-ci-restore
 ```
 This will restore following items:
-- Page types: Thank you page, Shopping cart page, Shopify product detail page, Store page, Shopify category page.
-- Content types: Shopify product, Shopify Product Variant, Shopify Image.
-- Shopify integration module for setting API credentials and adding currency codes.
+- Page content types: Thank you page, Shopping cart page, Shopify product detail page, Store page, Shopify category page(more info in [Usage-Guide.md](./docs/Usage-Guide.md#e-commerce-content-types).
+- Content types used for [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization): Shopify product, Shopify Product Variant, Shopify Image(more info in [Usage-Guide.md](./docs/Usage-Guide.md#e-commerce-content-types).
+- [Shopify integration module](#shopify-configuration-module) for setting API credentials and adding currency codes.
 - Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
 7.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](https://github.com/Kentico/xperience-by-kentico-shopify/blob/feat/XbyK_Shopify_integration/examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
 8. Start your livesite

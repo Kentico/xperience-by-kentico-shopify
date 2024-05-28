@@ -8,6 +8,9 @@ This integration connects your Shopify store with the Xperience by Kentico appli
 - Manage discount coupons.
 - Proceed to checkout directly on the Shopify store page.
 
+### Limitations
+**Shopify API can return maximum of 250 items in one API request**. For larger number of products, pagination needs to be implemented. More info can be found in the [Usage-Guide.md](./docs/Usage-Guide.md#limitations).
+
 ## Screenshots
 
 ![Products in content hub](./images/screenshots/products_content_hub.jpg "Products in content hub")

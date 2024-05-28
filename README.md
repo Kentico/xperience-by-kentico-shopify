@@ -1,9 +1,9 @@
-# Xperiene by Kentico Shopify integration
+# Xperience by Kentico Shopify integration
 
 [![Kentico Labs](https://img.shields.io/badge/Kentico_Labs-grey?labelColor=orange&logo=data:image/svg+xml;base64,PHN2ZyBjbGFzcz0ic3ZnLWljb24iIHN0eWxlPSJ3aWR0aDogMWVtOyBoZWlnaHQ6IDFlbTt2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO2ZpbGw6IGN1cnJlbnRDb2xvcjtvdmVyZmxvdzogaGlkZGVuOyIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik05NTYuMjg4IDgwNC40OEw2NDAgMjc3LjQ0VjY0aDMyYzE3LjYgMCAzMi0xNC40IDMyLTMycy0xNC40LTMyLTMyLTMyaC0zMjBjLTE3LjYgMC0zMiAxNC40LTMyIDMyczE0LjQgMzIgMzIgMzJIMzg0djIxMy40NEw2Ny43MTIgODA0LjQ4Qy00LjczNiA5MjUuMTg0IDUxLjIgMTAyNCAxOTIgMTAyNGg2NDBjMTQwLjggMCAxOTYuNzM2LTk4Ljc1MiAxMjQuMjg4LTIxOS41MnpNMjQxLjAyNCA2NDBMNDQ4IDI5NS4wNFY2NGgxMjh2MjMxLjA0TDc4Mi45NzYgNjQwSDI0MS4wMjR6IiAgLz48L3N2Zz4=)](https://github.com/Kentico/.github/blob/main/SUPPORT.md#labs-limited-support) [![CI: Build and Test](https://github.com/Kentico/xperience-by-kentico-shopify/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Kentico/xperience-by-kentico-shopify/actions/workflows/ci.yml)
 
 ## Description
-This integration connects your Shopify store with the Xperience by Kentico application using Shopify Storefront and Admin APIs. It provides synchronization of products and e-commerce actions between the two platforms. Implemented features provide users with:
+This integration connects your Shopify store with the Xperience by Kentico application using [Shopify Storefront](https://shopify.dev/docs/api/storefront) and [Shopify Admin](https://shopify.dev/docs/api/admin) APIs. It provides synchronization of products and e-commerce actions between the two platforms. Implemented features provide users with the options to:
 - Add, update and remove products in the shopping cart.
 - Manage discount coupons.
 - Proceed to checkout directly on the Shopify store page.
@@ -11,12 +11,14 @@ This integration connects your Shopify store with the Xperience by Kentico appli
 ## Screenshots
 
 ![Products in content hub](./images/screenshots/products_content_hub.jpg "Products in content hub")
+&nbsp;
 ![Product detail page](./images/screenshots/product_detail_page.png "Product detail page")
+&nbsp;
 ![Shopping cart page](./images/screenshots/shopping_cart_page.png "Shopping cart page")
 
 ## Library Version Matrix
 
-Summary of libraries which are supported by the following versions Xperince by Kentico
+Summary of libraries (NuGet packages) used by this integration and their Xperience by Kentico version requirements. To use this integration, your Xperience project must be upgraded to at least the highest version listed.
 
 | Library                            | Xperience by Kentico Version | Library Version |
 |----------------------------------- |------------------------------| --------------- |
@@ -29,71 +31,79 @@ Summary of libraries which are supported by the following versions Xperince by K
 - [Xperience by Kentico](https://docs.kentico.com/changelog)
 
 ## Quick Start
-1. Redeem API access tokens(more details in [Usage-Guide.md](./docs/Usage-Guide.md#generating-shopify-api-credentials)).
-- Install Headless channel into the Shopify store and [create storefront](https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/getting-started) and redeem private Storefront API token.
-- Create [custom application](https://help.shopify.com/en/manual/apps/app-types/custom-apps#create-and-install-a-custom-app) in the Shopify administration and redeem Admin API access token. Set following access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`
-2. Add these packages to your Xperience by Kentico application using the .NET CLI
-```powershell
-dotnet add package Kentico.Xperience.Shopify
-dotnet add package Kentico.Xperience.Shopify.Rcl
-```
-3. Fill settings to connect your Shopify instance(this step can be skipped if the settings will be filled directly in the Xperience by Kentico administration)
-```json
-{  
-  "CMSShopifyConfig": {
-    "ShopifyUrl": "https://your-shopify-store-url.com/",
-    "AdminApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "StorefrontApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "StorefrontApiVersion": "YYYY-MM"
-  }
-}
-```
-**Setting description**
-| Setting              | Description                                                                      |
-| -------------------- | -------------------------------------------------------------------------------- |
-| ShopifyUrl           | URL of the Shopify store                                                         |
-| AdminApiToken        | Access token for the Admin API calls                                             |
-| StorefrontApiToken   | Access token for the Storefront API calls                                        |
-| StorefrontApiVersion | Storefront API version that will be used in API calls. Must be in format YYYY-MM |
+1. Generate Shopify API access tokens (see [Generating Shopify API credentials](./docs/Usage-Guide.md#generating-shopify-api-credentials) for details).
+	- [Install](https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/getting-started) the [Headless channel](https://shopify.dev/docs/custom-storefronts/getting-started/build-options#the-headless-channel) into your Shopify admin. During the installation, select **Create storefront** and [generate a private Storefront API token](https://shopify.dev/docs/api/usage/authentication#getting-started-with-private-access).
+	- Install a [custom application](https://help.shopify.com/en/manual/apps/app-types/custom-apps#create-and-install-a-custom-app) into your Shopify admin and generate a Shopify Admin API access token. Set following access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`.
 
-Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
-If `CMSShopifyConfig` is not filled, it is possible to set it in the Xperience by Kentico administration. To use this method, go to [Shopify configuration module](#shopify-configuration-module) in Xperience by Kentico admin page and fill the credentials. Note that this method should only be used for development purposes. It is recommended to fill in the credentials using User Secrets.
-4. Add library to the application services
-```csharp
-// Program.cs
+2. Add these packages to your Xperience by Kentico application using the .NET CLI.
+	```powershell
+	dotnet add package Kentico.Xperience.Shopify
+	dotnet add package Kentico.Xperience.Shopify.Rcl
+	```
 
-// Registers Shopify services
-builder.Services.RegisterShopifyServices(builder.Configuration);
-```
-5. Enable session state for the application
-```csharp
-// Program.cs
+3. Configure your Xperience application to connect to your Shopify instance via the `CMSShopifyConfig` object. For development purposes, you can also configure these settings directly in the Xperience by Kentico administration via the **Shopify integration** application.
+	```json
+	{  
+	  "CMSShopifyConfig": {
+		"ShopifyUrl": "https://your-shopify-store-url.com/",
+		"AdminApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+		"StorefrontApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+		"StorefrontApiVersion": "YYYY-MM"
+	  }
+	}
+	```
+	**Setting description**
+	| Setting              | Description                                                                           |
+	| -------------------- | ------------------------------------------------------------------------------------- |
+	| ShopifyUrl           | URL of the Shopify store                                                              |
+	| AdminApiToken        | Access token for the Admin API calls                                                  |
+	| StorefrontApiToken   | Access token for the Storefront API calls                                             |
+	| StorefrontApiVersion | Storefront API version that will be used in API calls. Must use the format: `YYYY-MM` |
 
-// Enable session state for appliation
-app.UseSession();
-```
-6. Restore CI repository files to database (reusable content types, custom activities). CI files are located in  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`  and copy these files to your application.
-```powershell
-dotnet run --no-build --kxp-ci-restore
-```
-This will restore following items:
-- Page content types: Thank you page, Shopping cart page, Shopify product detail page, Store page, Shopify category page(more info in [Usage-Guide.md](./docs/Usage-Guide.md#e-commerce-content-types).
-- Content types used for [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization): Shopify product, Shopify Product Variant, Shopify Image(more info in [Usage-Guide.md](./docs/Usage-Guide.md#e-commerce-content-types).
-- [Shopify integration module](#shopify-configuration-module) for setting API credentials and adding currency codes.
-- Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
+	Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).
+	
+	You can also configure the integration via the [Shopify integration](#shopify-configuration-module) application in the Xperience admin UI. However, note that this approach should only be used for development purposes. For the production, use one of the recommended [configuration methods](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration).
 
-This CI repository does not contain any other objects than objects related to Shopify integration so it can be merged into already existing CI repository. 
-Using CD is not recommended for restoring `Product detail` pages and content items that were created by [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization). This is because the `Shopify product` content item is connected to Product detail page. Therefore, both Product detail page and Shopify product content item will be restored. However, the synchronization already created the same Shopify product content item, using CD restore will result in duplicate Shopify product content items.
+4. Add services provided by the integration to the service container.
+	```csharp
+	// Program.cs
 
-7.  Copy product listing widget from Dancing Goat example project to your project. Sample widget is located in  [here](./examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
-8. Start your livesite
-9. Add currency formats in the [Shopify configuration module](#shopify-configuration-module). It is recommended to use [custom numberic format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+	// Registers Shopify services
+	builder.Services.RegisterShopifyServices(builder.Configuration);
+	```
+
+5. Enable session state for the application.
+	```csharp
+	// Program.cs
+
+	// Enable session state for appliation
+	app.UseSession();
+	```
+
+6. Add Xperience objects used by the integration to your project using [Continuous Integration](https://docs.kentico.com/x/FAKQC). The integration's CI files are located under  `.\examples\DancingGoat-Shopify\App_Data\CIRepository\`. This CI repository does not contain any other objects than objects related to Shopify integration so it can be merged into your existing CI repository. Copy these files to your Continuous Integration repository and run:
+	```powershell
+	dotnet run --no-build --kxp-ci-restore
+	```
+	The command restores the following objects:
+		- Page content types: Thank you page, Shopping cart page, Shopify product detail page, Store page, Shopify category page(more info in [Usage-Guide.md](./docs/Usage-Guide.md#e-commerce-content-types).
+		- Content types used for [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization): Shopify product, Shopify Product Variant, Shopify Image(more info in [Usage-Guide.md](./docs/Usage-Guide.md#e-commerce-content-types).
+		- [Shopify integration module](#shopify-configuration-module) for setting API credentials and adding currency codes.
+		- Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
+
+	Using CD is not recommended for restoring `Product detail` pages and content items that were created by [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization). This is because the `Shopify product` content item is connected to Product detail page. Therefore, both Product detail page and Shopify product content item will be restored. However, the synchronization already created the same Shopify product content item, using CD restore will result in duplicate Shopify product content items.
+
+7. The integration uses a **Products** [Page Builder](https://docs.kentico.com/x/6QWiCQ) widget to display products from your Shopify store. Since Page Builder widgets cannot be distributed as part of NuGet packages, you must copy the **Products** widget implementation from the example project in this repository to your project. The widget implementation is located in [this folder](./examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
+
+8. Run your Xperience application (e.g., `using dotnet run`).
+
+9. In the Xperience admin UI, open the [Shopify integration](#shopify-configuration-module) application and on the **Shopify currencies formats** tab and add the required currencies for your store. For currency codes, use the values from [CurrencyCodeEnum](https://shopify.dev/docs/api/storefront/2024-01/enums/CurrencyCode). To format the output, we recommend using [custom numeric format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
+
 ## Full Instructions
 
 View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
 
 ## Shopify configuration module
-In this module, administrators can set Shopify API credentials and add currency formats. If Shopify API credentials are filled both in this module and JSON settings(appsettings.json/user secrets), values from JSON settings will be used. Module can be found under the `Configuration` category.
+The integration adds a new **Shopify integration** application to the admin UI. Using the application, administrators can set Shopify API credentials and add currency formats. If Shopify API credentials are provided both via this application and configuration providers (e.g., appsettings.json), values from the configuration will take precedence. The application is located under the `Configuration` category.
 ![Shopify integration module overview](./images/screenshots/shopify_integration_module.jpg "Shopify integration module overview")
 
 ## Codebase overview

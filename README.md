@@ -93,7 +93,13 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
 		- [Shopify integration module](#shopify-configuration-module) for setting API credentials and adding currency codes.
 		- Custom activities: Product added to shopping cart, Product removed from shopping cart, Purchase, Purchased product.
 
-	Using CD is not recommended for restoring `Product detail` pages and content items that were created by [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization). This is because the `Shopify product` content item is connected to Product detail page. Therefore, both Product detail page and Shopify product content item will be restored. However, the synchronization already created the same Shopify product content item, using CD restore will result in duplicate Shopify product content items.
+	Using CD is not recommended for restoring `Product detail`, `Category`, `Store` pages and content items that were created by [synchronization with Shopify](./docs/Usage-Guide.md#shopify-products-synchronization). This is because the `Shopify product` content item is connected to Product detail page. Therefore, both Product detail page and Shopify product content item will be restored. However, the synchronization already created the same Shopify product content item, using CD restore will result in duplicate Shopify product content items. To filter these objects from continuous deployment, add following rule into `repository.config`:
+	```xml
+	 <!-- Insert this part into RepositoryConfiguration -->
+	<ObjectFilters>
+		<ExcludedCodeNames>Shopify.Image;Shopify.StorePage;Shopify.Product;Shopify.ProductDetailPage;Shopify.ProductVariant;Shopify.CategoryPage</ExcludedCodeNames>
+	</ObjectFilters>
+	```
 
 7. The integration uses a **Products** [Page Builder](https://docs.kentico.com/x/6QWiCQ) widget to display products from your Shopify store. Since Page Builder widgets cannot be distributed as part of NuGet packages, you must copy the **Products** widget implementation from the example project in this repository to your project. The widget implementation is located in [this folder](./examples/DancingGoat-Shopify/Components/Widgets/Shopify/ProductListWidget).
 

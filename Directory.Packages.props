@@ -15,8 +15,8 @@
     <PackageVersion Include="kentico.xperience.imageprocessing" Version="29.0.2" />
     <PackageVersion Include="Kentico.Xperience.Core" Version="29.0.2" />
     <PackageVersion Include="Moq.AutoMock" Version="3.5.0" />
-    <PackageVersion Include="ShopifySharp" Version="6.13.0" />
-    <PackageVersion Include="ShopifySharp.Extensions.DependencyInjection" Version="1.4.0" />
+    <PackageVersion Include="ShopifySharp" Version="6.17.0" />
+    <PackageVersion Include="ShopifySharp.Extensions.DependencyInjection" Version="1.6.0" />
     <PackageVersion Include="Microsoft.Extensions.ApiDescription.Client" Version="7.0.2" />
     <PackageVersion Include="NSwag.ApiDescription.Client" Version="13.18.2" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.17.0.82934" />

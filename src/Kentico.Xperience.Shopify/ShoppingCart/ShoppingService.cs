@@ -36,10 +36,14 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
     {
         var cart = await GetCurrentShoppingCart();
 
-        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.ShopifyCartItemId == parameters.MerchandiseID);
+        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.VariantGraphQLId == parameters.MerchandiseID);
         if (cart == null || cartItemToUpdate == null)
         {
             return await AddItemToCart(parameters);
+        }
+        if (cartItemToUpdate.Quantity == parameters.Quantity)
+        {
+            return new CartOperationResult(cart, true);
         }
 
         int quantity = Math.Max(parameters.Quantity, 0);

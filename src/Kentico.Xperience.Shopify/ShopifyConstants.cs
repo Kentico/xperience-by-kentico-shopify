@@ -21,5 +21,11 @@
         /// The default name for product variants.
         /// </summary>
         public const string DEFAULT_VARIANT_NAME = "default title";
+
+
+        /// <summary>
+        /// The name of the header where buyer IP address should be added.
+        /// </summary>
+        public const string STOREFRONT_API_BUYER_IP_NAME = "Shopify-Storefront-Buyer-IP";
     }
 }

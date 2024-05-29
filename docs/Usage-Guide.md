@@ -22,7 +22,7 @@ Note: Price data and product availability are not synchronized since these value
 With the exception of the `product parameters` field of the "Shopify Product" content type, we don't recommend updating or modifying the values of any fields in the synchronized content items. The Shopify synchronization procedure overrides all fields in existing content items when it is executed.
 
 #### Limitations
-Currently, product synchronization creates content items (products, variants, images) only in english language. Multicultural synchronization is not implemented.
+Currently, product synchronization creates content items (products, variants, images) only in English language. Multicultural synchronization is not implemented. If the English language is not registered in the [Languages](https://docs.kentico.com/x/OxT_Cw) application, synchronization won't work.
 
 ### Benefits of products synchronization
 Constantly querying all product data directly from Shopify can lead to performance bottlenecks, especially when there is a large product catalog. Synchronizing the data to Xperience by Kentico application reduces the load on Shopify's API and improves the application's overall performance.

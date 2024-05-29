@@ -4,7 +4,7 @@
 2. [Shopify integration setup](#setup)
 
 ## Shopify integration
-Main part of the integration is in `Kentico.Xperience.Shopify` class library. For the communication between Shopify and XByK, GraphQL Storefront API and REST Admin API is used. For the REST Admin API communication,  [ShopifySharp](https://www.nuget.org/packages/ShopifySharp/) NuGet package is used as it provides all the necessary methods used in this integration. All the available Shopify APIs are documented [here](https://shopify.dev/docs/api).
+For the communication between Shopify and XByK, GraphQL Storefront API and REST Admin API is used. For the REST Admin API communication,  [ShopifySharp](https://www.nuget.org/packages/ShopifySharp/) NuGet package is used as it provides all the necessary methods used in this integration. All the available Shopify APIs are documented [here](https://shopify.dev/docs/api).
 Class library consists of 2 main parts - Shopify products synchronization and the e-commerce integration. In this repository, there is also an example of standalone product listing widget.
 
 ### Product listing widget

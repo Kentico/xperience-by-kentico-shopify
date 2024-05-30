@@ -18,7 +18,7 @@ namespace Kentico.Xperience.Shopify.Tests
     public class ShoppingServiceTests
     {
         private readonly AutoMocker mocker;
-        private ShoppingCartRepository CartRepository { get; set; }
+        private IShoppingCartRepository CartRepository { get; set; }
         private DiscountCodesRepository DiscountCodesRepository { get; set; }
 
 
@@ -37,7 +37,6 @@ namespace Kentico.Xperience.Shopify.Tests
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            mocker.Setup<IGraphQLHttpClientFactory, IGraphQLClient>(c => c.CreateGraphQLHttpClient()).Returns(new GraphQLHttpClientMock());
             mocker.Use<IShoppingCartCacheService>(new ShoppingCartCacheServiceMock());
             mocker.Use<IEcommerceActivityLogger>(new EcommerceActivityLoggerMock());
         }
@@ -52,6 +51,8 @@ namespace Kentico.Xperience.Shopify.Tests
         {
             CartRepository = new ShoppingCartRepository();
             DiscountCodesRepository = new DiscountCodesRepository();
+            mocker.Use(CartRepository);
+            mocker.Setup<IGraphQLHttpClientFactory, IGraphQLClient>(c => c.CreateGraphQLHttpClient()).Returns(new GraphQLHttpClientMock(CartRepository));
         }
 
 
@@ -115,7 +116,7 @@ namespace Kentico.Xperience.Shopify.Tests
             {
                 Country = CountryCode.CZ,
                 Quantity = -1,
-                MerchandiseID = itemToUpdate.ShopifyCartItemId
+                ShoppingCartItemID = itemToUpdate.ShopifyCartItemId
             })).Cart;
 
             Assert.Multiple(() =>
@@ -208,7 +209,7 @@ namespace Kentico.Xperience.Shopify.Tests
             {
                 Country = CountryCode.CZ,
                 Quantity = newQuantity,
-                MerchandiseID = itemToUpdate.ShopifyCartItemId
+                ShoppingCartItemID = itemToUpdate.ShopifyCartItemId
             })).Cart;
 
             Assert.Multiple(() =>
@@ -237,7 +238,7 @@ namespace Kentico.Xperience.Shopify.Tests
             var cartItemsList = shoppingCart.Items.ToList();
             var itemToRemove = cartItemsList[0];
 
-            var retrievedCart = (await shoppingService.RemoveCartItem(itemToRemove.VariantGraphQLId)).Cart;
+            var retrievedCart = (await shoppingService.RemoveCartItem(itemToRemove.ShopifyCartItemId)).Cart;
             cartItemsList.Remove(itemToRemove);
 
             Assert.Multiple(() =>
@@ -247,6 +248,32 @@ namespace Kentico.Xperience.Shopify.Tests
                 var retrievedCartItems = retrievedCart!.Items.ToList();
                 Assert.That(retrievedCartItems, Has.Count.EqualTo(cartItemsList.Count));
                 Assert.That(retrievedCartItems.Exists(x => x.ShopifyCartItemId == itemToRemove.ShopifyCartItemId), Is.False);
+            });
+        }
+
+
+        /// <summary>
+        /// Remove cart items with the same product variant GraphQL ID.
+        /// </summary>
+        [Test]
+        public async Task RemoveCartProductVariant_CartContainsVariant_ShouldRemoveCartItem()
+        {
+            var shoppingCart = new ShoppingCartInfo(CartRepository.CartWithSameProductVariant);
+            SetHttpContext(shoppingCart);
+            var shoppingService = mocker.CreateInstance<ShoppingService>();
+            var cartItemsList = shoppingCart.Items.ToList();
+            var duplicitItem = cartItemsList[0];
+
+            var retrievedCart = (await shoppingService.RemoveProductVariantFromCart(duplicitItem.VariantGraphQLId)).Cart;
+            cartItemsList.RemoveAll(x => x.VariantGraphQLId == duplicitItem.VariantGraphQLId);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(retrievedCart, Is.Not.Null);
+
+                var retrievedCartItems = retrievedCart!.Items.ToList();
+                Assert.That(retrievedCartItems, Has.Count.EqualTo(cartItemsList.Count));
+                Assert.That(retrievedCartItems.Exists(x => x.VariantGraphQLId == duplicitItem.VariantGraphQLId), Is.False);
             });
         }
 

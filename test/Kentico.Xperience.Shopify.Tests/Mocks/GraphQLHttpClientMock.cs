@@ -9,12 +9,13 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
 {
     internal class GraphQLHttpClientMock : IGraphQLClient
     {
-        private ShoppingCartRepository CartRepository => new();
+        private readonly IShoppingCartRepository cartRepository;
+
         private DiscountCodesRepository DiscountCodesRepository => new();
 
-        public GraphQLHttpClientMock()
+        public GraphQLHttpClientMock(IShoppingCartRepository cartRepository)
         {
-
+            this.cartRepository = cartRepository;
         }
 
         public IObservable<GraphQLResponse<TResponse>> CreateSubscriptionStream<TResponse>(GraphQLRequest request) => throw new NotImplementedException();
@@ -60,7 +61,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
             string[]? discountCodes = request.GetProperty<string[]>("discountCodes");
 
             var availableDiscountCodes = DiscountCodesRepository.DiscountCodes;
-            var cart = CartRepository.Carts.FirstOrDefault(x => x.Id == cartId);
+            var cart = cartRepository.Carts.FirstOrDefault(x => x.Id == cartId);
 
             if (cart != null && discountCodes != null)
             {
@@ -83,7 +84,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
 
         private CreateCartResponse HandleCreateCart(GraphQLRequest request)
         {
-            var cart = CartRepository.Carts.First();
+            var cart = cartRepository.Carts.First();
             var createCartParams = request.GetProperty<CreateCartParameters>("CartInput");
 
             if (cart.Lines?.Edges is not null && createCartParams?.Lines is not null)
@@ -131,7 +132,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
                 CartLinesUpdate = new CartResponseBase()
                 {
                     UserErrors = [],
-                    Cart = CartRepository.Carts.First()
+                    Cart = cartRepository.Carts.First()
                 }
             };
             var cartLines = cartResponse.CartLinesUpdate.Cart.Lines?.Edges;
@@ -159,7 +160,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
         {
             string? cartId = request.GetProperty("cartId")?.ToString();
 
-            var cart = CartRepository.Carts.FirstOrDefault(x => x.Id == cartId);
+            var cart = cartRepository.Carts.FirstOrDefault(x => x.Id == cartId);
             if (cart?.Id is null || cartId is null || cart.Id != cartId)
             {
                 return null;
@@ -176,7 +177,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
             string? cartId = request.GetProperty("CartId")?.ToString();
             string[]? cartLinesToRemove = (string[]?)Convert.ChangeType(request.GetProperty("LineIds"), typeof(string[]));
 
-            var cart = CartRepository.Carts.FirstOrDefault(cart => cart.Id == cartId);
+            var cart = cartRepository.Carts.FirstOrDefault(cart => cart.Id == cartId);
 
             var updatedCartLines = cart?.Lines?.Edges.Where(x => !cartLinesToRemove?.Contains(x.Node.Id) ?? false) ?? [];
             if (cart?.Lines is not null)
@@ -231,7 +232,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
                 }
             };
 
-            var cart = CartRepository.Carts.FirstOrDefault(cart => cart.Id == cartId);
+            var cart = cartRepository.Carts.FirstOrDefault(cart => cart.Id == cartId);
             var updatedCartLines = cart?.Lines?.Edges.Append(newLineItem) ?? [];
             if (cart?.Lines is not null)
             {

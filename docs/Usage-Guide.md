@@ -111,7 +111,7 @@ If storing `ActivityItemID` value is necessary, there can be implemented generat
 4. Click on `Create an app` and fill the app name.
 5. Configure Admin API scopes.
 	- Go to the `Configuration` tab.
-	- Add the following Shopify Admin API access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`.
+	- Add the following Shopify Admin API access scopes: `read_product_listings`, `read_products`, `read_inventory`, `read_orders`, `read_draft_orders`.
 6. In the `Apps and sales channels` install the Headless channel from the [Shopify App Store](https://apps.shopify.com/headless).
 7. In the Headless channel app, create new Storefront. After that, storefront `Private access token` should be available.
 

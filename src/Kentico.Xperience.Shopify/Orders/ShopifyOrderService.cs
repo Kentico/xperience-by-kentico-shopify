@@ -37,7 +37,7 @@ namespace Kentico.Xperience.Shopify.Orders
 
             var result = await orderService.ListAsync(filter);
 
-            return result.Items.FirstOrDefault(x => x.SourceIdentifier == sourceId);
+            return result.Items.FirstOrDefault(x => x.SourceIdentifier.Equals(sourceId, StringComparison.Ordinal));
         }
     }
 }

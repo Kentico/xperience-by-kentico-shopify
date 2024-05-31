@@ -36,7 +36,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
     {
         var cart = await GetCurrentShoppingCart();
 
-        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.ShopifyCartItemId == parameters.ShoppingCartItemID);
+        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.ShopifyCartItemId.Equals(parameters.ShoppingCartItemID, StringComparison.Ordinal));
         if (cart == null || cartItemToUpdate == null)
         {
             return await AddItemToCart(parameters);
@@ -74,7 +74,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, true);
         }
 
-        var shopifyCartLines = cart.Items.Where(x => x.VariantGraphQLId == variantGraphQLId);
+        var shopifyCartLines = cart.Items.Where(x => x.VariantGraphQLId.Equals(variantGraphQLId, StringComparison.Ordinal));
         bool success = true;
         CartOperationResult? result = null;
 
@@ -105,7 +105,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, true);
         }
 
-        var shopifyCartLine = cart.Items.FirstOrDefault(x => x.ShopifyCartItemId == cartItemId);
+        var shopifyCartLine = cart.Items.FirstOrDefault(x => x.ShopifyCartItemId.Equals(cartItemId, StringComparison.Ordinal));
         if (shopifyCartLine == null)
         {
             return new CartOperationResult(cart, true);

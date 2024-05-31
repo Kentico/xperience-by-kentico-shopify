@@ -77,6 +77,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
         var shopifyCartLines = cart.Items.Where(x => x.VariantGraphQLId == variantGraphQLId);
         bool success = true;
         CartOperationResult? result = null;
+
         foreach (var shopifyCartLine in shopifyCartLines)
         {
             result = await RemoveCartItem(shopifyCartLine.ShopifyCartItemId);
@@ -86,7 +87,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             }
         }
 
-        // There was no cart item with givent variant graphQL ID
+        // There was no cart item with given variant graphQL ID
         if (result == null)
         {
             return new CartOperationResult(cart, success);
@@ -200,7 +201,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
                 StoreCartToCookiesAndSession(cart.CartId);
             }
 
-            var addedItem = cart.Items.FirstOrDefault(x => x.VariantGraphQLId == parameters.MerchandiseID);
+            var addedItem = cart.Items.FirstOrDefault(x => x.VariantGraphQLId.Equals(parameters.MerchandiseID));
             activityLogger.LogProductAddedToShoppingCartActivity(addedItem, parameters.Quantity);
         }
         return result;

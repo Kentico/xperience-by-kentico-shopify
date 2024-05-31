@@ -14,11 +14,19 @@ public interface IShoppingService
 
 
     /// <summary>
+    /// Remove all shopping cart items of specific product variant.
+    /// </summary>
+    /// <param name="variantGraphQLId">Product variant graphQL ID.</param>
+    /// <returns><see cref="CartOperationResult"/> with updated shopping cart if operation was successful.</returns>
+    Task<CartOperationResult> RemoveProductVariantFromCart(string variantGraphQLId);
+
+
+    /// <summary>
     /// Remove shopping cart item.
     /// </summary>
-    /// <param name="merchandiseId">Shopify product variant ID</param>
+    /// <param name="cartItemId">Shopify shopping cart item ID</param>
     /// <returns><see cref="CartOperationResult"/> with updated shopping cart if operation was successful.</returns>
-    Task<CartOperationResult> RemoveCartItem(string merchandiseId);
+    Task<CartOperationResult> RemoveCartItem(string cartItemId);
 
 
     /// <summary>

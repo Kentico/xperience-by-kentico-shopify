@@ -74,7 +74,7 @@ public class ShopifyProductDetailController : Controller
             };
 
             var result = cartOperation == CartOperation.Remove
-                ? await shoppingService.RemoveCartItem(cartItemParams.MerchandiseID)
+                ? await shoppingService.RemoveProductVariantFromCart(cartItemParams.MerchandiseID)
                 : await shoppingService.AddItemToCart(cartItemParams);
 
             TempData[ERROR_MESSAGES_KEY] = result.ErrorMessages.ToArray();

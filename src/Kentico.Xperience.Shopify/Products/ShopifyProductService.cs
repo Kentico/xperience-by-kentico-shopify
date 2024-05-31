@@ -90,7 +90,7 @@ namespace Kentico.Xperience.Shopify.Products
             {
                 foreach (var variant in variants.Values)
                 {
-                    var cartItem = cart.Items.FirstOrDefault(x => x.VariantGraphQLId == variant.MerchandiseID);
+                    var cartItem = cart.Items.FirstOrDefault(x => x.VariantGraphQLId.Equals(variant.MerchandiseID, StringComparison.Ordinal));
                     variant.ItemsInCart = cartItem?.Quantity ?? 0;
                 }
             }
@@ -163,7 +163,7 @@ namespace Kentico.Xperience.Shopify.Products
             if (variants.Count() == 1)
             {
                 var onlyVariant = variants.First();
-                var currencyPrice = onlyVariant.PresentmentPrices?.FirstOrDefault(x => x.Price.CurrencyCode == currency);
+                var currencyPrice = onlyVariant.PresentmentPrices?.FirstOrDefault(x => x.Price.CurrencyCode.Equals(currency, StringComparison.Ordinal));
 
                 return currencyPrice is { Price: not null } ?
                     (currencyPrice.Price.Amount, currencyPrice.CompareAtPrice?.Amount) : (null, null);
@@ -173,7 +173,7 @@ namespace Kentico.Xperience.Shopify.Products
 
             foreach (var variant in variants)
             {
-                var currencyPrice = variant.PresentmentPrices?.FirstOrDefault(x => x.Price.CurrencyCode == currency);
+                var currencyPrice = variant.PresentmentPrices?.FirstOrDefault(x => x.Price.CurrencyCode.Equals(currency, StringComparison.Ordinal));
 
                 if (currencyPrice?.Price.Amount != null)
                 {

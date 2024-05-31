@@ -20,6 +20,13 @@ namespace Kentico.Xperience.Shopify.ShoppingCart
 
 
         /// <summary>
+        /// ID of the shopping cart item if item was already in shopping cart.
+        /// If the cart item is new, the value will be empty string.
+        /// </summary>
+        public string ShoppingCartItemID { get; set; } = string.Empty;
+
+
+        /// <summary>
         /// Country code for the item.
         /// </summary>
         public CountryCode Country { get; set; }

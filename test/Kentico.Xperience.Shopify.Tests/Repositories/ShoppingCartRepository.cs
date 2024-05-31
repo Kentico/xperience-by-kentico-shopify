@@ -1,19 +1,24 @@
 ﻿using Kentico.Xperience.Shopify.ShoppingCart;
 using Kentico.Xperience.Shopify.ShoppingCart.GraphQLModels;
+
 using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify.Tests.Repositories
 {
-    internal class ShoppingCartRepository
+    internal class ShoppingCartRepository : IShoppingCartRepository
     {
         private readonly DiscountCodesRepository discountCodesRepository = new();
 
         public IEnumerable<CartObjectModel> Carts { get; set; }
 
-        public CartObjectModel CartWithDiscountCode => GenerateCartWithDiscountCodes();
+        public CartObjectModel CartWithDiscountCode { get; set; }
+
+        public CartObjectModel CartWithSameProductVariant { get; set; }
 
         public ShoppingCartRepository()
         {
+            CartWithDiscountCode = GenerateCartWithDiscountCodes();
+            CartWithSameProductVariant = GenerateCartWithSameProductVariant();
             Carts =
             [
                 GenerateCart1(),
@@ -21,10 +26,55 @@ namespace Kentico.Xperience.Shopify.Tests.Repositories
                 GenerateCart3(),
                 GenerateCart4(),
                 GenerateCartWithoutLines(),
-                GenerateCartWithDiscountCodes()
+                GenerateCartWithDiscountCodes(),
+                GenerateCartWithSameProductVariant()
             ];
         }
 
+        private CartObjectModel GenerateCartWithSameProductVariant()
+        {
+            // Create VariantProduct instances
+            var product1 = new VariantProduct { Title = "Panama Los Lajones Honey" };
+            var product2 = new VariantProduct { Title = "Kenya Gakuyuni AA" };
+
+            // Create Merchandise instances
+            var merchandise1 = new Merchandise { Id = "gid://shopify/ProductVariant/47401942581544", Title = "2 lb", Product = product1 };
+            var merchandise2 = new Merchandise { Id = "gid://shopify/ProductVariant/47401957785896", Title = "Default Title", Product = product2 };
+
+            // Create CartCost instances
+            var totalAmount1 = new PriceDto { Amount = 3267.0m, CurrencyCode = CurrencyCode.CZK };
+            var totalAmount2 = new PriceDto { Amount = 1272.0m, CurrencyCode = CurrencyCode.CZK };
+            var subtotalAmount = new PriceDto { Amount = 4539.0m, CurrencyCode = CurrencyCode.CZK };
+
+            var cost1 = new CartCost { TotalAmount = totalAmount1 };
+            var cost2 = new CartCost { TotalAmount = totalAmount2 };
+
+            // Create CartLineNode instances
+            var node1 = new CartLineNode { Id = "gid://shopify/CartLine/244da069-6219-4943-8741-a0c8690d461c?cart=Z2NwLXVzLWVhc3QxOjAxSFM5NUFDWUI4OTQ0N05HUVdKU0hXVFlN", Quantity = 3, Cost = cost1, Merchandise = merchandise1 };
+            var node2 = new CartLineNode { Id = "gid://shopify/CartLine/efb4b873-08b8-48dc-94d4-b026fdebfa07?cart=Z2NwLXVzLWVhc3QxOjAxSFM5NUFDWUI4OTQ0N05HUVdKU0hXVFlN", Quantity = 3, Cost = cost2, Merchandise = merchandise2 };
+            var node3 = new CartLineNode { Id = "gid://shopify/CartLine/8rt7qwpv-z8mk-297g-8eq4g-b9eq7g8e96rn?cart=Z2NwLXVzLWVhc3QxOjAxSFM5NUFDWUI4OTQ0N05HUVdKU0hXVFlN", Quantity = 2, Cost = cost1, Merchandise = merchandise1 };
+
+            // Create CartLineEdge instances
+            var edge1 = new CartLineEdge { Node = node1 };
+            var edge2 = new CartLineEdge { Node = node2 };
+            var edge3 = new CartLineEdge { Node = node3 };
+
+            // Create CartLines instance
+            var lines = new CartLines { Edges = [edge1, edge2, edge3] };
+
+            // Create CartCost instance
+            var cost = new CartCost { TotalAmount = totalAmount1, SubtotalAmount = subtotalAmount };
+
+            // Create CartObjectModel instance
+            return new CartObjectModel
+            {
+                Id = "gid://shopify/Cart/Z2NwLWV1cm9wZS13ZXN0MTowMUhXUTE4TjNCV0FaTlNEMTdTVks2RVhUQQ",
+                TotalQuantity = 6,
+                CheckoutUrl = "https://quickstart-3b0f1a15.myshopify.com/cart/c/Z2NwLWV1cm9wZS13ZXN0MTowMUhXUTE4TjNCV0FaTlNEMTdTVks2RVhUQQ?key=ca0127810e60f064542c8a70ee304b76",
+                Cost = cost,
+                Lines = lines
+            };
+        }
 
         private CartObjectModel GenerateCartWithDiscountCodes()
         {

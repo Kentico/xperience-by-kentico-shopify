@@ -55,9 +55,9 @@
       },
       "ShopifySharp": {
         "type": "Direct",
-        "requested": "[6.13.0, )",
-        "resolved": "6.13.0",
-        "contentHash": "GwM1K0FzTo9BrXSqG9hWxIOGGfhrbBfLXK+b6vMqaabmw0Uv4/n9gskQKSZ9CIB7vJksI4Grn+Tk9qW/dVqBJQ==",
+        "requested": "[6.17.0, )",
+        "resolved": "6.17.0",
+        "contentHash": "0yvFrbdvCaQyWHOXsd5Lp15mPpJDQ0G+PE8vJVRkMiH39nrEemI1i2UYrFTS8axgNndGJzB+E1XzctwELp7uug==",
         "dependencies": {
           "Microsoft.Extensions.Http": "2.1.0",
           "System.Text.Json": "7.0.3",
@@ -66,11 +66,11 @@
       },
       "ShopifySharp.Extensions.DependencyInjection": {
         "type": "Direct",
-        "requested": "[1.4.0, )",
-        "resolved": "1.4.0",
-        "contentHash": "jpaU4WpqjAXm/Tm7vQwC/gBbsdIHa4taO/aAN6BZxT8t91f9+OHkWZzFOsvChVUNn61cShcTR84tUfrv6X2cVg==",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "Hf0MexgLD6FbTcm81lFMPsw5kWK4XNEl7FPmYuoE9kPlWhWwR/wUWMYUpn6uSBTHCE+62yI2l+i7lsOb0zASnA==",
         "dependencies": {
-          "ShopifySharp": "6.13.0",
+          "ShopifySharp": "6.16.0",
           "microsoft.extensions.dependencyinjection": "8.0.0"
         }
       },
@@ -1015,8 +1015,8 @@
           "Kentico.Xperience.Admin": "[29.0.2, )",
           "Kentico.Xperience.Core": "[29.0.2, )",
           "Kentico.Xperience.Ecommerce.Common": "[1.0.0-prerelease-1, )",
-          "ShopifySharp": "[6.13.0, )",
-          "ShopifySharp.Extensions.DependencyInjection": "[1.4.0, )",
+          "ShopifySharp": "[6.17.0, )",
+          "ShopifySharp.Extensions.DependencyInjection": "[1.6.0, )",
           "System.Configuration.ConfigurationManager": "[8.0.0, )",
           "System.Linq.Async": "[6.0.1, )"
         }
@@ -1024,7 +1024,7 @@
       "kentico.xperience.shopify.rcl": {
         "type": "Project",
         "dependencies": {
-          "Kentico.Xperience.Shopify": "[1.0.0-prerelease-1, )"
+          "Kentico.Xperience.Shopify": "[0.1.0-prerelease-1, )"
         }
       },
       "GraphQL": {

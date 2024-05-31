@@ -13,7 +13,7 @@
             @Html.Kentico().PageData()
             <div class="cart-item-amount">
                 <span>@HtmlLocalizer["Qty"]</span>
-                <input type="hidden" name="@nameof(ShoppingCartItemViewModel.VariantGraphQLId)" value="@Model.VariantGraphQLId" />
+                <input type="hidden" name="@nameof(ShoppingCartItemViewModel.CartItemId)" value="@Model.CartItemId" />
                 <input type="number" class="add-to-cart-textbox" min="0" , name="@nameof(ShoppingCartItemViewModel.Quantity)" value="@Model.Quantity" />
                 <input type="submit" name="cartOperation" value="Update" class="btn btn-default" />
                 <input type="submit" name="cartOperation" value="Remove" class="btn btn-default" />

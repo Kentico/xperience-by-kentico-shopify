@@ -17,7 +17,7 @@ public interface IShoppingService
     /// Remove all shopping cart items of specific product variant.
     /// </summary>
     /// <param name="variantGraphQLId">Product variant graphQL ID.</param>
-    /// <returns></returns>
+    /// <returns><see cref="CartOperationResult"/> with updated shopping cart if operation was successful.</returns>
     Task<CartOperationResult> RemoveProductVariantFromCart(string variantGraphQLId);
 
 

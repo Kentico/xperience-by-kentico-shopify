@@ -4,7 +4,7 @@
 
 | Name                               | Package         |
 |----------------------------------- | --------------- |
-| Kentico.Xperience.Shopify          | [![NuGet Package](https://img.shields.io/nuget/v/Kentico.Xperience.Shopify.svg)](https://www.nuget.org/packages/Kentico.Xperience.Shopify.Rcl)    |
+| Kentico.Xperience.Shopify          | [![NuGet Package](https://img.shields.io/nuget/v/Kentico.Xperience.Shopify.svg)](https://www.nuget.org/packages/Kentico.Xperience.Shopify)    |
 | Kentico.Xperience.Shopify.Rcl      | [![NuGet Package](https://img.shields.io/nuget/v/Kentico.Xperience.Shopify.Rcl.svg)](https://www.nuget.org/packages/Kentico.Xperience.Shopify.Rcl)|
 
 ## Description

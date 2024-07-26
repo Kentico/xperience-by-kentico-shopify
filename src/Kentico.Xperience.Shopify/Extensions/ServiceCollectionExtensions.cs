@@ -53,6 +53,7 @@ public static class ServiceCollectionExtensions
 
         // Add options monitor
         services.Configure<ShopifyConfig>(configuration.GetSection(ShopifyConfig.SECTION_NAME));
+        services.Configure<ShopifyWebsiteChannelConfigOptions>(configuration.GetSection(ShopifyWebsiteChannelConfigOptions.SECTION_NAME));
 
         // Add HTTP session services
         services.AddSession();

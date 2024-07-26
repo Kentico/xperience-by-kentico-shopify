@@ -16,7 +16,7 @@ namespace Kentico.Xperience.Shopify.Products.Models
         /// <summary>
         /// The currency to use for pricing.
         /// </summary>
-        public CurrencyCode? Currency { get; set; }
+        public CurrencyCode Currency { get; set; }
 
 
         /// <summary>

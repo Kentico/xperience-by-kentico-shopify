@@ -9,6 +9,7 @@ using DancingGoat.Models;
 
 using Kentico.Content.Web.Mvc;
 using Kentico.Content.Web.Mvc.Routing;
+using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products;
 using Kentico.Xperience.Shopify.Products.Models;
 
@@ -32,6 +33,7 @@ public class ShopifyStoreController : Controller
     private readonly ISettingsService settingsService;
     private readonly IConversionService conversionService;
     private readonly IShopifyPriceService priceService;
+    private readonly IShopifyIntegrationSettingsService shopifySettingsService;
 
     public ShopifyStoreController(StorePageRepository storePageRepository,
         IWebPageDataContextRetriever webPageDataContextRetriever,
@@ -42,7 +44,8 @@ public class ShopifyStoreController : Controller
         IProgressiveCache progressiveCache,
         ISettingsService settingsService,
         IConversionService conversionService,
-        IShopifyPriceService priceService)
+        IShopifyPriceService priceService,
+        IShopifyIntegrationSettingsService shopifySettingsService)
     {
         this.storePageRepository = storePageRepository;
         this.webPageDataContextRetriever = webPageDataContextRetriever;
@@ -54,6 +57,7 @@ public class ShopifyStoreController : Controller
         this.settingsService = settingsService;
         this.conversionService = conversionService;
         this.priceService = priceService;
+        this.shopifySettingsService = shopifySettingsService;
     }
 
     public async Task<IActionResult> Index()
@@ -86,7 +90,9 @@ public class ShopifyStoreController : Controller
 
             if (!string.IsNullOrEmpty(shopifyProductId) && prices.TryGetValue(shopifyProductId, out var price))
             {
-                productViewModels.Add(ShopifyProductListItemViewModel.GetViewModel(productPage.Product.FirstOrDefault(), url, price));
+                string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty;
+
+                productViewModels.Add(ShopifyProductListItemViewModel.GetViewModel(productPage.Product.FirstOrDefault(), url, price, currencyCode));
             }
         }
 

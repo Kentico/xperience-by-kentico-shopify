@@ -5,10 +5,12 @@ using DancingGoat.Models;
 
 using Kentico.Content.Web.Mvc;
 using Kentico.Content.Web.Mvc.Routing;
+using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 using Shopify.Controllers;
 
@@ -24,26 +26,31 @@ public class ShopifyProductDetailController : Controller
     private readonly ProductDetailPageRepository productDetailPageRepository;
     private readonly IWebPageDataContextRetriever webPageDataContextRetriever;
     private readonly IShoppingService shoppingService;
+    private readonly IShopifyIntegrationSettingsService settingsService;
 
     public ShopifyProductDetailController(ProductDetailPageRepository productDetailPageRepository,
         IWebPageDataContextRetriever webPageDataContextRetriever,
-        IShoppingService shoppingService)
+        IShoppingService shoppingService,
+        IShopifyIntegrationSettingsService settingsService)
     {
         this.productDetailPageRepository = productDetailPageRepository;
         this.webPageDataContextRetriever = webPageDataContextRetriever;
         this.shoppingService = shoppingService;
+        this.settingsService = settingsService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Index(string variantID = null)
     {
-        // TODO - dynamic resolve country
-        string country = "CZ";
-        string currency = "CZK";
-
         if (!TempData.TryGetValue(ERROR_MESSAGES_KEY, out object tempDataErrors) || tempDataErrors is not string[] errorMessages)
         {
             errorMessages = [];
+        }
+
+        var config = settingsService.GetWebsiteChannelSettings();
+        if (config == null)
+        {
+            return View(new ProductDetailViewModel());
         }
 
         var webPage = webPageDataContextRetriever.Retrieve().WebPage;
@@ -54,7 +61,7 @@ public class ShopifyProductDetailController : Controller
             return View(new ProductDetailViewModel());
         }
 
-        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, country, currency, errorMessages));
+        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, config.Country, config.CurrencyCode, errorMessages));
     }
 
     [HttpPost]

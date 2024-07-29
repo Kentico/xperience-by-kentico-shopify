@@ -107,10 +107,10 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
    ```
 
    **Setting description**
-   | Setting | Description | | | |
-   |----------------|----------------------------------------------------------------------------------------------------------------|---|---|---|
-   | Settings | List of configurations. Each item contains configuration for specific website channel defined by `ChannelName` | | | |
-   | DefaultSetting | Configuration used if no configuration found in the `Settings` for the given website channel. | | | |
+   | Setting | Description |
+   |----------------|----------------------------------------------------------------------------------------------------------------|
+   | Settings | List of configurations. Each item contains configuration for specific website channel defined by `ChannelName` |
+   | DefaultSetting | Configuration used if no configuration found in the `Settings` for the given website channel. |
 
    Note: Only currencies set in the shopify store can be used.
 

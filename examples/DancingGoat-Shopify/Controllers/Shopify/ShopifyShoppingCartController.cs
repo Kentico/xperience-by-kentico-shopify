@@ -76,18 +76,18 @@ namespace DancingGoat.Controllers.Shopify
         [HttpPost]
         [Route("/cart/update")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update([FromForm] string variantGraphQLId, [FromForm] int quantity, [FromForm] string cartOperation)
+        public async Task<IActionResult> Update([FromForm] string cartItemId, [FromForm] int quantity, [FromForm] string cartOperation)
         {
             var country = ShopifySharp.GraphQL.CountryCode.CZ;
             if (Enum.TryParse<CartOperation>(cartOperation, out var operationEnum))
             {
                 var result = operationEnum == CartOperation.Remove
-                ? await shoppingService.RemoveCartItem(variantGraphQLId)
+                ? await shoppingService.RemoveCartItem(cartItemId)
                 : await shoppingService.UpdateCartItem(new ShoppingCartItemParameters()
                 {
                     Country = country,
                     Quantity = quantity,
-                    MerchandiseID = variantGraphQLId
+                    ShoppingCartItemID = cartItemId
                 });
 
                 AddErrorsToTempData(result);

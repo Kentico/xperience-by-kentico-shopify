@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kentico.Xperience.Ecommerce.Common", "..\submodules\xperience-by-kentico-ecommerce-common\src\Kentico.Xperience.Ecommerce.Common\Kentico.Xperience.Ecommerce.Common.csproj", "{41275CA4-F178-4F49-9ED4-5AD8BA4F6E37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kentico.Xperience.Shopify", "Kentico.Xperience.Shopify\Kentico.Xperience.Shopify.csproj", "{86AC67CD-62DD-45E8-9C3D-A326AA88E8FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kentico.Xperience.Shopify.Rcl", "Kentico.Xperience.Shopify.Rcl\Kentico.Xperience.Shopify.Rcl.csproj", "{25E9AB4B-3A21-4319-BB05-F973731198BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41275CA4-F178-4F49-9ED4-5AD8BA4F6E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41275CA4-F178-4F49-9ED4-5AD8BA4F6E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41275CA4-F178-4F49-9ED4-5AD8BA4F6E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41275CA4-F178-4F49-9ED4-5AD8BA4F6E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86AC67CD-62DD-45E8-9C3D-A326AA88E8FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86AC67CD-62DD-45E8-9C3D-A326AA88E8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86AC67CD-62DD-45E8-9C3D-A326AA88E8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86AC67CD-62DD-45E8-9C3D-A326AA88E8FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25E9AB4B-3A21-4319-BB05-F973731198BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25E9AB4B-3A21-4319-BB05-F973731198BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25E9AB4B-3A21-4319-BB05-F973731198BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25E9AB4B-3A21-4319-BB05-F973731198BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BA543EA-D9FD-43EB-8922-73E50AE97454}
+	EndGlobalSection
+EndGlobal

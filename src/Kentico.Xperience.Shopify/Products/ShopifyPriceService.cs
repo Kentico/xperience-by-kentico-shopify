@@ -45,7 +45,7 @@ internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
                 continue;
             }
 
-            var prices = product.Variants.Select(x => x.PresentmentPrices.FirstOrDefault(x => x.Price.CurrencyCode == currency));
+            var prices = product.Variants.Select(x => x.PresentmentPrices.FirstOrDefault(x => x.Price.CurrencyCode.Equals(currency, StringComparison.Ordinal)));
 
             dict.TryAdd(product.Id.Value.ToString(), new ProductPriceModel()
             {

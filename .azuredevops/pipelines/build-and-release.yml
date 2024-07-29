@@ -47,10 +47,13 @@ stages:
           - name: Configuration
             value: Release
 
-          - name: ProjectPath
-            value: src/PROJECT_NAME/PROJECT_NAME.csproj
+          - name: slnPath
+            value: src/Kentico.Xperience.Shopify.Libs.sln
 
         steps:
+          - checkout: self
+            submodules: true
+
           - task: DotNetCoreCLI@2
             displayName: Restore dotnet tools
             inputs:
@@ -63,7 +66,7 @@ stages:
             displayName: Restore dependencies
             inputs:
               command: restore
-              projects: ${{ variables.ProjectPath }}
+              projects: ${{ variables.slnPath }}
               feedsToUse: select
               restoreArguments: --locked-mode
 
@@ -71,7 +74,7 @@ stages:
             displayName: Build
             inputs:
               command: build
-              projects: ${{ variables.ProjectPath }}
+              projects: ${{ variables.slnPath }}
               configuration: ${{ variables.Configuration }}
               arguments: --no-restore
             env:
@@ -79,20 +82,16 @@ stages:
               # Roll-forward behavior set for AzureSignTool dotnet tool (see .config\dotnet-tools.json) which requires .Net 6.0 runtime
               DOTNET_ROLL_FORWARD: Major
 
-          - task: DotNetCoreCLI@2
-            displayName: Create NuGet package
-            inputs:
-              command: pack
-              packagesToPack: ${{ variables.ProjectPath }}
-              configuration: ${{ variables.Configuration }}
-              packDirectory: $(System.DefaultWorkingDirectory)/packages
-              includesymbols: true
-              nobuild: true
-              versioningScheme: off
-
-          - publish: $(System.DefaultWorkingDirectory)/packages
-            displayName: Publish NuGet package as artifact
-            artifact: artifact
+          - template: steps.yml
+            parameters:
+              Configuration: $(Configuration)
+              artifacts:
+                - Shopify:
+                  artifactName: "Kentico-Xperience-Shopify"
+                  projectPath: "src/Kentico.Xperience.Shopify"
+                - ShopifyRcl:
+                  artifactName: "Kentico-Xperience-Shopify-Rcl"
+                  projectPath: "src/Kentico.Xperience.Shopify.Rcl"
 
   - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
       - stage: PublishNuGetPackages
@@ -132,7 +131,7 @@ stages:
                       displayName: NuGet push
                       inputs:
                         command: push
-                        packagesToPush: $(Pipeline.Workspace)/artifact/*.nupkg
+                        packagesToPush: $(Pipeline.Workspace)/**/*.nupkg
                         nuGetFeedType: external
                         publishFeedCredentials: nuget.org
                         allowPackageConflicts: true

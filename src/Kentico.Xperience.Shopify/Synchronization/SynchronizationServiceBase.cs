@@ -50,7 +50,7 @@ internal abstract class SynchronizationServiceBase
     {
         foreach (var shopifyObject in shopifyObjects.Where(x => x.Id.HasValue))
         {
-            var contentItem = contentItems.FirstOrDefault(x => x.ShopifyObjectID == (shopifyObject.Id?.ToString() ?? string.Empty));
+            var contentItem = contentItems.FirstOrDefault(x => x.ShopifyObjectID.Equals(shopifyObject.Id?.ToString() ?? string.Empty, StringComparison.Ordinal));
             yield return contentItem?.SystemFields.ContentItemGUID ?? Guid.Empty;
         }
     }

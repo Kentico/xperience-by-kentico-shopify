@@ -31,7 +31,7 @@ public record ProductDetailViewModel
     public static ProductDetailViewModel GetViewModel(ProductDetailPage page, string selectedVariantID, string country, string currency, string[] errorMessages)
     {
         var product = page.Product.First();
-        var selectedVariant = product.Variants.FirstOrDefault(x => x.ShopifyVariantID == selectedVariantID) ?? product.Variants.First();
+        var selectedVariant = product.Variants.FirstOrDefault(x => x.ShopifyVariantID.Equals(selectedVariantID, StringComparison.Ordinal)) ?? product.Variants.First();
 
         var allImages = product.Images.Concat(product.Variants.Select(x => x.Image.FirstOrDefault()))
             .Where(x => x != null)
@@ -48,7 +48,7 @@ public record ProductDetailViewModel
             Images = allImages,
             DescriptionHTML = product.Description,
             ParametersSection = product.Parameters,
-            Variants = product.Variants.Select(x => new SelectListItem(x.Title, x.ShopifyVariantID, x.ShopifyVariantID == selectedVariant.ShopifyVariantID)).ToList(),
+            Variants = product.Variants.Select(x => new SelectListItem(x.Title, x.ShopifyVariantID, x.ShopifyVariantID.Equals(selectedVariant.ShopifyVariantID, StringComparison.Ordinal))).ToList(),
             SelectedShopifyVariantId = selectedVariant.ShopifyVariantID,
             ShopifyProductId = product.ShopifyProductID,
             CountryCode = country,

@@ -36,10 +36,14 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
     {
         var cart = await GetCurrentShoppingCart();
 
-        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.ShopifyCartItemId == parameters.MerchandiseID);
+        var cartItemToUpdate = cart?.Items.FirstOrDefault(x => x.ShopifyCartItemId.Equals(parameters.ShoppingCartItemID, StringComparison.Ordinal));
         if (cart == null || cartItemToUpdate == null)
         {
             return await AddItemToCart(parameters);
+        }
+        if (cartItemToUpdate.Quantity == parameters.Quantity)
+        {
+            return new CartOperationResult(cart, true);
         }
 
         int quantity = Math.Max(parameters.Quantity, 0);
@@ -62,7 +66,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
     }
 
 
-    public async Task<CartOperationResult> RemoveCartItem(string merchandiseId)
+    public async Task<CartOperationResult> RemoveProductVariantFromCart(string variantGraphQLId)
     {
         var cart = await GetCurrentShoppingCart();
         if (cart == null)
@@ -70,7 +74,38 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
             return new CartOperationResult(null, true);
         }
 
-        var shopifyCartLine = cart.Items.FirstOrDefault(x => x.VariantGraphQLId == merchandiseId);
+        var shopifyCartLines = cart.Items.Where(x => x.VariantGraphQLId.Equals(variantGraphQLId, StringComparison.Ordinal));
+        bool success = true;
+        CartOperationResult? result = null;
+
+        foreach (var shopifyCartLine in shopifyCartLines)
+        {
+            result = await RemoveCartItem(shopifyCartLine.ShopifyCartItemId);
+            if (!result.Success)
+            {
+                success = false;
+            }
+        }
+
+        // There was no cart item with given variant graphQL ID
+        if (result == null)
+        {
+            return new CartOperationResult(cart, success);
+        }
+
+        return new CartOperationResult(result.Cart, success);
+    }
+
+
+    public async Task<CartOperationResult> RemoveCartItem(string cartItemId)
+    {
+        var cart = await GetCurrentShoppingCart();
+        if (cart == null)
+        {
+            return new CartOperationResult(null, true);
+        }
+
+        var shopifyCartLine = cart.Items.FirstOrDefault(x => x.ShopifyCartItemId.Equals(cartItemId, StringComparison.Ordinal));
         if (shopifyCartLine == null)
         {
             return new CartOperationResult(cart, true);
@@ -166,7 +201,7 @@ internal class ShoppingService : ShopifyStorefrontServiceBase, IShoppingService
                 StoreCartToCookiesAndSession(cart.CartId);
             }
 
-            var addedItem = cart.Items.FirstOrDefault(x => x.VariantGraphQLId == parameters.MerchandiseID);
+            var addedItem = cart.Items.FirstOrDefault(x => x.VariantGraphQLId.Equals(parameters.MerchandiseID));
             activityLogger.LogProductAddedToShoppingCartActivity(addedItem, parameters.Quantity);
         }
         return result;

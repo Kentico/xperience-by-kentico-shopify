@@ -12,7 +12,6 @@ namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
         [EditingComponent(TextInputComponent.IDENTIFIER, Label = "Title", Order = 0)]
         public string Title { get; set; }
 
-        // TODO - create selector for long datatype
         [EditingComponent(ShopifyCollectionSelectorComponent.IDENTIFIER, Label = "Collection", Order = 10)]
         public string CollectionID { get; set; }
 

@@ -16,10 +16,9 @@ public record ShopifyProductListItemViewModel
     public string ListPrice { get; init; }
     public bool HasMultipleVariants { get; init; }
 
-    public static ShopifyProductListItemViewModel GetViewModel(Product product, WebPageUrl productUrl, ProductPriceModel priceModel)
+    public static ShopifyProductListItemViewModel GetViewModel(Product product, WebPageUrl productUrl, ProductPriceModel priceModel, string currencyCode)
     {
-        // TODO resolve currency
-        string currency = "CZK";
+        string currency = currencyCode;
         var mainImage = product.Images.FirstOrDefault() ?? product.Variants.FirstOrDefault(x => x.Image.Any())?.Image.FirstOrDefault();
         return new ShopifyProductListItemViewModel()
         {

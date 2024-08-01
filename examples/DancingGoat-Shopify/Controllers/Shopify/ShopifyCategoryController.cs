@@ -7,6 +7,7 @@ using DancingGoat.Models;
 
 using Kentico.Content.Web.Mvc;
 using Kentico.Content.Web.Mvc.Routing;
+using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products;
 using Kentico.Xperience.Shopify.Products.Models;
 
@@ -28,6 +29,7 @@ public class ShopifyCategoryController : Controller
     private readonly ISettingsService settingsService;
     private readonly IConversionService conversionService;
     private readonly ILogger<ShopifyCategoryController> logger;
+    private readonly IShopifyIntegrationSettingsService shopifySettingsService;
 
     public ShopifyCategoryController(
         CategoryPageRepository categoryPageRepository,
@@ -37,7 +39,8 @@ public class ShopifyCategoryController : Controller
         IProgressiveCache progressiveCache,
         ISettingsService settingsService,
         IConversionService conversionService,
-        ILogger<ShopifyCategoryController> logger)
+        ILogger<ShopifyCategoryController> logger,
+        IShopifyIntegrationSettingsService shopifySettingsService)
     {
         this.categoryPageRepository = categoryPageRepository;
         this.webPageDataContextRetriever = webPageDataContextRetriever;
@@ -47,6 +50,7 @@ public class ShopifyCategoryController : Controller
         this.settingsService = settingsService;
         this.conversionService = conversionService;
         this.logger = logger;
+        this.shopifySettingsService = shopifySettingsService;
     }
     public async Task<IActionResult> Index()
     {
@@ -62,7 +66,9 @@ public class ShopifyCategoryController : Controller
             async (_) => await GetProductPrices(products.Select(x => x.Product.FirstOrDefault())),
             new CacheSettings(cacheMinutes, webPage.WebsiteChannelName, webPage.LanguageName, categoryPage.SystemFields.WebPageItemGUID));
 
-        return View(CategoryPageViewModel.GetViewModel(categoryPage, prices, products, urls, logger));
+        string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty;
+
+        return View(CategoryPageViewModel.GetViewModel(categoryPage, prices, products, urls, logger, currencyCode));
     }
 
     private async Task<IDictionary<string, ProductPriceModel>> GetProductPrices(IEnumerable<Product> productContentItems)

@@ -14,7 +14,8 @@ public record CategoryPageViewModel
         IDictionary<string, ProductPriceModel> productPrices,
         IEnumerable<ProductDetailPage> products,
         IDictionary<Guid, WebPageUrl> productUrls,
-        ILogger logger)
+        ILogger logger,
+        string currencyCode)
     {
         var productListItems = new List<ShopifyProductListItemViewModel>();
         foreach (var product in products)
@@ -25,7 +26,7 @@ public record CategoryPageViewModel
             }
             else
             {
-                productListItems.Add(GetProductListItem(product, productUrls, productPrices));
+                productListItems.Add(GetProductListItem(product, productUrls, productPrices, currencyCode));
             }
         }
         var model = new CategoryPageViewModel
@@ -37,7 +38,11 @@ public record CategoryPageViewModel
         return model;
     }
 
-    private static ShopifyProductListItemViewModel GetProductListItem(ProductDetailPage productPage, IDictionary<Guid, WebPageUrl> productUrls, IDictionary<string, ProductPriceModel> productPrices)
+    private static ShopifyProductListItemViewModel GetProductListItem(
+        ProductDetailPage productPage,
+        IDictionary<Guid, WebPageUrl> productUrls,
+        IDictionary<string, ProductPriceModel> productPrices,
+        string currencyCode)
     {
         var product = productPage.Product.FirstOrDefault();
         if (product == null)
@@ -47,6 +52,6 @@ public record CategoryPageViewModel
 
         productUrls.TryGetValue(productPage.SystemFields.WebPageItemGUID, out var url);
         productPrices.TryGetValue(product.ShopifyProductID, out var productPriceModel);
-        return ShopifyProductListItemViewModel.GetViewModel(product, url, productPriceModel);
+        return ShopifyProductListItemViewModel.GetViewModel(product, url, productPriceModel, currencyCode);
     }
 }

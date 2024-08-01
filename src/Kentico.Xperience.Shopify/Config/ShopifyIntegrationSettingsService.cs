@@ -1,5 +1,6 @@
 ﻿using CMS.DataEngine;
 using CMS.Helpers;
+using CMS.Websites.Routing;
 
 using Kentico.Xperience.Shopify.Admin;
 
@@ -10,26 +11,30 @@ namespace Kentico.Xperience.Shopify.Config
     internal class ShopifyIntegrationSettingsService : IShopifyIntegrationSettingsService
     {
         private readonly IProgressiveCache cache;
-        private readonly IOptionsMonitor<ShopifyConfig> monitor;
+        private readonly ShopifyConfig shopifyConfig;
         private readonly IInfoProvider<IntegrationSettingsInfo> integrationSettingsProvider;
+        private readonly ShopifyWebsiteChannelConfigOptions websiteChannelConfig;
+        private readonly IWebsiteChannelContext websiteChannelContext;
 
         public ShopifyIntegrationSettingsService(
             IProgressiveCache cache,
-            IOptionsMonitor<ShopifyConfig> monitor,
-            IInfoProvider<IntegrationSettingsInfo> integrationSettingsProvider)
+            IOptionsMonitor<ShopifyConfig> shopifyConfigMonitor,
+            IInfoProvider<IntegrationSettingsInfo> integrationSettingsProvider,
+            IOptionsMonitor<ShopifyWebsiteChannelConfigOptions> websiteChannelConfigMonitor,
+            IWebsiteChannelContext websiteChannelContext)
         {
             this.cache = cache;
-            this.monitor = monitor;
             this.integrationSettingsProvider = integrationSettingsProvider;
+            this.websiteChannelContext = websiteChannelContext;
+            shopifyConfig = shopifyConfigMonitor.CurrentValue;
+            websiteChannelConfig = websiteChannelConfigMonitor.CurrentValue;
         }
 
         public ShopifyConfig? GetSettings()
         {
-            var monitorValue = monitor.CurrentValue;
-
-            if (ShopifyConfigIsFilled(monitorValue))
+            if (ShopifyConfigIsFilled(shopifyConfig))
             {
-                return monitorValue;
+                return shopifyConfig;
             }
 
             return cache.Load(cs => GetConfigFromSettings(),
@@ -38,6 +43,21 @@ namespace Kentico.Xperience.Shopify.Config
                     CacheDependency = CacheHelper.GetCacheDependency($"{IntegrationSettingsInfo.OBJECT_TYPE}|all")
                 });
 
+        }
+
+        public ShopifyWebsiteChannelConfig? GetWebsiteChannelSettings()
+        {
+            if (websiteChannelConfig == null)
+            {
+                return null;
+            }
+
+            string? currentChannel = websiteChannelContext.WebsiteChannelName;
+            if (string.IsNullOrEmpty(currentChannel))
+            {
+                return websiteChannelConfig.DefaultSetting;
+            }
+            return websiteChannelConfig.Settings?.Find(x => x.ChannelName == currentChannel) ?? websiteChannelConfig.DefaultSetting;
         }
 
         private ShopifyConfig? GetConfigFromSettings()

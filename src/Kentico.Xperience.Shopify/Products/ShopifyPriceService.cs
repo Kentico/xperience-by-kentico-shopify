@@ -4,18 +4,22 @@ using Kentico.Xperience.Shopify.Products.Models;
 using ShopifySharp;
 using ShopifySharp.Factories;
 using ShopifySharp.Filters;
-using ShopifySharp.GraphQL;
 
 namespace Kentico.Xperience.Shopify.Products;
 
 internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
 {
     private readonly IProductService productService;
+    private readonly IShopifyIntegrationSettingsService settingsService;
 
-    public ShopifyPriceService(IShopifyIntegrationSettingsService integrationSettingsService, IProductServiceFactory productServiceFactory)
+    public ShopifyPriceService(
+        IShopifyIntegrationSettingsService integrationSettingsService,
+        IProductServiceFactory productServiceFactory,
+        IShopifyIntegrationSettingsService settingsService)
         : base(integrationSettingsService)
     {
         productService = productServiceFactory.Create(shopifyCredentials);
+        this.settingsService = settingsService;
     }
 
     public async Task<IDictionary<string, ProductPriceModel>> GetProductsPrice(IEnumerable<string> shopifyProductIds)
@@ -27,14 +31,15 @@ internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
 
     private async Task<IDictionary<string, ProductPriceModel>> GetProductsPriceInternal(IEnumerable<string> shopifyProductIds)
     {
-        string currency = CurrencyCode.CZK.ToString();
+        string currencyCode = settingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty;
+
         var dict = new Dictionary<string, ProductPriceModel>();
 
         var filter = new ProductListFilter()
         {
             Ids = shopifyProductIds.Select(long.Parse),
             Fields = "Variants,Id",
-            PresentmentCurrencies = [currency]
+            PresentmentCurrencies = [currencyCode]
         };
         var result = await productService.ListAsync(filter, true);
 
@@ -45,7 +50,7 @@ internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
                 continue;
             }
 
-            var prices = product.Variants.Select(x => x.PresentmentPrices.FirstOrDefault(x => x.Price.CurrencyCode.Equals(currency, StringComparison.Ordinal)));
+            var prices = product.Variants.Select(x => x.PresentmentPrices.FirstOrDefault(x => x.Price.CurrencyCode.Equals(currencyCode, StringComparison.Ordinal)));
 
             dict.TryAdd(product.Id.Value.ToString(), new ProductPriceModel()
             {

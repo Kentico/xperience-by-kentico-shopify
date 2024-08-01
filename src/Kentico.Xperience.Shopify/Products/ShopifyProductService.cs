@@ -15,6 +15,7 @@ namespace Kentico.Xperience.Shopify.Products
         private readonly IProductService productService;
         private readonly IShopifyInventoryService inventoryService;
         private readonly IShoppingService shoppingService;
+        private readonly IShopifyIntegrationSettingsService settingsService;
 
         private readonly Uri shopifyProductUrlBase;
         private readonly string[] _shopifyFields = ["title", "body_html", "handle", "images", "variants"];
@@ -26,10 +27,12 @@ namespace Kentico.Xperience.Shopify.Products
             IShopifyIntegrationSettingsService integrationSettingsService,
             IProductServiceFactory productServiceFactory,
             IShopifyInventoryService inventoryService,
-            IShoppingService shoppingService) : base(integrationSettingsService)
+            IShoppingService shoppingService,
+            IShopifyIntegrationSettingsService settingsService) : base(integrationSettingsService)
         {
             this.inventoryService = inventoryService;
             this.shoppingService = shoppingService;
+            this.settingsService = settingsService;
 
             productService = productServiceFactory.Create(shopifyCredentials);
 
@@ -79,7 +82,7 @@ namespace Kentico.Xperience.Shopify.Products
         {
             var filter = new ListFilter<Product>(filterParams?.PageInfo, filterParams?.Limit, ShopifyFields);
             var result = await productService.ListAsync(filter, true);
-            return CreateResultModel(result, "USD");
+            return CreateResultModel(result, settingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty);
         }
 
         private async Task<Dictionary<string, ProductVariantListModel>> GetProductVariantsInternal(string shopifyProductID, string currencyCode)
@@ -106,7 +109,7 @@ namespace Kentico.Xperience.Shopify.Products
                 CollectionId = initialFilter.CollectionID,
                 Limit = initialFilter.Limit,
                 Ids = initialFilter.Ids,
-                PresentmentCurrencies = [initialFilter.Currency?.ToString() ?? string.Empty]
+                PresentmentCurrencies = [initialFilter.Currency.ToString()]
             };
             var result = await productService.ListAsync(filter, true);
 

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-using CMS.DataEngine;
+﻿using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.Websites.Routing;
 
@@ -13,9 +11,9 @@ namespace Kentico.Xperience.Shopify.Config
     internal class ShopifyIntegrationSettingsService : IShopifyIntegrationSettingsService
     {
         private readonly IProgressiveCache cache;
-        private readonly IOptionsMonitor<ShopifyConfig> shopifyConfigMonitor;
+        private readonly ShopifyConfig shopifyConfig;
         private readonly IInfoProvider<IntegrationSettingsInfo> integrationSettingsProvider;
-        private readonly IOptionsMonitor<ShopifyWebsiteChannelConfigOptions> websiteChannelConfigMonitor;
+        private readonly ShopifyWebsiteChannelConfigOptions websiteChannelConfig;
         private readonly IWebsiteChannelContext websiteChannelContext;
 
         public ShopifyIntegrationSettingsService(
@@ -26,19 +24,17 @@ namespace Kentico.Xperience.Shopify.Config
             IWebsiteChannelContext websiteChannelContext)
         {
             this.cache = cache;
-            this.shopifyConfigMonitor = shopifyConfigMonitor;
             this.integrationSettingsProvider = integrationSettingsProvider;
-            this.websiteChannelConfigMonitor = websiteChannelConfigMonitor;
             this.websiteChannelContext = websiteChannelContext;
+            shopifyConfig = shopifyConfigMonitor.CurrentValue;
+            websiteChannelConfig = websiteChannelConfigMonitor.CurrentValue;
         }
 
         public ShopifyConfig? GetSettings()
         {
-            var monitorValue = shopifyConfigMonitor.CurrentValue;
-
-            if (ShopifyConfigIsFilled(monitorValue))
+            if (ShopifyConfigIsFilled(shopifyConfig))
             {
-                return monitorValue;
+                return shopifyConfig;
             }
 
             return cache.Load(cs => GetConfigFromSettings(),
@@ -51,9 +47,7 @@ namespace Kentico.Xperience.Shopify.Config
 
         public ShopifyWebsiteChannelConfig? GetWebsiteChannelSettings()
         {
-            var monitorValue = websiteChannelConfigMonitor.CurrentValue;
-
-            if (monitorValue == null)
+            if (websiteChannelConfig == null)
             {
                 return null;
             }
@@ -61,9 +55,9 @@ namespace Kentico.Xperience.Shopify.Config
             string? currentChannel = websiteChannelContext.WebsiteChannelName;
             if (string.IsNullOrEmpty(currentChannel))
             {
-                return monitorValue.DefaultSetting;
+                return websiteChannelConfig.DefaultSetting;
             }
-            return monitorValue.Settings?.Find(x => x.ChannelName == currentChannel) ?? monitorValue.DefaultSetting;
+            return websiteChannelConfig.Settings?.Find(x => x.ChannelName == currentChannel) ?? websiteChannelConfig.DefaultSetting;
         }
 
         private ShopifyConfig? GetConfigFromSettings()

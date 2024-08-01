@@ -83,11 +83,11 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
 
    You can also configure the integration via the [Shopify integration](#shopify-configuration-module) application in the Xperience admin UI. However, note that this approach should only be used for development purposes. For the production, use one of the recommended [configuration methods](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration).
 
-4. Configure currency and country code for website channels via the `ShopifyWebsiteChannelsConfig` object.
+4. Configure currency and country code for website channels via the `CMSShopifyWebsiteChannelsConfig` object.
 
    ```json
    {
-     "ShopifyWebsiteChannelsConfig": {
+     "CMSShopifyWebsiteChannelsConfig": {
        "Settings": [
          {
            "ChannelName": "MyWebsiteChannel1",

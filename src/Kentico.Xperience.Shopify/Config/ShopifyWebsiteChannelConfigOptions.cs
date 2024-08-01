@@ -8,7 +8,7 @@
         /// <summary>
         /// The name of configuration section.
         /// </summary>
-        public const string SECTION_NAME = "ShopifyWebsiteChannelsConfig";
+        public const string SECTION_NAME = "CMSShopifyWebsiteChannelsConfig";
 
         /// <summary>
         /// Website channel configurations list.

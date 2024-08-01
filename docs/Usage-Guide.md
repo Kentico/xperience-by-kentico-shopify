@@ -12,7 +12,7 @@ The **Product listing** widget is a standalone widget that displays Shopify prod
 
 #### Limitations
 - Shopify API can return maximum of 250 items in one API request. For larger number of products, pagination needs to be implemented. Detailed information on Shopify API pagination can be found [here](https://shopify.dev/docs/api/usage/pagination-rest). The `ShopifyProductService` wraps result in [ListResultWrapper](../src/Kentico.Xperience.Shopify/Products/Models/ListResultWrapper.cs). This wrapper returns retrieved items along with next page and previous page [PagingFilterParams](../src/Kentico.Xperience.Shopify/Products/Models/PagingFilterParams.cs). These filters can then be used in the `GetProductsAsync` method parameters to retrieve next or previous page from Shopify API. Due to this limitation, the maximum number of retrieved results in the [product listing widget](#product-listing-widget) is 250. To increase this limit, pagination must be implemented in the widget. This limitation also affects product synchronization, where only first 250 products are synchronized, and shopping cart, which can have maximum of 250 cart items.
-- Only one currency pre website channel is supported.
+- Only one currency per website channel is supported.
 
 ### Shopify products synchronization
 Synchronization running in background thread worker periodically every 15 minutes and all synchronization items are stored as following content items:

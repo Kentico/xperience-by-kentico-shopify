@@ -36,8 +36,8 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
 | Library                            | Xperience by Kentico Version | Library Version |
 | ---------------------------------- | ---------------------------- | --------------- |
 | Kentico.Xperience.Ecommerce.Common | \>= 29.0.1                   | 1.0.0           |
-| Kentico.Xperience.Shopify          | \>= 29.0.2                   | 1.0.0           |
-| Kentico.Xperience.Shopify.Rcl      | \>= 29.0.2                   | 1.0.0           |
+| Kentico.Xperience.Shopify          | \>= 29.0.2                   | 2.0.0           |
+| Kentico.Xperience.Shopify.Rcl      | \>= 29.0.2                   | 2.0.0           |
 
 ### Dependencies
 

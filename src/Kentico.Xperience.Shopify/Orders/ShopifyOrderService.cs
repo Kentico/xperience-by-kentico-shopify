@@ -3,7 +3,6 @@ using Kentico.Xperience.Shopify.Products;
 
 using ShopifySharp;
 using ShopifySharp.Factories;
-using ShopifySharp.Filters;
 
 namespace Kentico.Xperience.Shopify.Orders
 {
@@ -20,24 +19,10 @@ namespace Kentico.Xperience.Shopify.Orders
             orderService = orderServiceFactory.Create(shopifyCredentials);
         }
 
-
         /// <inheritdoc/>
-        public async Task<Order?> GetRecentOrder(string sourceId)
-        {
-            if (string.IsNullOrEmpty(sourceId))
-            {
-                return null;
-            }
-
-            var filter = new OrderListFilter()
-            {
-                CreatedAtMin = DateTime.Now.AddDays(-1).Date,
-                Fields = ORDERS_FIELDS
-            };
-
-            var result = await orderService.ListAsync(filter);
-
-            return result.Items.FirstOrDefault(x => x.SourceIdentifier.Equals(sourceId, StringComparison.Ordinal));
-        }
+        public async Task<Order?> GetOrder(long shopifyOrderId)
+            => await TryCatch<Order?>(
+                async () => await orderService.GetAsync(shopifyOrderId, ORDERS_FIELDS),
+                () => null);
     }
 }

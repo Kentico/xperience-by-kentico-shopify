@@ -1,6 +1,7 @@
 ﻿using Kentico.Xperience.Admin.Base;
 using Kentico.Xperience.Admin.Base.Forms;
 using Kentico.Xperience.Shopify.Admin;
+using Kentico.Xperience.Shopify.Config;
 
 [assembly: UIPage(
     parentType: typeof(ShopifyIntegrationSettingsApplication),
@@ -17,11 +18,16 @@ namespace Kentico.Xperience.Shopify.Admin
     /// </summary>
     public class ShopifyIntegrationSettingsEdit : ModelEditPage<ShopifyIntegrationSettingsModel>
     {
+        private readonly IShopifyIntegrationSettingsService settingsService;
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopifyIntegrationSettingsEdit"/> class.
         /// </summary>
-        public ShopifyIntegrationSettingsEdit(Xperience.Admin.Base.Forms.Internal.IFormItemCollectionProvider formItemCollectionProvider, IFormDataBinder formDataBinder) : base(formItemCollectionProvider, formDataBinder)
+        public ShopifyIntegrationSettingsEdit(
+            Xperience.Admin.Base.Forms.Internal.IFormItemCollectionProvider formItemCollectionProvider,
+            IFormDataBinder formDataBinder,
+            IShopifyIntegrationSettingsService settingsService) : base(formItemCollectionProvider, formDataBinder)
         {
+            this.settingsService = settingsService;
         }
 
         private IntegrationSettingsInfo? settingsInfo;
@@ -40,7 +46,19 @@ namespace Kentico.Xperience.Shopify.Admin
         /// <inheritdoc/>
         public override Task ConfigurePage()
         {
-            PageConfiguration.Headline = "It is recommended to use appsettings.json or user secrets to store API credentials. Use this primarly for developement.";
+
+            PageConfiguration.Headline = "It is recommended to use appsettings.json or user secrets to store API credentials. Use this primarly for developement. Values in appsettings.json/user secrets will override these values.";
+
+            if (!settingsService.AdminUISettingsUsed())
+            {
+                PageConfiguration.SubmitConfiguration.ConfirmationConfiguration = new ConfirmationConfiguration()
+                {
+                    Title = "Warning",
+                    Detail = "These settings are overridden by values from appsettings.json or user secrets. Changes won't affect the application.",
+                    Button = "Save",
+                };
+            }
+
             return base.ConfigurePage();
         }
 

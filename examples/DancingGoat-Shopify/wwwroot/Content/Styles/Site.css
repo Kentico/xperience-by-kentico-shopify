@@ -5790,7 +5790,6 @@ dd.product-price--retail {
 .ktc-checkbox-list-horizontal label {
   margin-right: 16px;
 }
-/*# Checkout process inputs #*/
 .checkout-container input[type="text"],
 .checkout-container input[type="email"],
 .checkout-container input[type="tel"],
@@ -5800,7 +5799,7 @@ dd.product-price--retail {
   margin-top: 0.25rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  border: 2px solid #BEBEBE;
+  border: 2px solid #bebebe;
 }
 .checkout-container input[type="checkbox"] {
   height: 1rem;
@@ -5817,15 +5816,15 @@ dd.product-price--retail {
   clear: both;
 }
 .checkout-container select:disabled {
-  background: #AAAAAA;
+  background: #aaaaaa;
 }
 .checkout-container .hidden {
   display: none;
 }
 .checkout-top-header {
-  background: #B24143;
+  background: #b24143;
   padding: 0.8125rem 0px;
-  color: #FFF;
+  color: #fff;
 }
 /*# Checkout process forms #*/
 .checkout-container .customer-details h4:first-of-type,
@@ -5884,7 +5883,7 @@ dd.product-price--retail {
   float: left;
   text-align: center;
   margin-top: 0;
-  border: 2px solid #BEBEBE;
+  border: 2px solid #bebebe;
 }
 .cart-item-amount input[type="submit"] {
   padding: 0 0.425rem;
@@ -5900,8 +5899,16 @@ dd.product-price--retail {
   font-size: 1rem;
   float: left;
 }
-.cart-item-info {
-  padding-bottom: 1.25rem;
+.cart-item-info__coupons {
+  color: #ceb48d;
+  margin: 10px;
+}
+.cart-item-info__coupons span {
+  margin-left: 5px;
+}
+.cart-item-info__price {
+  font-size: larger;
+  float: right;
 }
 .cart-item-info > a {
   color: #000;
@@ -5937,10 +5944,10 @@ dd.product-price--retail {
   font-weight: bold;
 }
 .green {
-  color: #397C39;
+  color: #397c39;
 }
 .red {
-  color: #B24143;
+  color: #b24143;
 }
 .cart-item-discount-info {
   background-color: #e7e7e7;
@@ -6036,9 +6043,9 @@ dd.product-price--retail {
   margin-bottom: 1.25rem;
   padding: 1rem;
   background-color: #494132;
-  color: #FFF;
+  color: #fff;
   font-size: 1.375rem;
-  font-family: 'pt serif';
+  font-family: "pt serif";
   line-height: 1.4em;
 }
 /*# Delivery details #*/
@@ -6064,7 +6071,7 @@ dd.product-price--retail {
 }
 .shopping-cart-mini-preview .shopping-cart-mini-preview-label {
   float: left;
-  background-color: #08768C;
+  background-color: #08768c;
   color: white;
   padding: 0.75rem;
   text-transform: uppercase;
@@ -6082,7 +6089,7 @@ dd.product-price--retail {
   margin-top: 0.3rem;
   margin-bottom: 0.6rem;
   display: block;
-  background-color: #D12127;
+  background-color: #d12127;
   color: white;
 }
 /*# Page wrap #*/

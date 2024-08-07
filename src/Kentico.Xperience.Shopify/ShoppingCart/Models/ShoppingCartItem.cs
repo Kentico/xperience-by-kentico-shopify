@@ -33,5 +33,17 @@
         /// Quantity of the shopping cart item.
         /// </summary>
         public required int Quantity { get; set; }
+
+
+        /// <summary>
+        /// List of coupon codes used for shopping cart item discounts.
+        /// </summary>
+        public IEnumerable<string>? DiscountCouponCodes { get; set; }
+
+
+        /// <summary>
+        /// Amount that was discounted from the cart item.
+        /// </summary>
+        public required decimal DiscountedAmount { get; set; }
     }
 }

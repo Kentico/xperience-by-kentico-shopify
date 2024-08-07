@@ -54,6 +54,9 @@ public class ShoppingCartInfo
     {
         var merchandise = node.Merchandise;
         string name = merchandise.Product.Title;
+        var coupons = node.DiscountAllocations?.Where(x => !string.IsNullOrEmpty(x.Code))
+            .Select(x => x.Code!) ?? [];
+
         if (string.Compare(merchandise.Title, ShopifyConstants.DEFAULT_VARIANT_NAME, StringComparison.InvariantCultureIgnoreCase) != 0)
         {
             name += $" ({merchandise.Title})";
@@ -65,7 +68,9 @@ public class ShoppingCartInfo
             Name = name,
             Price = node.Cost.TotalAmount.Amount,
             VariantGraphQLId = merchandise.Id,
-            Quantity = node.Quantity
+            Quantity = node.Quantity,
+            DiscountCouponCodes = coupons,
+            DiscountedAmount = node.DiscountAllocations?.Sum(x => x.DiscountedAmount.Amount) ?? 0,
         };
     }
 }

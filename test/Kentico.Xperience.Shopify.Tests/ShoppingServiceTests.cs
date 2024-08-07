@@ -323,6 +323,7 @@ namespace Kentico.Xperience.Shopify.Tests
                 Name = "New added product",
                 Quantity = 2,
                 Price = 10m,
+                DiscountedAmount = 0m,
                 ShopifyCartItemId = "TestCartItemId",
                 VariantGraphQLId = "TestVariantGraphQLId"
             };

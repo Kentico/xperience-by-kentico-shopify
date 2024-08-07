@@ -54,23 +54,19 @@ Step-by-step tutorial to create new pages:
 3. Create new category page and in "Products" field, select all the product detail pages that should be included in the category. The selected products will be displayed as a products listing in the category page.
 
 #### Checkout
-The next step from shopping cart preview page(`Shopify.ShoppingCartPage`) is redirection to official Shopify store checkout page where user can complete the checkout and create the order. Checkout completion using Shopify API is not possible as whole checkout API will be removed from Shopify. To redirect user from Shopify thank you page to DancingGoat, following javascript tag for redirection needs to be inserted into Shopify order status page (you can set it in Shopify administration via `Settings` -> `Checkout` -> `Order status page` ->`Additional scripts`):
-```html
-<script>
+The next step from shopping cart preview page(`Shopify.ShoppingCartPage`) is redirection to official Shopify store checkout page where user can complete the checkout and create the order. Checkout completion using Shopify API is not possible as whole checkout API will be removed from Shopify. To redirect user from Shopify thank you page to DancingGoat, custom [web pixel](https://shopify.dev/docs/apps/build/marketing-analytics/pixels) needs to be created. This can be done in Shopify administration via `Settings` -> `Customer events` -> `Add custom pixel`. Fill in the name and in the `Customer privacy` section, set `Permission` to "Not required" and `Data sale` to "Data collected does not qualify as data sale" since this pixel won't collect any customer data. Its only purpose is to redirect user back to DancingGoat thank you page. Then insert following javacript code to `Code` section:
+```javascript
+analytics.subscribe('checkout_completed', (event) => {
 	/// Replace with delay in ms
 	const redirectionDelay = 5000;
 	/// Replace with absolute URL of your XByK thank you page
 	const thankYouPageUrl = "https://my-dancing-goat.com/thank-you";
-    window.setTimeout(function(){
-            var urlPart = "/checkouts/";
-            var currentUrl = window.location.href;
-            if (!currentUrl.includes(urlPart)) {
-                return;
-            }
-            var sourceId= currentUrl.split(urlPart)[1].split("/")[1];
-            window.location.href = thankYouPageUrl + "?sourceId=" + sourceId;
-        }, redirectionDelay);
-</script>
+    
+	window.setTimeout(function(){
+		var orderId = event.data.checkout.order.id;
+		window.location.href = thankYouPageUrl + "?orderId=" + orderId;
+	}, redirectionDelay);
+});
 ```
 This script will redirect the user to the Xperience by Kentico Thank you page after 5 seconds. You can adjust the timespan and URL by modifying the `redirectionDelay` and `thankYouPageUrl` constants, respectively. The redirection will occur exclusively from the Shopify thank you page, ensuring users can still check their order status in the future. Query parameter `sourceId` is then used to retrieve created order, update XByK contact information based on the order information and log purchase activity.
 

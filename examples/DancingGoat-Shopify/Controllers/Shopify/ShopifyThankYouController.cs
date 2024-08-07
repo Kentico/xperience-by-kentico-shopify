@@ -1,6 +1,5 @@
 ﻿using CMS.ContactManagement;
 using CMS.Globalization;
-using CMS.Helpers;
 
 using DancingGoat;
 using DancingGoat.Controllers.Shopify;

@@ -60,6 +60,9 @@ namespace Kentico.Xperience.Shopify.Config
             return websiteChannelConfig.Settings?.Find(x => x.ChannelName == currentChannel) ?? websiteChannelConfig.DefaultSetting;
         }
 
+        public bool AdminUISettingsUsed()
+            => !ShopifyConfigIsFilled(shopifyConfig);
+
         private ShopifyConfig? GetConfigFromSettings()
         {
             var settingsInfo = integrationSettingsProvider.Get()

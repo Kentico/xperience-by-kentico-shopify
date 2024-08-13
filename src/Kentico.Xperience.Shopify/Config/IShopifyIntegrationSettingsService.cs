@@ -19,5 +19,12 @@
         /// <see cref="ShopifyWebsiteChannelConfig"/> containing configuration for current website channel or default value if no configuration is found.
         /// </returns>
         ShopifyWebsiteChannelConfig? GetWebsiteChannelSettings();
+
+        /// <summary>
+        /// Check if settings from admin UI are being used. If not, values from appsettings.json or
+        /// user secrets are used.
+        /// </summary>
+        /// <returns>True if settings from admin UI are used. Otherwise False.</returns>
+        bool AdminUISettingsUsed();
     }
 }

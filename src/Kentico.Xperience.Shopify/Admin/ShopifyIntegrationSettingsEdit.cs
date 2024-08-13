@@ -47,7 +47,7 @@ namespace Kentico.Xperience.Shopify.Admin
         public override Task ConfigurePage()
         {
 
-            PageConfiguration.Headline = "It is recommended to use appsettings.json or user secrets to store API credentials. Use this primarly for developement. Values in appsettings.json/user secrets will override these values.";
+            PageConfiguration.Headline = "It is recommended to use appsettings.json or user secrets to store API credentials. Use this primarily for development. Values in appsettings.json/user secrets will override these values.";
 
             if (!settingsService.AdminUISettingsUsed())
             {

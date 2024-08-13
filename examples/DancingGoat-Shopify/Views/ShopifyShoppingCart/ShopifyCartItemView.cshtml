@@ -9,6 +9,29 @@
         <div class="cart-item-info">
             @Model.ItemName
         </div>
+        <div class="cart-item-info__price">
+            @if (!string.IsNullOrEmpty(Model.ItemListPrice))
+            {
+                <s>@Model.ItemListPrice</s>
+            }
+            <b>@Model.ItemPrice</b>
+        </div>
+        @if (Model.Coupons.Any())
+        {
+            <div class="cart-item-info__coupons">
+                @HtmlLocalizer["Coupons:"]
+                <b>
+                    @foreach (var coupon in Model.Coupons)
+                    {
+                        <span>@coupon</span>
+                    }
+                </b>
+            </div>
+        }
+        else
+        {
+            <br />
+        }
         <form asp-controller="ShopifyShoppingCart" asp-action="Update" asp-antiforgery="true" method="post">
             @Html.Kentico().PageData()
             <div class="cart-item-amount">

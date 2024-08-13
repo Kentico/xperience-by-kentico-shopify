@@ -31,6 +31,8 @@ namespace DancingGoat.Models.WebPage.Shopify.ShoppingCartPage
                     VariantGraphQLId = x.VariantGraphQLId,
                     CartItemId = x.ShopifyCartItemId,
                     ItemPrice = x.Price.FormatPrice(cart.Currency),
+                    ItemListPrice = x.DiscountedAmount < 1 ? string.Empty : (x.DiscountedAmount + x.Price).FormatPrice(cart.Currency),
+                    Coupons = x.DiscountCouponCodes ?? [],
                 }) ?? [],
                 ErrorMessages = errorMessages,
                 StorePageUrl = storePageUrl

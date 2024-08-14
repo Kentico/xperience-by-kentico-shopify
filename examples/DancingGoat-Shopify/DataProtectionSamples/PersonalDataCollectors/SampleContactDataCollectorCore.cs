@@ -21,8 +21,8 @@ namespace Samples.DancingGoat
     {
         private readonly IPersonalDataWriter writer;
         private readonly IInfoProvider<ActivityInfo> activityInfoProvider;
-        private readonly ICountryInfoProvider countryInfoProvider;
-        private readonly IStateInfoProvider stateInfoProvider;
+        private readonly IInfoProvider<CountryInfo> countryInfoProvider;
+        private readonly IInfoProvider<StateInfo> stateInfoProvider;
         private readonly IInfoProvider<ConsentAgreementInfo> consentAgreementInfoProvider;
         private readonly IInfoProvider<AccountContactInfo> accountContactInfoProvider;
         private readonly IInfoProvider<AccountInfo> accountInfoProvider;
@@ -326,8 +326,8 @@ namespace Samples.DancingGoat
         public SampleContactDataCollectorCore(
             IPersonalDataWriter writer,
             IInfoProvider<ActivityInfo> activityInfoProvider,
-            ICountryInfoProvider countryInfoProvider,
-            IStateInfoProvider stateInfoProvider,
+            IInfoProvider<CountryInfo> countryInfoProvider,
+            IInfoProvider<StateInfo> stateInfoProvider,
             IInfoProvider<ConsentAgreementInfo> consentAgreementInfoProvider,
             IInfoProvider<AccountContactInfo> accountContactInfoProvider,
             IInfoProvider<AccountInfo> accountInfoProvider,

@@ -1,4 +1,5 @@
 ﻿using CMS.ContactManagement;
+using CMS.DataEngine;
 using CMS.Globalization;
 
 using DancingGoat;
@@ -21,14 +22,14 @@ namespace DancingGoat.Controllers.Shopify
     public class ShopifyThankYouController : Controller
     {
         private readonly IShopifyOrderService orderService;
-        private readonly ICountryInfoProvider countryInfoProvider;
+        private readonly IInfoProvider<CountryInfo> countryInfoProvider;
         private readonly IShoppingService shoppingService;
         private readonly IEcommerceActivityLogger activityLogger;
 
 
         public ShopifyThankYouController(
             IShopifyOrderService orderService,
-            ICountryInfoProvider countryInfoProvider,
+            IInfoProvider<CountryInfo> countryInfoProvider,
             IShoppingService shoppingService,
             IEcommerceActivityLogger activityLogger)
         {

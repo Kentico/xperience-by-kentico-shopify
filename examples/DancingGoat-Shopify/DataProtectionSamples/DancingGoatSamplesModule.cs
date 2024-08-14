@@ -35,10 +35,10 @@ namespace Samples.DancingGoat
         private IInfoProvider<ConsentAgreementInfo> consentAgreementInfoProvider;
         private IInfoProvider<BizFormInfo> bizFormInfoProvider;
         private IInfoProvider<AccountContactInfo> accountContactInfoProvider;
-        private ISettingsKeyInfoProvider settingsKeyInfoProvider;
+        private IInfoProvider<SettingsKeyInfo> settingsKeyInfoProvider;
         private IInfoProvider<ActivityInfo> activityInfoProvider;
-        private ICountryInfoProvider countryInfoProvider;
-        private IStateInfoProvider stateInfoProvider;
+        private IInfoProvider<CountryInfo> countryInfoProvider;
+        private IInfoProvider<StateInfo> stateInfoProvider;
         private IInfoProvider<AccountInfo> accountInfoProvider;
 
 
@@ -62,10 +62,10 @@ namespace Samples.DancingGoat
             consentAgreementInfoProvider = Service.Resolve<IInfoProvider<ConsentAgreementInfo>>();
             bizFormInfoProvider = Service.Resolve<IInfoProvider<BizFormInfo>>();
             accountContactInfoProvider = Service.Resolve<IInfoProvider<AccountContactInfo>>();
-            settingsKeyInfoProvider = Service.Resolve<ISettingsKeyInfoProvider>();
+            settingsKeyInfoProvider = Service.Resolve<IInfoProvider<SettingsKeyInfo>>();
             activityInfoProvider = Service.Resolve<IInfoProvider<ActivityInfo>>();
-            countryInfoProvider = Service.Resolve<ICountryInfoProvider>();
-            stateInfoProvider = Service.Resolve<IStateInfoProvider>();
+            countryInfoProvider = Service.Resolve<IInfoProvider<CountryInfo>>();
+            stateInfoProvider = Service.Resolve<IInfoProvider<StateInfo>>();
             accountInfoProvider = Service.Resolve<IInfoProvider<AccountInfo>>();
 
             InitializeSamples();

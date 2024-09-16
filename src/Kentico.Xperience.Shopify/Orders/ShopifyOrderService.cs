@@ -3,7 +3,6 @@ using Kentico.Xperience.Shopify.Products;
 
 using ShopifySharp;
 using ShopifySharp.Factories;
-using ShopifySharp.Filters;
 
 namespace Kentico.Xperience.Shopify.Orders
 {

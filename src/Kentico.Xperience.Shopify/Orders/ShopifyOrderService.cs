@@ -9,7 +9,7 @@ namespace Kentico.Xperience.Shopify.Orders
 {
     internal class ShopifyOrderService : ShopifyServiceBase, IShopifyOrderService
     {
-        private const string ORDERS_FIELDS = "customer,source_identifier,name,order_status_url,id,line_items,total_price_set,presentment_currency";
+        private const string ORDER_FIELDS = "customer,source_identifier,name,order_status_url,id,line_items,total_price_set,presentment_currency";
 
         private readonly IOrderService orderService;
 
@@ -22,22 +22,16 @@ namespace Kentico.Xperience.Shopify.Orders
 
 
         /// <inheritdoc/>
-        public async Task<Order?> GetRecentOrder(string sourceId)
+        public async Task<Order?> GetOrder(long orderId)
         {
-            if (string.IsNullOrEmpty(sourceId))
+            if (orderId == 0)
             {
                 return null;
             }
 
-            var filter = new OrderListFilter()
-            {
-                CreatedAtMin = DateTime.Now.AddDays(-1).Date,
-                Fields = ORDERS_FIELDS
-            };
-
-            var result = await orderService.ListAsync(filter);
-
-            return result.Items.FirstOrDefault(x => x.SourceIdentifier.Equals(sourceId, StringComparison.Ordinal));
+            return await TryCatch<Order?>(
+                async () => await orderService.GetAsync(orderId, ORDER_FIELDS),
+                () => null);
         }
     }
 }

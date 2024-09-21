@@ -222,18 +222,18 @@ namespace Kentico.Xperience.Shopify.Products
         private ProductVariantListModel GetVariantListModel(ProductVariant variant, string currencyCode, Dictionary<long, InventoryItem> inventoryItems)
         {
             var prices = variant.PresentmentPrices.First();
-            bool onStock = true;
+            bool inStock = true;
             if (inventoryItems.TryGetValue(variant.InventoryItemId ?? 0, out var inventoryItem))
             {
-                onStock = !(inventoryItem.Tracked ?? false) || variant.InventoryQuantity > 0;
+                inStock = !(inventoryItem.Tracked ?? false) || variant.InventoryQuantity > 0;
             }
             return new ProductVariantListModel()
             {
                 PriceFormatted = prices.Price.Amount.FormatPrice(currencyCode),
                 ListPriceFormatted = prices.CompareAtPrice?.Amount.FormatPrice(currencyCode),
-                StockCssClass = onStock ? "available" : "unavailable",
-                StockStatusText = onStock ? "On stock" : "Out of stock",
-                Available = onStock,
+                StockCssClass = inStock ? "available" : "unavailable",
+                StockStatusText = inStock ? "In stock" : "Out of stock",
+                Available = inStock,
                 MerchandiseID = variant.AdminGraphQLAPIId,
             };
         }

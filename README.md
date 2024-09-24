@@ -63,8 +63,8 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
    {
      "CMSShopifyConfig": {
        "ShopifyUrl": "https://your-shopify-store-url.com/",
-       "AdminApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-       "StorefrontApiToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+       "AdminApiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+       "StorefrontApiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
        "StorefrontApiVersion": "YYYY-MM"
      }
    }
@@ -74,8 +74,8 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
    | Setting | Description |
    | -------------------- | ------------------------------------------------------------------------------------- |
    | ShopifyUrl | URL of the Shopify store |
-   | AdminApiToken | Access token for the Admin API calls |
-   | StorefrontApiToken | Access token for the Storefront API calls |
+   | AdminApiKey | Access token for the Admin API calls |
+   | StorefrontApiKey | Access token for the Storefront API calls |
    | StorefrontApiVersion | Storefront API version that will be used in API calls. Must use the format: `YYYY-MM` |
 
    Note: The `StorefrontApiVersion` refers to the version of the Shopify Storefront API you are using. You can find the available versions and their release dates in the [Shopify API versioning documentation](https://shopify.dev/docs/api/usage/versioning).

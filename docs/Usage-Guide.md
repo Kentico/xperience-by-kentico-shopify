@@ -88,12 +88,12 @@ Step-by-step tutorial:
 	}
 
 	function deleteCookie(cookieName) {
-	document.cookie =
-		cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 	}
 
 	const orderCookieName = "orderId";
 	const orderId = getCookie(orderCookieName);
+
 	if (orderId) {
 		deleteCookie(orderCookieName);
 

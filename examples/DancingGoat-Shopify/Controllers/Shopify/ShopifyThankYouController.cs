@@ -50,6 +50,7 @@ namespace DancingGoat.Controllers.Shopify
                 UpdateCurrentContact(order);
                 LogPurchaseActivity(order, cart);
             }
+
             if (order == null)
             {
                 return NotFound();

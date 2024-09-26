@@ -4,7 +4,7 @@
 2. [Shopify integration setup](#setup)
 
 ## Shopify integration
-For the communication between Shopify and XByK, GraphQL Storefront API and REST Admin API is used. For the REST Admin API communication,  [ShopifySharp](https://www.nuget.org/packages/ShopifySharp/) NuGet package is used as it provides all the necessary methods used in this integration. All the available Shopify APIs are documented [here](https://shopify.dev/docs/api).
+For the communication between Shopify and XbyK, GraphQL Storefront API and REST Admin API is used. For the REST Admin API communication,  [ShopifySharp](https://www.nuget.org/packages/ShopifySharp/) NuGet package is used as it provides all the necessary methods used in this integration. All the available Shopify APIs are documented [here](https://shopify.dev/docs/api).
 Class library consists of 2 main parts - Shopify products synchronization and the e-commerce integration. In this repository, there is also an example of standalone product listing widget.
 
 ### Product listing widget
@@ -97,12 +97,12 @@ Step-by-step tutorial:
 	if (orderId) {
 		deleteCookie(orderCookieName);
 
-		/// Replace with absolute URL of your XByK thank you page
+		/// Replace with absolute URL of your XbyK thank you page
 		const thankYouPageUrl = "https://my-dancing-goat.com/thank-you";
 		window.location.href = thankYouPageUrl + "?orderId=" + orderId;
 	}
 	```
-	When the order is completed and user will go back to the store(for example by pressing the 'Continue shopping' button), this javascript will be executed and if `orderId` cookie exists, user will be redirected back to the DancingGoat site and the cookie will be removed(to prevent further redirections). Query parameter `orderId` is then used to retrieve created order, update XByK contact information based on the order information and log purchase activity.
+	When the order is completed and user will go back to the store(for example by pressing the 'Continue shopping' button), this javascript will be executed and if `orderId` cookie exists, user will be redirected back to the DancingGoat site and the cookie will be removed(to prevent further redirections). Query parameter `orderId` is then used to retrieve created order, update XbyK contact information based on the order information and log purchase activity.
 
 3. Last step is to add this javascript to the layout. Find `theme.liquid` file inside `layout` folder and add file created in previous step to the `head` HTML element.
 	```html

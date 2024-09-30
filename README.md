@@ -159,6 +159,12 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
 
 10. In the Xperience admin UI, open the [Shopify integration](#shopify-configuration-module) application and on the **Shopify currencies formats** tab and add the required currencies for your store. For currency codes, use the values from [CurrencyCodeEnum](https://shopify.dev/docs/api/storefront/2024-01/enums/CurrencyCode). To format the output, we recommend using [custom numeric format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings).
 
+11. When using NuGet package and generating code files using [code generator](https://docs.kentico.com/x/5IbWCQ), Shopify classes need to be excluded since they are already included inside the NuGet package. To achive this, use `--exclude Shopify.*` parameter. For example:
+    
+    ```powershell
+    dotnet run -- --kxp-codegen --type "ReusableContentTypes" --exclude "Shopify.*"
+    ```
+
 ## Full Instructions
 
 View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.

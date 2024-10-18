@@ -3,19 +3,15 @@ name: "CI: Build and Test"
 on:
   push:
     branches: [main, feat/automatic_E2E_testing]
-    paths:
-      - "**.cs"
-      - "**.tsx"
-      - "**.js"
-      - "**.csproj"
-      - "**.props"
-      - "**.targets"
-      - "**.sln"
-      - "**/Client/**/*.json"
-      # Added to check if pipeline is working
-      - "/scripts/**/*.psm1"
-      - "/scripts/**/*.ps1"
-      - "**/ci.yml"
+    #paths:
+    #  - "**.cs"
+    #  - "**.tsx"
+    #  - "**.js"
+    #  - "**.csproj"
+    #  - "**.props"
+    #  - "**.targets"
+    #  - "**.sln"
+    #  - "**/Client/**/*.json"
   pull_request:
     branches: [main]
     paths:

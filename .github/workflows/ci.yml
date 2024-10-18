@@ -12,6 +12,10 @@ on:
       - "**.targets"
       - "**.sln"
       - "**/Client/**/*.json"
+      # Added to check if pipeline is working
+      - "/scripts/**/*.psm1"
+      - "/scripts/**/*.ps1"
+      - "**/ci.yml"
   pull_request:
     branches: [main]
     paths:

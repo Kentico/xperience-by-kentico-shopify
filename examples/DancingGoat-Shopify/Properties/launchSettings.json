@@ -14,6 +14,14 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:13268"
+    },
+    "EcommerceShopify.WebCI": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:14065",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "CI"
+      }
     }
   },
   "iisSettings": {

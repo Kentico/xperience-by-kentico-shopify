@@ -7,7 +7,7 @@ Import-Module (Resolve-Path Utilities) `
 
 $projectPath = Get-WebProjectPath
 $repositoryPath = Join-Path $projectPath "App_Data/CIRepository"
-$launchProfile = $Env:ASPNETCORE_ENVIRONMENT -eq "CI" ? "EcommerceShopify.WebCI" : "IIS Express"
+$launchProfile = $Env:ASPNETCORE_ENVIRONMENT -eq "CI" ? "EcommerceShopify.WebCI" : "DancingGoat"
 $configuration = $Env:ASPNETCORE_ENVIRONMENT -eq "CI" ? "Release" : "Debug"
 
 $command = "dotnet run " + `

@@ -2,7 +2,7 @@ name: "CI: Build and Test"
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/automatic_E2E_testing]
     paths:
       - "**.cs"
       - "**.tsx"

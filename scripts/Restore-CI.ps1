@@ -9,13 +9,14 @@ $projectPath = Get-WebProjectPath
 $repositoryPath = Join-Path $projectPath "App_Data/CIRepository"
 $launchProfile = $Env:ASPNETCORE_ENVIRONMENT -eq "CI" ? "EcommerceShopify.WebCI" : "DancingGoat"
 $configuration = $Env:ASPNETCORE_ENVIRONMENT -eq "CI" ? "Release" : "Debug"
+$dbName = $Env:DB_NAME
 
 $turnOffCI = "sqlcmd " + `
             "-S localhost " + `
-            "-d master " + `
+            "-d $dbName " + `
             "-U `"sa`" " + `
             "-P `"Pass@12345`" " + `
-            "-Q `"UPDATE XByK_DancingGoat_Shopify_UAT.dbo.CMS_SettingsKey SET KeyValue = N'False' WHERE KeyName = N'CMSEnableCI'`""
+            "-Q `"UPDATE CMS_SettingsKey SET KeyValue = N'False' WHERE KeyName = N'CMSEnableCI'`""
 
 $updateCommand = "dotnet run " + `
     "--launch-profile $launchProfile " + `

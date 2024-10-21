@@ -39,6 +39,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_NOLOGO: 1
       PROJECT_NAME: DancingGoat
+      DB_NAME: XByK_DancingGoat_Shopify_UAT
       ASPNETCORE_URLS: https://localhost:14065
       STATUS_CHECK_URL: https://localhost:14065/status
 
@@ -90,19 +91,19 @@ jobs:
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "RESTORE DATABASE [XByK_DancingGoat_Shopify_UAT] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT.mdf', MOVE 'XByK_DancingGoat_Shopify_log' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT_log.ldf'"
+            -Q "RESTORE DATABASE [${{env.DB_NAME}}] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify' TO '/var/opt/mssql/data/${{env.DB_NAME}}.mdf', MOVE 'XByK_DancingGoat_Shopify_log' TO '/var/opt/mssql/data/${{env.DB_NAME}}_log.ldf'"
           sqlcmd `
             -S localhost `
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "SELECT KeyValue FROM XByK_DancingGoat_Shopify_UAT.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
+            -Q "SELECT KeyValue FROM ${{env.DB_NAME}}.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
           sqlcmd `
             -S localhost `
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "SELECT TOP 1 EventTime, EventDescription FROM XByK_DancingGoat_Shopify_UAT.dbo.CMS_EventLog ORDER BY EventTime DESC"
+            -Q "SELECT TOP 1 EventTime, EventDescription FROM ${{env.DB_NAME}}.dbo.CMS_EventLog ORDER BY EventTime DESC"
         if: endsWith(env.DATABASE_BACKUP_FILENAME, '.bak')
 
       - name: Restore Database .bacpac
@@ -110,7 +111,7 @@ jobs:
           sqlpackage `
             /a:Import `
             /tsn:localhost `
-            /tdn:XByK_DancingGoat_Shopify_UAT `
+            /tdn:${{env.DB_NAME}} `
             /tu:sa `
             /tp:Pass@12345 `
             /sf:"./database/${{ env.DATABASE_BACKUP_FILENAME }}" `

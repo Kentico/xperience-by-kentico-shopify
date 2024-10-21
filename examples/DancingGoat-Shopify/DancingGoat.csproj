@@ -23,6 +23,9 @@
   <PropertyGroup Condition="'$(SeparatedAdmin)' == 'true'">
     <DefineConstants>$(DefineConstants);SEPARATED_ADMIN</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="kentico.xperience.admin" Condition="'$(SeparatedAdmin)' == 'false'" />
     <PackageReference Include="kentico.xperience.azurestorage" />

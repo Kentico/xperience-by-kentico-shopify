@@ -119,7 +119,7 @@ jobs:
 
       - name: Upgrade XbK to latest version
         run: |
-          dotnet run --no-build --kxp-update --project ./examples/DancingGoat-Shopify
+          dotnet run --configuration Release --no-build --kxp-update --skip-confirmation --project ./examples/DancingGoat-Shopify
 
       - name: Restore CI Repository
         working-directory: "./scripts"

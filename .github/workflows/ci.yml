@@ -84,32 +84,25 @@ jobs:
         # TODO: Heslo v otevřené podobě?
         run: |
           docker exec sql mkdir /var/opt/mssql/backup
-          docker exec -it sql ls /var/opt/mssql/backup
           docker cp "./database/${{ env.DATABASE_BACKUP_FILENAME }}" sql:/var/opt/mssql/backup
           sqlcmd `
             -S localhost `
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "SELECT name FROM master.dbo.sysdatabases"
+            -Q "RESTORE DATABASE [XByK_DancingGoat_Shopify_UAT] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify_UAT' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT.mdf', MOVE 'XByK_DancingGoat_Shopify_UAT_log' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT_log.ldf'"
           sqlcmd `
             -S localhost `
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "SELECT KeyValue FROM XByK_DancingGoat_Shopify.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
+            -Q "SELECT KeyValue FROM XByK_DancingGoat_Shopify_UAT.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
           sqlcmd `
             -S localhost `
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "RESTORE DATABASE [XByK_DancingGoat_Shopify] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify.mdf', MOVE 'XByK_DancingGoat_Shopify_log' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_log.ldf'"
-          sqlcmd `
-            -S localhost `
-            -d master `
-            -U "sa" `
-            -P "Pass@12345" `
-            -Q "SELECT KeyValue FROM XByK_DancingGoat_Shopify.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
+            -Q "SELECT TOP 1 EventTime, EventDescription FROM XByK_DancingGoat_Shopify_UAT.dbo.CMS_EventLog ORDER BY EventTime DESC"
         if: endsWith(env.DATABASE_BACKUP_FILENAME, '.bak')
 
       - name: Restore Database .bacpac
@@ -117,7 +110,7 @@ jobs:
           sqlpackage `
             /a:Import `
             /tsn:localhost `
-            /tdn:XByK_DancingGoat_Shopify `
+            /tdn:XByK_DancingGoat_Shopify_UAT `
             /tu:sa `
             /tp:Pass@12345 `
             /sf:"./database/${{ env.DATABASE_BACKUP_FILENAME }}" `

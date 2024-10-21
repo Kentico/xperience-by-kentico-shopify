@@ -96,7 +96,7 @@ jobs:
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "SELECT KeyValue FROM CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
+            -Q "SELECT KeyValue FROM XByK_DancingGoat_Shopify.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
         if: endsWith(env.DATABASE_BACKUP_FILENAME, '.bak')
 
       - name: Restore Database .bacpac

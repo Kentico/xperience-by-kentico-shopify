@@ -84,7 +84,20 @@ jobs:
         # TODO: Heslo v otevřené podobě?
         run: |
           docker exec sql mkdir /var/opt/mssql/backup
+          docker exec -it sql ls /var/opt/mssql/backup
           docker cp "./database/${{ env.DATABASE_BACKUP_FILENAME }}" sql:/var/opt/mssql/backup
+          sqlcmd `
+            -S localhost `
+            -d master `
+            -U "sa" `
+            -P "Pass@12345" `
+            -Q "SELECT name FROM master.dbo.sysdatabases"
+          sqlcmd `
+            -S localhost `
+            -d master `
+            -U "sa" `
+            -P "Pass@12345" `
+            -Q "SELECT KeyValue FROM XByK_DancingGoat_Shopify.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
           sqlcmd `
             -S localhost `
             -d master `

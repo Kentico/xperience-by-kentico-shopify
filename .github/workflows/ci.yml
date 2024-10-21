@@ -90,7 +90,7 @@ jobs:
             -d master `
             -U "sa" `
             -P "Pass@12345" `
-            -Q "RESTORE DATABASE [XByK_DancingGoat_Shopify_UAT] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify_UAT' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT.mdf', MOVE 'XByK_DancingGoat_Shopify_UAT_log' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT_log.ldf'"
+            -Q "RESTORE DATABASE [XByK_DancingGoat_Shopify_UAT] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT.mdf', MOVE 'XByK_DancingGoat_Shopify_log' TO '/var/opt/mssql/data/XByK_DancingGoat_Shopify_UAT_log.ldf'"
           sqlcmd `
             -S localhost `
             -d master `

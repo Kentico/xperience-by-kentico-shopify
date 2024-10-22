@@ -39,7 +39,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_NOLOGO: 1
       PROJECT_NAME: DancingGoat
-      DB_NAME: XByK_DancingGoat_Shopify_UAT
+      DB_NAME: XByK_DancingGoat_Shopify
       ASPNETCORE_URLS: https://localhost:14065
       STATUS_CHECK_URL: https://localhost:14065/status
 

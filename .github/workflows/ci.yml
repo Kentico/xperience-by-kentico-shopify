@@ -92,18 +92,6 @@ jobs:
             -U "sa" `
             -P "Pass@12345" `
             -Q "RESTORE DATABASE [${{env.DB_NAME}}] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify' TO '/var/opt/mssql/data/${{env.DB_NAME}}.mdf', MOVE 'XByK_DancingGoat_Shopify_log' TO '/var/opt/mssql/data/${{env.DB_NAME}}_log.ldf'"
-          sqlcmd `
-            -S localhost `
-            -d master `
-            -U "sa" `
-            -P "Pass@12345" `
-            -Q "SELECT KeyValue FROM ${{env.DB_NAME}}.dbo.CMS_SettingsKey WHERE KeyName = 'CMSDBVersion'"
-          sqlcmd `
-            -S localhost `
-            -d master `
-            -U "sa" `
-            -P "Pass@12345" `
-            -Q "SELECT TOP 1 EventTime, EventDescription FROM ${{env.DB_NAME}}.dbo.CMS_EventLog ORDER BY EventTime DESC"
         if: endsWith(env.DATABASE_BACKUP_FILENAME, '.bak')
 
       - name: Restore Database .bacpac
@@ -121,7 +109,7 @@ jobs:
       - name: Restore CI Repository
         working-directory: "./scripts"
         run: |
-          ./Restore-CI.ps1
+          ./UpdateAndRestoreCI.ps1
 
       - name: Publish Application
         run: |
@@ -148,8 +136,6 @@ jobs:
           # Run the ASP.NET Core app as a background job
           cd ./publish
           Start-Job -ScriptBlock { dotnet ./${{ env.PROJECT_NAME }}.dll } -Name ${{ env.PROJECT_NAME }}
-          Start-Sleep -Seconds 10
-          Get-Job
           Receive-Job -Name ${{ env.PROJECT_NAME }}
           cd ../
 

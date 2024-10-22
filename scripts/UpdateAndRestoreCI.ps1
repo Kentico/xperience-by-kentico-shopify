@@ -5,18 +5,24 @@ Import-Module (Resolve-Path Utilities) `
     Write-Status `
     -Force
 
+function SetCIValue {
+    param(
+        [string]$ciValue
+    )
+
+    $toggleCICommand = "sqlcmd " + `
+            "-S localhost " + `
+            "-d $Env:DB_NAME " + `
+            "-U `"sa`" " + `
+            "-P `"Pass@12345`" " + `
+            "-Q `"UPDATE CMS_SettingsKey SET KeyValue = N'$ciValue' WHERE KeyName = N'CMSEnableCI'`""
+    Invoke-ExpressionWithException $toggleCICommand
+}
+
 $projectPath = Get-WebProjectPath
 $repositoryPath = Join-Path $projectPath "App_Data/CIRepository"
 $launchProfile = $Env:ASPNETCORE_ENVIRONMENT -eq "CI" ? "EcommerceShopify.WebCI" : "DancingGoat"
 $configuration = $Env:ASPNETCORE_ENVIRONMENT -eq "CI" ? "Release" : "Debug"
-$dbName = $Env:DB_NAME
-
-$turnOffCI = "sqlcmd " + `
-            "-S localhost " + `
-            "-d $dbName " + `
-            "-U `"sa`" " + `
-            "-P `"Pass@12345`" " + `
-            "-Q `"UPDATE CMS_SettingsKey SET KeyValue = N'False' WHERE KeyName = N'CMSEnableCI'`""
 
 $updateCommand = "dotnet run " + `
     "--launch-profile $launchProfile " + `
@@ -34,9 +40,10 @@ $restoreCommand = "dotnet run " + `
     "--project $projectPath " + `
     "--kxp-ci-restore"
 
-Invoke-ExpressionWithException $turnOffCI
+SetCIValue 'False'
 Invoke-ExpressionWithException $updateCommand
 Invoke-ExpressionWithException $restoreCommand
+SetCIValue 'True'
 
 Write-Host "`n"
 Write-Status 'CI files processed'

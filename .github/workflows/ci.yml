@@ -148,6 +148,8 @@ jobs:
           # Run the ASP.NET Core app as a background job
           cd ./publish
           Start-Job -ScriptBlock { dotnet ./${{ env.PROJECT_NAME }}.dll } -Name ${{ env.PROJECT_NAME }}
+          Start-Sleep -Seconds 10
+          Get-Job
           Receive-Job -Name ${{ env.PROJECT_NAME }}
           cd ../
 

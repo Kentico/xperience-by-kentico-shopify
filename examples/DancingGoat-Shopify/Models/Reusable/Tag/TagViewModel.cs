@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using CMS.ContentEngine;
-using Tag = CMS.ContentEngine.Tag;
+﻿using Tag = CMS.ContentEngine.Tag;
 
 namespace DancingGoat.Models
 {

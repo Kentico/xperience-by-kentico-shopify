@@ -39,4 +39,9 @@
     <ProjectReference Include="..\..\src\Kentico.Xperience.Shopify.Rcl\Kentico.Xperience.Shopify.Rcl.csproj" />
     <ProjectReference Include="..\..\src\Kentico.Xperience.Shopify\Kentico.Xperience.Shopify.csproj" />
   </ItemGroup>
+
+	<Target Name="UpgradeXbK" AfterTargets="Rebuild">
+		<Exec Command="dotnet run --no-build -- --kxp-update --skip-confirmation" />
+		<Exec Command="dotnet run --no-build -- --kxp-codegen --type ReusableContentTypes --namespace Shopify --location ../../src/Kentico.Xperience.Shopify/{type}/{dataClassNamespace}/{name}/ --skip-confirmation --include Shopify.*" />
+	</Target>
 </Project>

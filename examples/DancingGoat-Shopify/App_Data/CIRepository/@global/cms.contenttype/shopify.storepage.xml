@@ -47,6 +47,7 @@
   <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
   <ClassIconClass>xp-market</ClassIconClass>
   <ClassName>Shopify.StorePage</ClassName>
+  <ClassShortName>ShopifyStorePage</ClassShortName>
   <ClassTableName>Shopify_StorePage</ClassTableName>
   <ClassType>Content</ClassType>
   <ClassWebPageHasUrl>True</ClassWebPageHasUrl>

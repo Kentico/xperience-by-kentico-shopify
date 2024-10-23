@@ -42,6 +42,10 @@ jobs:
       DB_NAME: XByK_DancingGoat_Shopify
       ASPNETCORE_URLS: https://localhost:14065
       STATUS_CHECK_URL: https://localhost:14065/status
+      CMSSHOPIFYCONFIG__ADMINAPIKEY: ${{ secrets.ADMIN_API_KEY }}
+      CMSSHOPIFYCONFIG__SHOPIFYURL: ${{ secrets.SHOPIFY_URL }}
+      CMSSHOPIFYCONFIG__STOREFRONTAPIKEY: ${{ secrets.STOREFRONT_API_KEY }}
+      CMSSHOPIFYCONFIG__STOREFRONTAPIVERSION: ${{ secrets.STOREFRONT_API_VERSION }}
 
     steps:
       - uses: actions/checkout@v4

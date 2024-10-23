@@ -23,6 +23,7 @@
   <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
   <ClassIconClass>xp-shopping-cart</ClassIconClass>
   <ClassName>Shopify.ShoppingCartPage</ClassName>
+  <ClassShortName>ShopifyShoppingCartPage</ClassShortName>
   <ClassTableName>Shopify_ShoppingCartPage</ClassTableName>
   <ClassType>Content</ClassType>
   <ClassWebPageHasUrl>True</ClassWebPageHasUrl>

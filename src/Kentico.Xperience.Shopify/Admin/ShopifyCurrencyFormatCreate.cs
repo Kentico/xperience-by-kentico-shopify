@@ -21,9 +21,9 @@ namespace Kentico.Xperience.Shopify.Admin
         /// </summary>
         /// <param name="formComponentMapper">The form component mapper.</param>
         /// <param name="formDataBinder">The form data binder.</param>
-        /// <param name="pageUrlGenerator">The page URL generator.</param>
-        public ShopifyCurrencyFormatCreate(IFormComponentMapper formComponentMapper, IFormDataBinder formDataBinder, IPageUrlGenerator pageUrlGenerator)
-            : base(formComponentMapper, formDataBinder, pageUrlGenerator)
+        /// <param name="pageLinkGenerator">The page link generator.</param>
+        public ShopifyCurrencyFormatCreate(IFormComponentMapper formComponentMapper, IFormDataBinder formDataBinder, IPageLinkGenerator pageLinkGenerator)
+            : base(formComponentMapper, formDataBinder, pageLinkGenerator)
         {
         }
 

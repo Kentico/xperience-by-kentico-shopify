@@ -5,7 +5,7 @@ using Kentico.Xperience.Shopify.Config;
 using Microsoft.Extensions.Logging;
 
 using ShopifySharp.Credentials;
-using ShopifySharp.Infrastructure;
+using ShopifySharp;
 
 namespace Kentico.Xperience.Shopify.Products
 {

@@ -829,8 +829,8 @@
       },
       "System.Text.Json": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "OdrZO2WjkiEG6ajEFRABTRCi/wuXQPxeV6g8xvUJqdxMvvuCCEk86zPla8UiIQJz3durtUEbNyY/3lIhS0yZvQ==",
+        "resolved": "8.0.4",
+        "contentHash": "bAkhgDJ88XTsqczoxEMliSrpijKZHhbJQldhAmObj/RbrN3sU5dcokuXmWJWsdQAhiMJ9bTayWsL1C9fbbCRhw==",
         "dependencies": {
           "System.Text.Encodings.Web": "8.0.0"
         }
@@ -869,8 +869,8 @@
           "Kentico.Xperience.Admin": "[29.5.3, )",
           "Kentico.Xperience.Core": "[29.5.3, )",
           "Kentico.Xperience.Ecommerce.Common": "[1.0.0, )",
-          "ShopifySharp": "[6.17.0, )",
-          "ShopifySharp.Extensions.DependencyInjection": "[1.6.0, )",
+          "ShopifySharp": "[6.19.0, )",
+          "ShopifySharp.Extensions.DependencyInjection": "[1.7.0, )",
           "System.Configuration.ConfigurationManager": "[8.0.0, )",
           "System.Linq.Async": "[6.0.1, )"
         }
@@ -958,22 +958,22 @@
       },
       "ShopifySharp": {
         "type": "CentralTransitive",
-        "requested": "[6.17.0, )",
-        "resolved": "6.17.0",
-        "contentHash": "0yvFrbdvCaQyWHOXsd5Lp15mPpJDQ0G+PE8vJVRkMiH39nrEemI1i2UYrFTS8axgNndGJzB+E1XzctwELp7uug==",
+        "requested": "[6.19.0, )",
+        "resolved": "6.19.0",
+        "contentHash": "DZoplPz2y0f5o/yGlZ3A0vu7SD2nr+kVovgzHK2s0dpn7TyJOr5nJ//ugY9WQvWwEwao/OmMZMSqqKsRNNgxUg==",
         "dependencies": {
-          "Microsoft.Extensions.Http": "2.1.0",
-          "System.Text.Json": "7.0.3",
-          "newtonsoft.json": "13.0.2"
+          "Microsoft.Extensions.Http": "8.0.0",
+          "System.Text.Json": "8.0.4",
+          "newtonsoft.json": "13.0.3"
         }
       },
       "ShopifySharp.Extensions.DependencyInjection": {
         "type": "CentralTransitive",
-        "requested": "[1.6.0, )",
-        "resolved": "1.6.0",
-        "contentHash": "Hf0MexgLD6FbTcm81lFMPsw5kWK4XNEl7FPmYuoE9kPlWhWwR/wUWMYUpn6uSBTHCE+62yI2l+i7lsOb0zASnA==",
+        "requested": "[1.7.0, )",
+        "resolved": "1.7.0",
+        "contentHash": "EgXQWM0MtQV2g2QjbO4pNuWs0qne5y1SbJzVrj9sXsq+YR6aEQa1NHqFokT7NYNOAh+uhzh93xFLA7E6eY+K8w==",
         "dependencies": {
-          "ShopifySharp": "6.16.0",
+          "ShopifySharp": "6.19.0",
           "microsoft.extensions.dependencyinjection": "8.0.0"
         }
       },

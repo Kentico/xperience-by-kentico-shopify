@@ -27,10 +27,10 @@
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="kentico.xperience.admin" Condition="'$(SeparatedAdmin)' == 'false'" />
-    <PackageReference Include="kentico.xperience.azurestorage" />
-    <PackageReference Include="kentico.xperience.imageprocessing" />
-    <PackageReference Include="kentico.xperience.webapp" />
+    <PackageReference Include="kentico.xperience.admin" Condition="'$(SeparatedAdmin)' == 'false'" VersionOverride="$(XbyKVersion)" />
+    <PackageReference Include="kentico.xperience.azurestorage" VersionOverride="$(XbyKVersion)" />
+    <PackageReference Include="kentico.xperience.imageprocessing" VersionOverride="$(XbyKVersion)" />
+    <PackageReference Include="kentico.xperience.webapp" VersionOverride="$(XbyKVersion)" />
     <PackageReference Include="ShopifySharp" />
     <PackageReference Include="ShopifySharp.Extensions.DependencyInjection" />
     <PackageReference Include="System.Linq.Async" />

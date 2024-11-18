@@ -46,6 +46,7 @@ jobs:
       CMSSHOPIFYCONFIG__SHOPIFYURL: ${{ secrets.SHOPIFY_URL }}
       CMSSHOPIFYCONFIG__STOREFRONTAPIKEY: ${{ secrets.STOREFRONT_API_KEY }}
       CMSSHOPIFYCONFIG__STOREFRONTAPIVERSION: ${{ secrets.STOREFRONT_API_VERSION }}
+      CMSSHOPIFYCONFIG__STOREPASSWORD: ${{ secrets.SHOPIFY_STORE_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -56,6 +57,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install NPM
+        run: |
+          cd test/Playwright
+          npm ci
+          npx playwright install --with-deps
+          cd ../..
 
       - name: Install dependencies
         run: |
@@ -170,9 +183,21 @@ jobs:
               exit 1
           }
 
-          # TODO: Run the E2E tests
+          # Sleep for finishing initialization
+          Start-Sleep -Seconds 10
+
+          # Run the E2E tests
+          cd test/Playwright
+          npx playwright test
+          cd ../..
 
           # Stop the background ASP.NET Core application
           Receive-Job -Name ${{ env.PROJECT_NAME }}
           Stop-Job -Name ${{ env.PROJECT_NAME }}
           Remove-Job -Name ${{ env.PROJECT_NAME }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: ./test/Playwright/playwright-report/
+          retention-days: 30

@@ -199,5 +199,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: playwright-report
+          if: ${{ always() }}
           path: ./test/Playwright/playwright-report/
           retention-days: 30

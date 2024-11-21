@@ -18,12 +18,12 @@ export class CheckoutPage extends BasePage {
   constructor(page: Page) {
     super(page);
 
-    this.$firstName = page.locator('#TextField0[name="firstName"]');
-    this.$lastName = page.locator('#TextField1[name="lastName"]');
-    this.$email = page.locator('input[name="email"]');
-    this.$address = page.locator('#TextField2[name="address1"]');
-    this.$city = page.locator('#TextField5[name="city"]');
-    this.$psc = page.locator('#TextField4[name="postalCode"]');
+    this.$firstName = page.locator('#shippingAddressForm input[placeholder="First name (optional)"]');
+    this.$lastName = page.locator('#shippingAddressForm input[placeholder="Last name"]');
+    this.$email = page.locator('input[placeholder="Email or mobile phone number"]');
+    this.$address = page.locator('#shippingAddressForm input[placeholder="Address"]');
+    this.$city = page.locator('#shippingAddressForm input[placeholder="City"]');
+    this.$psc = page.locator('#shippingAddressForm input[placeholder="Postal code"]');
     this.$country = page.locator('select[name="countryCode"]');
     this.$shippingMethods = page.locator("#shipping_methods");
     this.$cardNumber = page

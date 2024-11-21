@@ -46,6 +46,7 @@ jobs:
       CMSSHOPIFYCONFIG__SHOPIFYURL: ${{ secrets.SHOPIFY_URL }}
       CMSSHOPIFYCONFIG__STOREFRONTAPIKEY: ${{ secrets.STOREFRONT_API_KEY }}
       CMSSHOPIFYCONFIG__STOREFRONTAPIVERSION: ${{ secrets.STOREFRONT_API_VERSION }}
+      CMSSHOPIFYCONFIG__STOREPASSWORD: ${{ secrets.SHOPIFY_STORE_PASSWORD }}
       XPERIENCE_BY_KENTICO_LICENSE: eyJEYXRhIjoie1x1MDAyMnRpZXJcdTAwMjI6XHUwMDIyQWR2YW5jZWRcdTAwMjIsXHUwMDIybGljZW5zZVx1MDAyMjpudWxsLFx1MDAyMmxpbWl0YXRpb25zXHUwMDIyOntcdTAwMjJjaGFubmVsc1x1MDAyMjo1LFx1MDAyMm1pY3JvQ2hhbm5lbHNcdTAwMjI6NX0sXHUwMDIya2V5XHUwMDIyOntcdTAwMjJpZFx1MDAyMjpcdTAwMjJlZjdmZTczZC1mNzI4LTQzOTYtOTQ3MS0yZGFhOTlkM2NlOWZcdTAwMjIsXHUwMDIydmVyc2lvblx1MDAyMjpcdTAwMjIxXHUwMDIyLFx1MDAyMmlzc3VlZERhdGVVdGNcdTAwMjI6XHUwMDIyMjAyNC0xMC0yMVQxMjoxMzo1My42NDA3NDczWlx1MDAyMixcdTAwMjJleHBpcmF0aW9uRGF0ZVV0Y1x1MDAyMjpcdTAwMjIyMDI1LTEwLTIwVDEyOjExOjAwWlx1MDAyMixcdTAwMjJ0eXBlXHUwMDIyOlx1MDAyMkRldmVsb3BtZW50XHUwMDIyLFx1MDAyMm5hbWVcdTAwMjI6XHUwMDIyS0VOVElDT19HSF9hY3Rpb25zXHUwMDIyLFx1MDAyMnN5bmNocm9uaXphdGlvblx1MDAyMjp0cnVlfX0iLCJTaWduYXR1cmUiOiJKRlhieTEwSjlTeDR6ZWFjZzR1YldSS3BSMldsOWlJXHUwMDJCWVZ2ZXNnN1BSeEE0ZGhIbXk3XHUwMDJCaXVtbk1JRXpKZmpQWGU1bC9cdTAwMkJMbjFOcXZTcVBDY0NaWjdaM1M1OFVKd3ZoWVdqVzI4ckRFL3FNaVNIM1M4V2lPYXd4anVUZ1Y2UmlaZDNNemloTEFFMFkxR1JUbDRodFlLOUFUZEpmQXk4NXFcdTAwMkJnVmJZaGpzc3dSaWttNzcwVm1jVWEvLzZSOFlYQ3hRMVJBTkZ4OU1sZlQxeVpQckl3UkhcdTAwMkJNaEFsUGN2b1RiTHNpNTRURW5LcTVSOTlIVGNTRkJcdTAwMkJ3VnBkNGF0bFRoVjZVM1hLQXV4Z2g4YjRcdTAwMkJiRnZ0L1o3UnFUZUY1bVx1MDAyQkJPdnFocWZyd1J4VnBER1dYaVQ4aXNTdjRpbTVXbjBHWXFmR3JHSXdcdTAwMkJOU3k5aW92NEw4VlVPOWM3cFE9PSJ9
 
     steps:
@@ -57,6 +58,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install NPM
+        run: |
+          cd test/Playwright
+          npm ci
+          npx playwright install --with-deps
+          cd ../..
 
       - name: Install dependencies
         run: |
@@ -166,9 +179,22 @@ jobs:
               exit 1
           }
 
-          # TODO: Run the E2E tests
+          # Sleep for finishing initialization
+          Start-Sleep -Seconds 10
+
+          # Run the E2E tests
+          cd test/Playwright
+          npx playwright test
+          cd ../..
 
           # Stop the background ASP.NET Core application
           Receive-Job -Name ${{ env.PROJECT_NAME }}
           Stop-Job -Name ${{ env.PROJECT_NAME }}
           Remove-Job -Name ${{ env.PROJECT_NAME }}
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: ./test/Playwright/playwright-report/
+          retention-days: 30

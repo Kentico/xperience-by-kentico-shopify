@@ -2,16 +2,16 @@ name: "CI: Build and Test"
 
 on:
   push:
-    branches: [main, feat/automatic_E2E_testing]
-    #paths:
-    #  - "**.cs"
-    #  - "**.tsx"
-    #  - "**.js"
-    #  - "**.csproj"
-    #  - "**.props"
-    #  - "**.targets"
-    #  - "**.sln"
-    #  - "**/Client/**/*.json"
+    branches: [main]
+    paths:
+      - "**.cs"
+      - "**.tsx"
+      - "**.js"
+      - "**.csproj"
+      - "**.props"
+      - "**.targets"
+      - "**.sln"
+      - "**/Client/**/*.json"
   pull_request:
     branches: [main]
     paths:
@@ -38,16 +38,6 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_NOLOGO: 1
-      PROJECT_NAME: DancingGoat
-      DB_NAME: XByK_DancingGoat_Shopify
-      ASPNETCORE_URLS: https://localhost:14065
-      STATUS_CHECK_URL: https://localhost:14065/status
-      CMSSHOPIFYCONFIG__ADMINAPIKEY: ${{ secrets.ADMIN_API_KEY }}
-      CMSSHOPIFYCONFIG__SHOPIFYURL: ${{ secrets.SHOPIFY_URL }}
-      CMSSHOPIFYCONFIG__STOREFRONTAPIKEY: ${{ secrets.STOREFRONT_API_KEY }}
-      CMSSHOPIFYCONFIG__STOREFRONTAPIVERSION: ${{ secrets.STOREFRONT_API_VERSION }}
-      CMSSHOPIFYCONFIG__STOREPASSWORD: ${{ secrets.SHOPIFY_STORE_PASSWORD }}
-      XPERIENCE_BY_KENTICO_LICENSE: ${{ secrets.XPERIENCE_BY_KENTICO_LICENSE }}
 
     steps:
       - uses: actions/checkout@v4
@@ -59,18 +49,6 @@ jobs:
         with:
           global-json-file: global.json
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-
-      - name: Install NPM
-        run: |
-          cd test/Playwright
-          npm ci
-          npx playwright install --with-deps
-          cd ../..
-
       - name: Install dependencies
         run: |
           dotnet restore `
@@ -80,63 +58,7 @@ jobs:
         run: |
           dotnet build `
             --configuration Release `
-            -p:XbyKVersion=*
-
-      - name: Get Database Backup Name
-        run: |
-          $latestBackup = Get-Content -Path "./database/backups.txt" -TotalCount 1
-          "DATABASE_BACKUP_FILENAME=$latestBackup" >> $env:GITHUB_ENV
-
-      - name: Extract Database Backup
-        run: |
-          Expand-Archive `
-            -Path "./database/${{ env.DATABASE_BACKUP_FILENAME }}.zip" `
-            -DestinationPath "./database"
-      - name: Install a SQL Server suite of tools (SQLEngine, SQLPackage)
-        uses: potatoqualitee/mssqlsuite@9a0136e208df60b8ecb62909f076bc34854fa55a # set as a commit hash for security - v1.7
-        with:
-          install: sqlpackage, sqlengine
-          sa-password: Pass@12345
-          version: 2022
-
-      - name: Restore Database .bak
-        run: |
-          docker exec sql mkdir /var/opt/mssql/backup
-          docker cp "./database/${{ env.DATABASE_BACKUP_FILENAME }}" sql:/var/opt/mssql/backup
-          sqlcmd `
-            -S localhost `
-            -d master `
-            -U "sa" `
-            -P "Pass@12345" `
-            -Q "RESTORE DATABASE [${{env.DB_NAME}}] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify' TO '/var/opt/mssql/data/${{env.DB_NAME}}.mdf', MOVE 'XByK_DancingGoat_Shopify_log' TO '/var/opt/mssql/data/${{env.DB_NAME}}_log.ldf'"
-        if: endsWith(env.DATABASE_BACKUP_FILENAME, '.bak')
-
-      - name: Import license key to DB
-        run: |
-          sqlcmd `
-            -S localhost `
-            -d ${{env.DB_NAME}} `
-            -U "sa" `
-            -P "Pass@12345" `
-            -Q "UPDATE CMS_SettingsKey SET KeyValue='${{ env.XPERIENCE_BY_KENTICO_LICENSE }}' WHERE KeyName='CMSLicenseKey'"
-
-      - name: Restore CI Repository
-        working-directory: "./scripts"
-        run: |
-          ./UpdateAndRestoreCI.ps1
-
-      - name: Publish Application
-        run: |
-          dotnet publish `
-            ./examples/DancingGoat-Shopify `
-            -c Release `
-            -o ./publish `
-            --no-build `
             --no-restore
-
-      - name: Install Azurite
-        id: azuright
-        uses: potatoqualitee/azuright@e56d2754eb15218d507961493bc83ca037216887 # set as a commit hash for security - v1.1
 
       - name: Test Solution
         run: |
@@ -144,57 +66,3 @@ jobs:
             --configuration Release `
             --no-build `
             --no-restore
-
-      - name: Run Application and E2E Tests
-        run: |
-          # Run the ASP.NET Core app as a background job
-          cd ./publish
-          Start-Job -ScriptBlock { dotnet ./${{ env.PROJECT_NAME }}.dll } -Name ${{ env.PROJECT_NAME }}
-          Receive-Job -Name ${{ env.PROJECT_NAME }}
-          cd ../
-
-          # The ASP.NET Core app can take a few seconds to start, so we delay running tests
-          #   until it is ready, and fail if we go over a maximum wait time
-          $limit = 10
-          $attempts = 0
-          $success = $false
-
-          while ($attempts -lt $limit -and -not $success) {
-              Start-Sleep -Seconds 1
-              try {
-                  $response = Invoke-WebRequest -Uri ${{ env.STATUS_CHECK_URL }} -Method Get -SkipCertificateCheck
-                  if ($response.StatusCode -eq 200) {
-                      Write-Output "Application is ready."
-                      $success = $true
-                  }
-              }
-              catch {
-                  Write-Output "Attempt $attempts - Application not ready yet."
-              }
-              $attempts++
-          }
-
-          if (-not $success) {
-              Write-Output "Application did not respond in time."
-              exit 1
-          }
-
-          # Sleep for finishing initialization
-          Start-Sleep -Seconds 10
-
-          # Run the E2E tests
-          cd test/Playwright
-          npx playwright test
-          cd ../..
-
-          # Stop the background ASP.NET Core application
-          Receive-Job -Name ${{ env.PROJECT_NAME }}
-          Stop-Job -Name ${{ env.PROJECT_NAME }}
-          Remove-Job -Name ${{ env.PROJECT_NAME }}
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: ./test/Playwright/playwright-report/
-          retention-days: 30

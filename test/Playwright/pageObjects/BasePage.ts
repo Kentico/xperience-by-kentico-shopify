@@ -21,7 +21,7 @@ export class BasePage {
         let totalHeight = 0;
         const distance = 200;
         const timer = setInterval(() => {
-          var scrollHeight = document.body.scrollHeight;
+          const scrollHeight = document.body.scrollHeight;
           window.scrollBy(0, distance);
           totalHeight += distance;
           if (totalHeight >= scrollHeight - window.innerHeight) {

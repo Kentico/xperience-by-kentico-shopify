@@ -1,19 +1,22 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
+    <CentralPackageVersionOverrideEnabled>true</CentralPackageVersionOverrideEnabled>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+	<CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
+	<LastAppliedHotfix>29.5.3</LastAppliedHotfix>
+	<XbyKVersion Condition="'$(XbyKVersion)' == ''">$(LastAppliedHotfix)</XbyKVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="GraphQL" Version="7.8.0" />
     <PackageVersion Include="GraphQL.Client" Version="6.0.2" />
     <PackageVersion Include="GraphQL.Client.Serializer.Newtonsoft" Version="6.0.2" />
-    <PackageVersion Include="Kentico.Xperience.Admin" Version="29.5.3" />
-    <PackageVersion Include="Kentico.Xperience.WebApp" Version="29.5.3" />
-    <PackageVersion Include="kentico.xperience.azurestorage" Version="29.5.3" />
-    <PackageVersion Include="kentico.xperience.imageprocessing" Version="29.5.3" />
-    <PackageVersion Include="Kentico.Xperience.Core" Version="29.5.3" />
+    <PackageVersion Include="Kentico.Xperience.Admin" Version="$(LastAppliedHotfix)" />
+    <PackageVersion Include="Kentico.Xperience.WebApp" Version="$(LastAppliedHotfix)" />
+    <PackageVersion Include="kentico.xperience.azurestorage" Version="$(LastAppliedHotfix)" />
+    <PackageVersion Include="kentico.xperience.imageprocessing" Version="$(LastAppliedHotfix)" />
+    <PackageVersion Include="Kentico.Xperience.Core" Version="$(LastAppliedHotfix)" />
     <PackageVersion Include="Moq.AutoMock" Version="3.5.0" />
     <PackageVersion Include="ShopifySharp" Version="6.19.0" />
     <PackageVersion Include="ShopifySharp.Extensions.DependencyInjection" Version="1.7.0" />

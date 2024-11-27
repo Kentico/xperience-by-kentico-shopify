@@ -23,11 +23,14 @@
   <PropertyGroup Condition="'$(SeparatedAdmin)' == 'true'">
     <DefineConstants>$(DefineConstants);SEPARATED_ADMIN</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="kentico.xperience.admin" Condition="'$(SeparatedAdmin)' == 'false'" />
-    <PackageReference Include="kentico.xperience.azurestorage" />
-    <PackageReference Include="kentico.xperience.imageprocessing" />
-    <PackageReference Include="kentico.xperience.webapp" />
+    <PackageReference Include="kentico.xperience.admin" Condition="'$(SeparatedAdmin)' == 'false'" VersionOverride="$(XbyKVersion)" />
+    <PackageReference Include="kentico.xperience.azurestorage" VersionOverride="$(XbyKVersion)" />
+    <PackageReference Include="kentico.xperience.imageprocessing" VersionOverride="$(XbyKVersion)" />
+    <PackageReference Include="kentico.xperience.webapp" VersionOverride="$(XbyKVersion)" />
     <PackageReference Include="ShopifySharp" />
     <PackageReference Include="ShopifySharp.Extensions.DependencyInjection" />
     <PackageReference Include="System.Linq.Async" />
@@ -36,4 +39,9 @@
     <ProjectReference Include="..\..\src\Kentico.Xperience.Shopify.Rcl\Kentico.Xperience.Shopify.Rcl.csproj" />
     <ProjectReference Include="..\..\src\Kentico.Xperience.Shopify\Kentico.Xperience.Shopify.csproj" />
   </ItemGroup>
+
+	<Target Name="UpgradeXbK" AfterTargets="Rebuild">
+		<Exec Command="dotnet run --no-build -- --kxp-update --skip-confirmation" />
+		<Exec Command="dotnet run --no-build -- --kxp-codegen --type ReusableContentTypes --namespace Shopify --location ../../src/Kentico.Xperience.Shopify/{type}/{dataClassNamespace}/{name}/ --skip-confirmation --include Shopify.*" />
+	</Target>
 </Project>

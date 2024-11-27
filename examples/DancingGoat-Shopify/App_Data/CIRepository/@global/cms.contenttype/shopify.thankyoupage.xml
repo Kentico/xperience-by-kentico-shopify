@@ -23,6 +23,7 @@
   <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
   <ClassIconClass>xp-check</ClassIconClass>
   <ClassName>Shopify.ThankYouPage</ClassName>
+  <ClassShortName>ShopifyThankYouPage</ClassShortName>
   <ClassTableName>Shopify_ThankYouPage</ClassTableName>
   <ClassType>Content</ClassType>
   <ClassWebPageHasUrl>True</ClassWebPageHasUrl>

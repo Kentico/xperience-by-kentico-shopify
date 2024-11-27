@@ -49,6 +49,8 @@ builder.Services.AddLocalization()
         options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResources));
     });
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddDancingGoatServices();
 
 ConfigureMembershipServices(builder.Services);
@@ -56,6 +58,8 @@ ConfigureMembershipServices(builder.Services);
 builder.Services.RegisterShopifyServices(builder.Configuration);
 
 var app = builder.Build();
+
+app.MapHealthChecks("/status");
 
 app.UseSession();
 
@@ -66,7 +70,6 @@ app.UseStaticFiles();
 app.UseCookiePolicy();
 
 app.UseAuthentication();
-
 
 app.UseKentico();
 

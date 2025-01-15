@@ -1,10 +1,6 @@
 ﻿using DancingGoat.Models;
 using DancingGoat.ViewComponents;
 
-using Kentico.OnlineMarketing.Web.Mvc;
-
-using Samples.DancingGoat;
-
 namespace DancingGoat
 {
     public static class IServiceCollectionExtensions
@@ -18,7 +14,6 @@ namespace DancingGoat
             AddRepositories(services);
 
             services.AddSingleton<ICurrentWebsiteChannelPrimaryLanguageRetriever, CurrentWebsiteChannelPrimaryLanguageRetriever>();
-            services.AddSingleton<IEmailActivityTrackingEvaluator, EmailActivityTrackingEvaluator>();
         }
 
 

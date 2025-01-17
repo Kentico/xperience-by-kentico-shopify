@@ -21,7 +21,7 @@ resources:
 
   containers:
     - container: Windows
-      image: mcr.microsoft.com/dotnet/sdk:8.0
+      image: mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022
 
 variables:
   - name: SIGN_FILE

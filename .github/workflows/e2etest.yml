@@ -74,7 +74,7 @@ jobs:
       - name: Install a SQL Server suite of tools (SQLEngine, SQLPackage)
         uses: potatoqualitee/mssqlsuite@9a0136e208df60b8ecb62909f076bc34854fa55a # set as a commit hash for security - v1.7
         with:
-          install: sqlpackage, sqlengine
+          install: sqlpackage, sqlengine, sqlclient
           sa-password: Pass@12345
           version: 2022
 
@@ -177,3 +177,31 @@ jobs:
           name: playwright-report
           path: ./test/Playwright/playwright-report/
           retention-days: 30
+      
+      # Create an issue if this job fails
+      - name: "Create GitHub Issue on Failure"
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const date = new Date();
+            const issueTitle = `🚨 ${date.toLocaleDateString('en-GB')} E2E Test Failed: Weekly Cron Job`;
+            const issueBody = `### Workflow Failure Alert
+            - **Repository**: ${{ github.repository }}
+            - **Workflow**: [Test E2E](https://github.com/Kentico/xperience-by-kentico-shopify/actions/runs/${{ github.run_id }})
+            - **Timestamp**: ${date.toISOString()}
+
+            Please check the logs and resolve the issue.`;
+
+            try {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issueTitle,
+                body: issueBody,
+                labels: ["workflow-failure"]
+              });
+            } catch (error) {
+              console.error("Error creating issue:", error);
+            }

@@ -78,7 +78,8 @@ namespace Kentico.Xperience.Shopify.Config
                 AdminApiKey = settingsInfo.AdminApiKey,
                 ShopifyUrl = settingsInfo.ShopifyUrl,
                 StorefrontApiKey = settingsInfo.AdminApiKey,
-                StorefrontApiVersion = settingsInfo.StorefrontApiVersion
+                StorefrontApiVersion = settingsInfo.StorefrontApiVersion,
+                WorkspaceName = settingsInfo.ShopifyEffectiveWorkspaceName
             };
         }
 

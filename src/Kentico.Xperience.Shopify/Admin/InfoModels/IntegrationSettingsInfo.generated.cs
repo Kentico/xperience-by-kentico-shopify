@@ -14,7 +14,6 @@ namespace Kentico.Xperience.Shopify.Admin
     /// <summary>
     /// Data container class for <see cref="IntegrationSettingsInfo"/>.
     /// </summary>
-    [Serializable]
     public partial class IntegrationSettingsInfo : AbstractInfo<IntegrationSettingsInfo, IInfoProvider<IntegrationSettingsInfo>>, IInfoWithId
     {
         /// <summary>
@@ -84,6 +83,48 @@ namespace Kentico.Xperience.Shopify.Admin
         {
             get => ValidationHelper.GetString(GetValue(nameof(StorefrontApiVersion)), String.Empty);
             set => SetValue(nameof(StorefrontApiVersion), value);
+        }
+
+        /// <summary>
+        /// Shopify workspace name
+        /// </summary>
+        [DatabaseField]
+        public virtual string ShopifyWorkspaceName
+        {
+            get => ValidationHelper.GetString(GetValue(nameof(ShopifyWorkspaceName)), String.Empty);
+            set => SetValue(nameof(ShopifyWorkspaceName), value);
+        }
+
+        /// <summary>
+        /// K13 ecommerce settings product SKU folder Guid.
+        /// </summary>
+        [DatabaseField]
+        public virtual Guid ShopifyProductSKUFolderGuid
+        {
+            get => ValidationHelper.GetGuid(GetValue(nameof(ShopifyProductSKUFolderGuid)), Guid.Empty);
+            set => SetValue(nameof(ShopifyProductSKUFolderGuid), value);
+        }
+
+
+        /// <summary>
+        /// K13 ecommerce settings product variant folder Guid.
+        /// </summary>
+        [DatabaseField]
+        public virtual Guid ShopifyProductVariantFolderGuid
+        {
+            get => ValidationHelper.GetGuid(GetValue(nameof(ShopifyProductVariantFolderGuid)), Guid.Empty);
+            set => SetValue(nameof(ShopifyProductVariantFolderGuid), value);
+        }
+
+
+        /// <summary>
+        /// K13 ecommerce settings product image folder Guid.
+        /// </summary>
+        [DatabaseField]
+        public virtual Guid ShopifyProductImageFolderGuid
+        {
+            get => ValidationHelper.GetGuid(GetValue(nameof(ShopifyProductImageFolderGuid)), Guid.Empty);
+            set => SetValue(nameof(ShopifyProductImageFolderGuid), value);
         }
 
 

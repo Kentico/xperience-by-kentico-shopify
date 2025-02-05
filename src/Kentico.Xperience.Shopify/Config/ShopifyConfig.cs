@@ -33,5 +33,10 @@
         /// Storefront API version
         /// </summary>
         public required string StorefrontApiVersion { get; set; }
+
+        /// <summary>
+        /// Workspace name for synchronized content items.
+        /// </summary>
+        public required string WorkspaceName { get; set; }
     }
 }

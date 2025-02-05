@@ -15,7 +15,7 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
     {
     }
 
-    public async Task ProcessProduct(Product product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, int userID, ShopifyProductItem? existingProduct)
+    public async Task ProcessProduct(Product product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, string workspaceName, int userID, ShopifyProductItem? existingProduct)
     {
         var productSyncItem = new ProductSynchronizationItem()
         {
@@ -53,6 +53,7 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
             {
                 ContentItem = productSyncItem,
                 LanguageName = languageName,
+                WorkspaceName = workspaceName,
                 UserID = userID
             };
 

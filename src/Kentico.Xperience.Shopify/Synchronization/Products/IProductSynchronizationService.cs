@@ -12,9 +12,17 @@ internal interface IProductSynchronizationService
     /// <param name="variants">Product variant content item GUIDs</param>
     /// <param name="images">Product images content item GUIDs</param>
     /// <param name="languageName">Language name</param>
+    /// <param name="workspaceName">Workspace name for synchronized content items.</param>
     /// <param name="userID">User ID</param>
     /// <param name="existingProduct">Shopify product equivallent stored as content item</param>
-    Task ProcessProduct(Product product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, int userID, ShopifyProductItem? existingProduct);
+    Task ProcessProduct(
+        Product product,
+        IEnumerable<Guid> variants,
+        IEnumerable<Guid> images,
+        string languageName,
+        string workspaceName,
+        int userID,
+        ShopifyProductItem? existingProduct);
 
     /// <summary>
     /// Delete product content items from <paramref name="contentItemProducts"/> that are not in <paramref name="shopifyProducts"/>.

@@ -21,12 +21,13 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
         IEnumerable<ShopifyProductVariantItem>? existingVariants,
         Dictionary<string, Guid> variantImages,
         string languageName,
+        string workspaceName,
         int userID)
     {
         (var toCreate, var toUpdate, var toDelete) = ClassifyItems(variants, existingVariants ?? []);
 
         await contentItemService.DeleteContentItems(toDelete.Select(x => x.ContentItemIdentifier), languageName, userID);
-        var addedVariantsID = await CreateProductVariants(toCreate, variantImages, languageName, userID).ToListAsync();
+        var addedVariantsID = await CreateProductVariants(toCreate, variantImages, languageName, workspaceName, userID).ToListAsync();
         await UpdateProductVariants(toUpdate, variantImages, languageName, userID);
 
         IEnumerable<ShopifyProductVariantItem> variantsToReturn;
@@ -80,6 +81,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
         IEnumerable<ProductVariant> productVariants,
         IDictionary<string, Guid> variantsImages,
         string languageName,
+        string workspaceName,
         int userID)
     {
         foreach (var productVariant in productVariants)
@@ -89,7 +91,8 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
             {
                 ContentItem = variantSyncItem,
                 LanguageName = languageName,
-                UserID = userID
+                UserID = userID,
+                WorkspaceName = workspaceName
             });
 
             if (itemId == 0)

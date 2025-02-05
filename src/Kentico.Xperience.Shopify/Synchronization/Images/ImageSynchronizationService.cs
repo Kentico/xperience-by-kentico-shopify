@@ -23,6 +23,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
         IEnumerable<ProductImage> shopifyImages,
         IEnumerable<ShopifyImageItem>? imagesCI,
         string languageName,
+        string workspaceName,
         int userID)
     {
         (var toCreate, var toUpdate, var toDelete) = ClassifyItems(shopifyImages, imagesCI ?? []);
@@ -36,7 +37,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
         // Create new content item images
         if (toCreate != null && toCreate.Any())
         {
-            resultImages.AddRange(await CreateNewImages(toCreate, languageName, userID, syncResult));
+            resultImages.AddRange(await CreateNewImages(toCreate, languageName, workspaceName, userID, syncResult));
         }
 
         // Update existing content item images
@@ -107,10 +108,11 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
     /// </summary>
     /// <param name="shopifyImages">List of retrieved images from Shopify.</param>
     /// <param name="languageName">Content items language.</param>
+    /// <param name="workspaceName">Workspace name for synchronized content items.</param>
     /// <param name="userID">User ID used to add content items.</param>
     /// <param name="syncResult">List of variant and product images.</param>
     /// <returns>Created content items.</returns>
-    private async Task<IEnumerable<ShopifyImageItem>> CreateNewImages(IEnumerable<ProductImage> shopifyImages, string languageName, int userID, ImageSynchronizationResult syncResult)
+    private async Task<IEnumerable<ShopifyImageItem>> CreateNewImages(IEnumerable<ProductImage> shopifyImages, string languageName, string workspaceName, int userID, ImageSynchronizationResult syncResult)
     {
         var uploadModels = shopifyImages.Select(x => new ImageUploadModel()
         {
@@ -122,7 +124,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
         });
 
         // Upload images to content hub and create dictionary where key is Content item ID and value is list of Shopify variant IDs
-        var uploadedKvp = uploadModels.ToDictionary(x => UploadProductImage(x, languageName, userID).GetAwaiter().GetResult(), x => x.VariantIDs);
+        var uploadedKvp = uploadModels.ToDictionary(x => UploadProductImage(x, languageName, workspaceName, userID).GetAwaiter().GetResult(), x => x.VariantIDs);
 
         var imageContentItems = await contentItemService.GetContentItems<ShopifyImageItem>(global::Shopify.Image.CONTENT_TYPE_NAME,
                 config => config.Where(x => x.WhereIn(nameof(ShopifyImageItem.SystemFields.ContentItemID), uploadedKvp.Keys.ToArray()))
@@ -220,7 +222,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
         }
     }
 
-    private async Task<int> UploadProductImage(ImageUploadModel uploadModel, string languageName, int userID)
+    private async Task<int> UploadProductImage(ImageUploadModel uploadModel, string languageName, string workspaceName, int userID)
     {
         var addParams = new ContentItemAddParams()
         {
@@ -229,9 +231,10 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
                 ImageName = uploadModel.ImageName,
                 ImageAsset = await CreateAssetMetadata(uploadModel.ImageUrl, uploadModel.ImageName),
                 ImageDescription = uploadModel.Description,
-                ShopifyImageID = uploadModel.ShopifyImageID
+                ShopifyImageID = uploadModel.ShopifyImageID,
             },
             LanguageName = languageName,
+            WorkspaceName = workspaceName,
             UserID = userID
         };
 

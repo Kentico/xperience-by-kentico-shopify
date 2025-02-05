@@ -1,4 +1,6 @@
-﻿using Kentico.Xperience.Shopify.Config;
+﻿using CMS.Helpers;
+
+using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 
@@ -6,6 +8,8 @@ using ShopifySharp;
 using ShopifySharp.Factories;
 using ShopifySharp.Filters;
 using ShopifySharp.Lists;
+
+using ProductVariantInventoryPolicy = ShopifySharp.GraphQL.ProductVariantInventoryPolicy;
 
 
 namespace Kentico.Xperience.Shopify.Products
@@ -223,10 +227,13 @@ namespace Kentico.Xperience.Shopify.Products
         {
             var prices = variant.PresentmentPrices.First();
             bool inStock = true;
+            bool sellIfNotInStock = string.Equals(ProductVariantInventoryPolicy.CONTINUE.ToStringRepresentation(), variant.InventoryPolicy, StringComparison.OrdinalIgnoreCase);
+
             if (inventoryItems.TryGetValue(variant.InventoryItemId ?? 0, out var inventoryItem))
             {
-                inStock = !(inventoryItem.Tracked ?? false) || variant.InventoryQuantity > 0;
+                inStock = sellIfNotInStock || !(inventoryItem.Tracked ?? false) || variant.InventoryQuantity > 0;
             }
+
             return new ProductVariantListModel()
             {
                 PriceFormatted = prices.Price.Amount.FormatPrice(currencyCode),

@@ -14,7 +14,7 @@
         /// <summary>
         /// The ID of the product collection.
         /// </summary>
-        public long CollectionID { get; set; }
+        public string CollectionID { get; set; } = string.Empty;
     }
 }
 

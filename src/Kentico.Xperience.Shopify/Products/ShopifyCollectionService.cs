@@ -9,15 +9,12 @@ namespace Kentico.Xperience.Shopify.Products
 {
     internal class ShopifyCollectionService : ShopifyServiceBase, IShopifyCollectionService
     {
-        private readonly ICustomCollectionService customCollectionService;
-        private readonly ISmartCollectionService smartCollectionService;
+        private readonly IGraphService graphService;
 
         public ShopifyCollectionService(IShopifyIntegrationSettingsService integrationSettingsService,
-            ICustomCollectionServiceFactory customCollectionServiceFactory,
-            ISmartCollectionServiceFactory smartCollectionServiceFactory) : base(integrationSettingsService)
+            IGraphServiceFactory graphServiceFactory) : base(integrationSettingsService)
         {
-            customCollectionService = customCollectionServiceFactory.Create(shopifyCredentials);
-            smartCollectionService = smartCollectionServiceFactory.Create(shopifyCredentials);
+            graphService = graphServiceFactory.Create(shopifyCredentials);
         }
 
         public async Task<IEnumerable<CollectionListingModel>> GetCollectionListing()
@@ -25,38 +22,28 @@ namespace Kentico.Xperience.Shopify.Products
             return await TryCatch(GetCollectionListingInternal, Enumerable.Empty<CollectionListingModel>);
         }
 
-        private ListFilter<T> GenerateListFilter<T>()
-        {
-            return new ListFilter<T>(string.Empty, null, fields: "id,title");
-        }
-
         private async Task<IEnumerable<CollectionListingModel>> GetCollectionListingInternal()
         {
+            var request = new GraphRequest
+            {
+                Query = "query CustomCollectionList { collections(first: 250) { nodes { id title } } }"
+            };
+
             var modelList = new List<CollectionListingModel>();
 
-            var customCollectionsTask = customCollectionService.ListAsync(GenerateListFilter<CustomCollection>());
-            var smartCollectionsTask = smartCollectionService.ListAsync(GenerateListFilter<SmartCollection>());
+            var result = await graphService.PostAsync<ProductCollectionsResult>(request);
 
-            // Requests can run parallel
-            await Task.WhenAll(customCollectionsTask, smartCollectionsTask);
-
-            var customCollections = customCollectionsTask.Result;
-            var smartCollections = smartCollectionsTask.Result;
-
-            foreach (var collectionListing in customCollections.Items.Where(x => x != null && x.Id.HasValue))
+            if (result.Data.Collections.nodes is null)
             {
-                modelList.Add(new CollectionListingModel
-                {
-                    CollectionID = collectionListing.Id.GetValueOrDefault(),
-                    Name = collectionListing.Title ?? "",
-                });
+                return modelList;
             }
-            foreach (var collectionListing in smartCollections.Items.Where(x => x != null && x.Id.HasValue))
+
+            foreach (var collectionListing in result.Data.Collections.nodes)
             {
                 modelList.Add(new CollectionListingModel
                 {
-                    CollectionID = collectionListing.Id.GetValueOrDefault(),
-                    Name = collectionListing.Title ?? "",
+                    CollectionID = collectionListing.id ?? string.Empty,
+                    Name = collectionListing.title ?? string.Empty,
                 });
             }
 

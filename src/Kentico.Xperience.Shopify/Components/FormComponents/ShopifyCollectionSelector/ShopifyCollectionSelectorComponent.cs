@@ -44,7 +44,7 @@ public class ShopifyCollectionSelectorComponent : SelectorFormComponent<ShopifyC
         {
             yield return new HtmlOptionItem()
             {
-                Value = collection.CollectionID.ToString(),
+                Value = collection.CollectionID,
                 Text = collection.Name
             };
         }

@@ -73,7 +73,8 @@ public class ShopifyCategoryController : Controller
 
     private async Task<IDictionary<string, ProductPriceModel>> GetProductPrices(IEnumerable<Product> productContentItems)
     {
+        // TODO retrieve country code
         var productIds = productContentItems.Select(x => x.ShopifyProductID);
-        return await priceService.GetProductsPrice(productIds);
+        return await priceService.GetProductsPrice(productIds, ShopifySharp.GraphQL.CountryCode.CZ);
     }
 }

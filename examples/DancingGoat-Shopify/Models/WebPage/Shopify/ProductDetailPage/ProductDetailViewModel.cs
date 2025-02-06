@@ -50,7 +50,7 @@ public record ProductDetailViewModel
             ParametersSection = product.Parameters,
             Variants = product.Variants.Select(x => new SelectListItem(x.Title, x.ShopifyVariantID, x.ShopifyVariantID.Equals(selectedVariant.ShopifyVariantID, StringComparison.Ordinal))).ToList(),
             SelectedShopifyVariantId = selectedVariant.ShopifyVariantID,
-            ShopifyProductId = product.ShopifyProductID,
+            ShopifyProductId = product.ShopifyProductID.Split('/')[^1],
             CountryCode = country,
             CurrencyCode = currency,
             VariantQuantity = 1,

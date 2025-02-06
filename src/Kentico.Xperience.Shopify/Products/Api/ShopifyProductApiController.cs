@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using ShopifySharp.GraphQL;
+
 namespace Kentico.Xperience.Shopify.Products.Api;
 
 /// <summary>
@@ -30,7 +32,9 @@ public class ShopifyProductApiController : Controller
     [HttpGet]
     public async Task<IActionResult> GetProductPrices([FromQuery] string productId, [FromQuery] string currency)
     {
-        var variants = await productService.GetProductVariants(productId, currency);
+        // TODO get country code instead of currency
+        var countryCode = CountryCode.CZ;
+        var variants = await productService.GetProductVariants(productId, countryCode);
         return Json(variants);
     }
 }

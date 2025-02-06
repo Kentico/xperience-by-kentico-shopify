@@ -1,5 +1,7 @@
 ﻿using Kentico.Xperience.Shopify.Products.Models;
 
+using ShopifySharp.GraphQL;
+
 namespace Kentico.Xperience.Shopify.Products;
 
 /// <summary>
@@ -12,5 +14,5 @@ public interface IShopifyPriceService
     /// </summary>
     /// <param name="shopifyProductIds">Shopify products IDs.</param>
     /// <returns>Dictionary where key is the Shopify product ID and value is its <see cref="ProductPriceModel"/>.</returns>
-    Task<IDictionary<string, ProductPriceModel>> GetProductsPrice(IEnumerable<string> shopifyProductIds);
+    Task<IDictionary<string, ProductPriceModel>> GetProductsPrice(IEnumerable<string> shopifyProductIds, CountryCode countryCode);
 }

@@ -74,7 +74,7 @@ internal class ShopifySynchronizationWorker : ThreadWorker<ShopifySynchronizatio
         string languageName = "en";
         int adminUserID = UserInfoProvider.AdministratorUser.UserID;
 
-        var shopifyProducts = productService.GetAllProductsRaw().GetAwaiter().GetResult().Items;
+        var shopifyProducts = productService.GetAllProductsRaw().GetAwaiter().GetResult().Items ?? [];
         var contentItemProducts = contentItemService.GetContentItems<ShopifyProductItem>(Product.CONTENT_TYPE_NAME, 2)
             .GetAwaiter().GetResult();
 

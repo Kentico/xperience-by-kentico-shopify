@@ -2,7 +2,6 @@
 
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Xperience.Shopify.Products;
-using Kentico.Xperience.Shopify.Products.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -16,10 +15,14 @@ namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
     {
         public const string IDENTIFIER = "DancingGoat.LandingPage.ShopifyProductList";
 
+        private readonly IShopifyCollectionService collectionService;
         private readonly IShopifyProductService productService;
 
-        public ShopifyProductListWidgetViewComponent(IShopifyProductService productService)
+        public ShopifyProductListWidgetViewComponent(
+            IShopifyCollectionService collectionService,
+            IShopifyProductService productService)
         {
+            this.collectionService = collectionService;
             this.productService = productService;
         }
 
@@ -29,23 +32,21 @@ namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
             {
                 currencyProperty = CurrencyCode.USD;
             }
-            var filter = new ProductFilter()
-            {
-                Currency = currencyProperty,
-                Limit = properties.Limit
-            };
 
-            if (long.TryParse(properties.CollectionID, out long collectionID) && collectionID > 0)
+            if (properties.Limit <= 0)
             {
-                filter.CollectionID = collectionID;
+                properties.Limit = 250;
             }
 
-            var products = await productService.GetProductsAsync(filter);
+            // TODO use country code from filter
+            var products = string.IsNullOrEmpty(properties.CollectionID)
+                ? (await productService.GetProductsAsync(new Kentico.Xperience.Shopify.Products.Models.ProductFilter())).Items
+                : await collectionService.GetCollectionProducts(properties.CollectionID, properties.Limit, CountryCode.US);
 
             return View("~/Components/Widgets/Shopify/ProductListWidget/_ShopifyProductListWidget.cshtml", new ShopifyProductListViewModel
             {
                 Title = properties.Title,
-                Products = products.Items,
+                Products = products,
                 Currency = currencyProperty.ToString()
             });
         }

@@ -16,7 +16,7 @@ namespace Kentico.Xperience.Shopify.Products.Models
         /// <summary>
         /// The currency to use for pricing.
         /// </summary>
-        public CurrencyCode Currency { get; set; }
+        public CountryCode Country { get; set; }
 
 
         /// <summary>
@@ -29,5 +29,17 @@ namespace Kentico.Xperience.Shopify.Products.Models
         /// The IDs of products to retrieve.
         /// </summary>
         public IEnumerable<long>? Ids { get; set; }
+
+
+        /// <summary>
+        /// Start cursor used for pagination.
+        /// </summary>
+        public string? StartCursor { get; set; }
+
+
+        /// <summary>
+        /// End cursor used for pagination.
+        /// </summary>
+        public string? EndCursor { get; set; }
     }
 }

@@ -45,6 +45,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IShopifyIntegrationSettingsService, ShopifyIntegrationSettingsService>();
         services.AddScoped<IEcommerceActivityLogger, EcommerceActivityLogger>();
         services.AddScoped<IShopifyOrderService, ShopifyOrderService>();
+        services.AddScoped<IShopifySynchronizationWorkerService, ShopifySynchronizationWorkerService>();
 
         services.AddSingleton<IShopifyCurrencyFormatService, ShopifyCurrencyFormatService>();
 

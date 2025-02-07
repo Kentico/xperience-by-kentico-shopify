@@ -3,6 +3,7 @@ using CMS.Core;
 
 using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
 using Kentico.Xperience.Shopify.ReusableContentTypes;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 
 using ShopifySharp;
 
@@ -20,7 +21,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
     }
 
     public async Task<ImageSynchronizationResult> ProcessImages(
-        IEnumerable<ProductImage> shopifyImages,
+        IEnumerable<ShopifyMediaImageDto> shopifyImages,
         IEnumerable<ShopifyImageItem>? imagesCI,
         string languageName,
         int userID)
@@ -80,22 +81,22 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
     /// </param>
     /// <param name="contentItems">Image content items.</param>
     /// <returns>Images that should be assigned to particular variants and products.</returns>
-    private ImageSynchronizationResult GetSyncResult(Dictionary<int, IEnumerable<string>?> contentItemKvp, IEnumerable<ShopifyImageItem> contentItems)
+    private ImageSynchronizationResult GetSyncResult(Dictionary<int, ImageUploadModel> contentItemKvp, IEnumerable<ShopifyImageItem> contentItems)
     {
         var syncResult = new ImageSynchronizationResult();
         foreach (var systemFields in contentItems.Select(x => x.SystemFields))
         {
             var imageGuid = systemFields.ContentItemGUID;
-            if (contentItemKvp.TryGetValue(systemFields.ContentItemID, out var variantIDs) && variantIDs != null && variantIDs.Any())
+            if (contentItemKvp.TryGetValue(systemFields.ContentItemID, out var uploadModel))
             {
-                foreach (string? variant in variantIDs)
+                if (uploadModel.IsVariantImage)
                 {
-                    syncResult.VariantImages.TryAdd(variant, imageGuid);
+                    syncResult.VariantImages.TryAdd(uploadModel.ParentID, imageGuid);
                 }
-            }
-            else
-            {
-                syncResult.ProductImages.Add(imageGuid);
+                else
+                {
+                    syncResult.ProductImages.Add(imageGuid);
+                }
             }
         }
 
@@ -110,19 +111,22 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
     /// <param name="userID">User ID used to add content items.</param>
     /// <param name="syncResult">List of variant and product images.</param>
     /// <returns>Created content items.</returns>
-    private async Task<IEnumerable<ShopifyImageItem>> CreateNewImages(IEnumerable<ProductImage> shopifyImages, string languageName, int userID, ImageSynchronizationResult syncResult)
+    private async Task<IEnumerable<ShopifyImageItem>> CreateNewImages(IEnumerable<ShopifyMediaImageDto> shopifyImages, string languageName, int userID, ImageSynchronizationResult syncResult)
     {
-        var uploadModels = shopifyImages.Select(x => new ImageUploadModel()
-        {
-            ImageName = NameFromUrl(x.Src),
-            ImageUrl = x.Src,
-            Description = x.Alt,
-            ShopifyImageID = x.Id?.ToString() ?? string.Empty,
-            VariantIDs = x.VariantIds?.Select(x => x.ToString())
-        });
+        var uploadModels = shopifyImages
+            .Where(x => !string.IsNullOrEmpty(x.Image.url))
+            .Select(x => new ImageUploadModel()
+            {
+                ImageName = NameFromUrl(x.Image.url!),
+                ImageUrl = x.Image.url!,
+                Description = x.Image.altText ?? string.Empty,
+                ShopifyImageID = x.Id,
+                ParentID = x.ParentId ?? string.Empty,
+                IsVariantImage = x.Parent is ShopifyProductVariantDto
+            });
 
         // Upload images to content hub and create dictionary where key is Content item ID and value is list of Shopify variant IDs
-        var uploadedKvp = uploadModels.ToDictionary(x => UploadProductImage(x, languageName, userID).GetAwaiter().GetResult(), x => x.VariantIDs);
+        var uploadedKvp = uploadModels.ToDictionary(x => UploadProductImage(x, languageName, userID).GetAwaiter().GetResult());
 
         var imageContentItems = await contentItemService.GetContentItems<ShopifyImageItem>(global::Shopify.Image.CONTENT_TYPE_NAME,
                 config => config.Where(x => x.WhereIn(nameof(ShopifyImageItem.SystemFields.ContentItemID), uploadedKvp.Keys.ToArray()))
@@ -147,7 +151,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
     }
 
     private async Task UpdateExistingImages(
-        IEnumerable<(ProductImage ShopifyItem, ShopifyImageItem ContentItem)> imagesToUpdate,
+        IEnumerable<(ShopifyMediaImageDto ShopifyItem, ShopifyImageItem ContentItem)> imagesToUpdate,
         string languageName,
         int userID,
         ImageSynchronizationResult syncResult)
@@ -162,16 +166,16 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
 
         foreach ((var shopifyImage, var contentItemImage) in imagesToUpdate)
         {
-            if (shopifyImage == null || contentItemImage == null)
+            if (shopifyImage?.Image.url == null || contentItemImage == null)
             {
                 continue;
             }
 
             var syncItem = new ImageSynchronizationItem()
             {
-                ImageName = NameFromUrl(shopifyImage.Src),
-                ImageDescription = shopifyImage.Alt ?? string.Empty,
-                ShopifyImageID = shopifyImage.Id?.ToString() ?? string.Empty
+                ImageName = NameFromUrl(shopifyImage.Image.url),
+                ImageDescription = shopifyImage.Image.altText ?? string.Empty,
+                ShopifyImageID = shopifyImage.Id
             };
 
             if (syncItem.GetModifiedProperties(contentItemImage, out var modifiedProps))
@@ -179,7 +183,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
                 if (modifiedProps.ContainsKey(nameof(ShopifyImageItem.ShopifyImageID)))
                 {
                     // Needs to update image asset as well
-                    await UpdateImageContentItem(contentItemImage, shopifyImage.Src, languageName, userID);
+                    await UpdateImageContentItem(contentItemImage, shopifyImage.Image.url, languageName, userID);
                 }
                 else
                 {

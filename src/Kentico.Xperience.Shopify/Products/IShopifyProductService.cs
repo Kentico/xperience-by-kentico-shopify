@@ -1,4 +1,5 @@
 ﻿using Kentico.Xperience.Shopify.Products.Models;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 
 using ShopifySharp.GraphQL;
 
@@ -24,6 +25,6 @@ namespace Kentico.Xperience.Shopify.Products
         /// <returns>Dictionary where key is Shopify variant ID</returns>
         Task<Dictionary<string, ProductVariantListModel>> GetProductVariants(string shopifyProductID, CountryCode countryCode);
 
-        Task<ShopifySharp.Lists.ListResult<ShopifySharp.Product>> GetAllProductsRaw();
+        Task<IEnumerable<ShopifyProductDto>> GetAllProductsRaw();
     }
 }

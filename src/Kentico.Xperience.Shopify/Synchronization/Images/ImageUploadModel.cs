@@ -30,7 +30,13 @@ public class ImageUploadModel
 
 
     /// <summary>
-    /// The Shopify variant IDs associated with the image.
+    /// The Shopify object ID associated with the image.
     /// </summary>
-    public IEnumerable<string>? VariantIDs { get; set; }
+    public required string ParentID { get; set; }
+
+    /// <summary>
+    /// True if image belongs to specific product variant
+    /// instead of product itself.
+    /// </summary>
+    public required bool IsVariantImage { get; set; }
 }

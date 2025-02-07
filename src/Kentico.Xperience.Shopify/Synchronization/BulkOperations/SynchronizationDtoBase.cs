@@ -18,5 +18,7 @@ namespace Kentico.Xperience.Shopify.Synchronization.BulkOperations
 
         [JsonPropertyName("id")]
         public string Id { get; set; } = string.Empty;
+
+        public SynchronizationDtoBase? Parent { get; set; }
     }
 }

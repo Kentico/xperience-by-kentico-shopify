@@ -2,6 +2,7 @@
 using CMS.Core;
 
 using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 
 using Shopify.ContentTypes;
 
@@ -60,7 +61,7 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
         }
     }
 
-    public async Task DeleteNonExistingProducts(IEnumerable<ShopifyProductItem> contentItemProducts, IEnumerable<Product> shopifyProducts, string languageName, int userID)
+    public async Task DeleteNonExistingProducts(IEnumerable<ShopifyProductItem> contentItemProducts, IEnumerable<ShopifyProductDto> shopifyProducts, string languageName, int userID)
     {
         var removedProductIDs = await DeleteNonExistingItems(contentItemProducts, shopifyProducts, languageName, userID);
         var childItemsToDelete = new List<int>();

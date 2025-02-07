@@ -74,7 +74,7 @@ internal class ShopifySynchronizationWorker : ThreadWorker<ShopifySynchronizatio
         string languageName = "en";
         int adminUserID = UserInfoProvider.AdministratorUser.UserID;
 
-        var shopifyProducts = productService.GetAllProductsRaw().GetAwaiter().GetResult() ?? [];
+        var shopifyProducts = productService.GetAllProductsRaw().GetAwaiter().GetResult();
         var contentItemProducts = contentItemService.GetContentItems<ShopifyProductItem>(Product.CONTENT_TYPE_NAME, 2)
             .GetAwaiter().GetResult();
 
@@ -85,11 +85,7 @@ internal class ShopifySynchronizationWorker : ThreadWorker<ShopifySynchronizatio
 
         foreach (var shopifyProduct in shopifyProducts)
         {
-            if (!shopifyProduct.Id.HasValue)
-            {
-                continue;
-            }
-            var productContentItem = contentItemProductsLookup[shopifyProduct.Id.Value.ToString()].FirstOrDefault();
+            var productContentItem = contentItemProductsLookup[shopifyProduct.Id].FirstOrDefault();
             var imageContentItems = GetAllProductImages(productContentItem);
 
             var imageSyncResult = imageUploaderService.ProcessImages(shopifyProduct.Images, imageContentItems, languageName, adminUserID)

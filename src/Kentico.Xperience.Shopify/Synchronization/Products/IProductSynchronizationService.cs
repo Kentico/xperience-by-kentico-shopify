@@ -1,4 +1,6 @@
-﻿using Shopify.ContentTypes;
+﻿using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
+
+using Shopify.ContentTypes;
 
 using ShopifySharp;
 
@@ -24,5 +26,5 @@ internal interface IProductSynchronizationService
     /// <param name="shopifyProducts">Products retrieved from Shopify</param>
     /// <param name="languageName">Content items language.</param>
     /// <param name="userID">User ID used to delete content items.</param>
-    Task DeleteNonExistingProducts(IEnumerable<ShopifyProductItem> contentItemProducts, IEnumerable<Product> shopifyProducts, string languageName, int userID);
+    Task DeleteNonExistingProducts(IEnumerable<ShopifyProductItem> contentItemProducts, IEnumerable<ShopifyProductDto> shopifyProducts, string languageName, int userID);
 }

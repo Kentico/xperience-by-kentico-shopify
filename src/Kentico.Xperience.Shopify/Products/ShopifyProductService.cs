@@ -126,6 +126,7 @@ namespace Kentico.Xperience.Shopify.Products
                                 if (productVariant.ParentId != null && productDict.TryGetValue(productVariant.ParentId, out var productItem))
                                 {
                                     productItem.Variants.Add(productVariant);
+                                    productVariant.Parent = productItem;
                                 }
                             }
                             else if (parsed is ShopifyMediaImageDto mediaImage && mediaImage.ParentId != null)
@@ -133,10 +134,12 @@ namespace Kentico.Xperience.Shopify.Products
                                 if (productDict.TryGetValue(mediaImage.ParentId, out var productItem))
                                 {
                                     productItem.Images.Add(mediaImage);
+                                    mediaImage.Parent = productItem.Parent;
                                 }
                                 else if (variantDict.TryGetValue(mediaImage.ParentId, out var variantItem))
                                 {
                                     variantItem.Images.Add(mediaImage);
+                                    mediaImage.Parent = variantItem.Parent;
                                 }
                             }
                         }

@@ -1,6 +1,7 @@
 ﻿using DancingGoat.Components.Widgets.Shopify.ProductListWidget;
 
 using Kentico.PageBuilder.Web.Mvc;
+using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products;
 
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,16 @@ namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
 
         private readonly IShopifyCollectionService collectionService;
         private readonly IShopifyProductService productService;
+        private readonly IShopifyIntegrationSettingsService shopifyIntegrationSettingsService;
 
         public ShopifyProductListWidgetViewComponent(
             IShopifyCollectionService collectionService,
-            IShopifyProductService productService)
+            IShopifyProductService productService,
+            IShopifyIntegrationSettingsService shopifyIntegrationSettingsService)
         {
             this.collectionService = collectionService;
             this.productService = productService;
+            this.shopifyIntegrationSettingsService = shopifyIntegrationSettingsService;
         }
 
         public async Task<ViewViewComponentResult> InvokeAsync(ShopifyProductListWidgetProperties properties)
@@ -38,10 +42,11 @@ namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
                 properties.Limit = 250;
             }
 
-            // TODO use country code from filter
+            var settings = shopifyIntegrationSettingsService.GetWebsiteChannelSettings();
+
             var products = string.IsNullOrEmpty(properties.CollectionID)
                 ? (await productService.GetProductsAsync(new Kentico.Xperience.Shopify.Products.Models.ProductFilter())).Items
-                : await collectionService.GetCollectionProducts(properties.CollectionID, properties.Limit, CountryCode.US);
+                : await collectionService.GetCollectionProducts(properties.CollectionID, properties.Limit, settings.CountryCode);
 
             return View("~/Components/Widgets/Shopify/ProductListWidget/_ShopifyProductListWidget.cshtml", new ShopifyProductListViewModel
             {

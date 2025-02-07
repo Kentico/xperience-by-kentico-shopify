@@ -1,4 +1,6 @@
-﻿namespace Kentico.Xperience.Shopify.Config
+﻿using ShopifySharp.GraphQL;
+
+namespace Kentico.Xperience.Shopify.Config
 {
     /// <summary>
     /// Class with list of website channel configurations.
@@ -47,6 +49,6 @@
         /// <summary>
         /// Two letter country code.
         /// </summary>
-        public required string Country { get; set; }
+        public required CountryCode CountryCode { get; set; }
     }
 }

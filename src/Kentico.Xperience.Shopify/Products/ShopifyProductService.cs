@@ -12,6 +12,8 @@ using ShopifySharp.GraphQL;
 
 using ProductVariantInventoryPolicy = ShopifySharp.GraphQL.ProductVariantInventoryPolicy;
 using ProductVariant = ShopifySharp.GraphQL.ProductVariant;
+using ShopifySharp.Services.Graph;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 
 
 namespace Kentico.Xperience.Shopify.Products
@@ -20,6 +22,7 @@ namespace Kentico.Xperience.Shopify.Products
     {
         private readonly IShoppingService shoppingService;
         private readonly IGraphService graphService;
+        private readonly IHttpClientFactory httpClientFactory;
 
         private readonly IProductService productService;
 
@@ -29,9 +32,11 @@ namespace Kentico.Xperience.Shopify.Products
             IShopifyIntegrationSettingsService integrationSettingsService,
             IGraphServiceFactory graphServiceFactory,
             IProductServiceFactory productServiceFactory,
+            IHttpClientFactory httpClientFactory,
             IShoppingService shoppingService) : base(integrationSettingsService)
         {
             this.shoppingService = shoppingService;
+            this.httpClientFactory = httpClientFactory;
 
             graphService = graphServiceFactory.Create(shopifyCredentials);
             productService = productServiceFactory.Create(shopifyCredentials);
@@ -51,16 +56,94 @@ namespace Kentico.Xperience.Shopify.Products
                 () => []);
         }
 
-        //public Task<ListResultWrapper<ShopifySharp.Product>> GetAllProductsRaw(ProductFilter? initialFilter = null)
+        //public async Task<ListResultWrapper<ShopifySharp.GraphQL.Product>> GetAllProductsRaw(ProductFilter? initialFilter)
         //{
-        //    // TODO Get products raw
-        //    return Task.FromResult(new ListResultWrapper<ShopifySharp.Product>());
+        //    var bulkRequest = new GraphRequest
+        //    {
+        //        Query = "mutation{bulkOperationRunQuery(query:\"\"\"{products{edges{node{title descriptionHtml id media(first:250){edges{node{...on MediaImage{__typename image{url id altText}}}}}variants(first:250){edges{node{id title sku position inventoryItem{measurement{weight{value}}}media(first:1){edges{node{...on MediaImage{__typename image{altText url id}}}}}}}}}}}} \"\"\"){bulkOperation{id}}}"
+        //    };
+
+        //    var bulkResult = await graphService.PostAsync(bulkRequest, typeof(BulkOperationRunQueryPayload));
+
         //}
 
         public async Task<ShopifySharp.Lists.ListResult<ShopifySharp.Product>> GetAllProductsRaw()
         {
             return await TryCatch(
-                async () => await productService.ListAsync(),
+                async () =>
+                {
+                    var bulkRequest = new GraphRequest
+                    {
+                        Query = "mutation{bulkOperationRunQuery(query:\"\"\"{products{edges{node{__typename title descriptionHtml id media(first:250){edges{node{...on MediaImage{__typename image{url id altText}}}}}variants(first:250){edges{node{__typename id title sku position inventoryItem{measurement{weight{value}}}media(first:1){edges{node{...on MediaImage{__typename image{altText url id}}}}}}}}}}}} \"\"\"){bulkOperation{id}}}"
+                    };
+
+                    await graphService.PostAsync<BulkOperationRunQueryRequest>(bulkRequest);
+                    var status = BulkOperationStatus.RUNNING;
+                    string bulkDataUrl = string.Empty;
+                    bulkRequest.Query = "query{currentBulkOperation{id status url}}";
+
+                    while (status == BulkOperationStatus.RUNNING)
+                    {
+                        Thread.Sleep(1000);
+                        var waitingResult = await graphService.PostAsync<CurrentBulkOperationResult>(bulkRequest);
+                        status = waitingResult.Data.CurrentBulkOperation.status ?? BulkOperationStatus.FAILED;
+                        if (status == BulkOperationStatus.COMPLETED)
+                        {
+                            bulkDataUrl = waitingResult.Data.CurrentBulkOperation.url ?? string.Empty;
+                        }
+                    }
+
+                    if (status == BulkOperationStatus.FAILED || string.IsNullOrEmpty(bulkDataUrl))
+                    {
+                        return new([], null);
+                    }
+
+                    var productDict = new Dictionary<string, ShopifyProductDto>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(bulkDataUrl);
+                        response.EnsureSuccessStatusCode();
+                        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync());
+                        var variantDict = new Dictionary<string, ShopifyProductVariantDto>();
+
+                        while (!reader.EndOfStream)
+                        {
+                            var line = await reader.ReadLineAsync();
+                            if (string.IsNullOrWhiteSpace(line))
+                            {
+                                continue;
+                            }
+
+                            var parsed = Serializer.Deserialize<SynchronizationDtoBase>(line);
+                            if (parsed is ShopifyProductDto product)
+                            {
+                                productDict.Add(product.Id, product);
+                            }
+                            else if (parsed is ShopifyProductVariantDto productVariant)
+                            {
+                                variantDict.Add(productVariant.Id, productVariant);
+                                if (productVariant.ParentId != null && productDict.TryGetValue(productVariant.ParentId, out var productItem))
+                                {
+                                    productItem.Variants.Add(productVariant);
+                                }
+                            }
+                            else if (parsed is ShopifyMediaImageDto mediaImage && mediaImage.ParentId != null)
+                            {
+                                if (productDict.TryGetValue(mediaImage.ParentId, out var productItem))
+                                {
+                                    productItem.Images.Add(mediaImage);
+                                }
+                                else if (variantDict.TryGetValue(mediaImage.ParentId, out var variantItem))
+                                {
+                                    variantItem.Images.Add(mediaImage);
+                                }
+                            }
+                        }
+                    }
+
+                    return await productService.ListAsync();
+                },
                 () => new ShopifySharp.Lists.ListResult<ShopifySharp.Product>([], null));
         }
 

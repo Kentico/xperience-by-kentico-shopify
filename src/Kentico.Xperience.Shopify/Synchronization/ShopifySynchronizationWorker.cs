@@ -88,12 +88,12 @@ internal class ShopifySynchronizationWorker : ThreadWorker<ShopifySynchronizatio
             var productContentItem = contentItemProductsLookup[shopifyProduct.Id].FirstOrDefault();
             var imageContentItems = GetAllProductImages(productContentItem);
 
-            var imageSyncResult = imageUploaderService.ProcessImages(shopifyProduct.Images, imageContentItems, languageName, adminUserID)
+            var imageSyncResult = imageUploaderService.ProcessImages(shopifyProduct, imageContentItems, languageName, adminUserID)
                 .GetAwaiter().GetResult();
-            var variantGuids = variantSynchronizationService.ProcessVariants(shopifyProduct.Variants, productContentItem?.Variants, imageSyncResult.VariantImages, languageName, adminUserID)
-                .GetAwaiter().GetResult();
-            productSynchronizationService.ProcessProduct(shopifyProduct, variantGuids, imageSyncResult.ProductImages, languageName, adminUserID, productContentItem)
-                .GetAwaiter().GetResult();
+            //var variantGuids = variantSynchronizationService.ProcessVariants(shopifyProduct.Variants, productContentItem?.Variants, imageSyncResult.VariantImages, languageName, adminUserID)
+            //    .GetAwaiter().GetResult();
+            //productSynchronizationService.ProcessProduct(shopifyProduct, variantGuids, imageSyncResult.ProductImages, languageName, adminUserID, productContentItem)
+            //    .GetAwaiter().GetResult();
         }
 
         logger.LogInformation("Finished shopify product synchronization.");

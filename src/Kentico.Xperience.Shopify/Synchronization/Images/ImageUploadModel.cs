@@ -30,13 +30,8 @@ public class ImageUploadModel
 
 
     /// <summary>
-    /// The Shopify object ID associated with the image.
+    /// Variant IDs that use the image. If image is assigned
+    /// directly to product, array is empty.
     /// </summary>
-    public required string ParentID { get; set; }
-
-    /// <summary>
-    /// True if image belongs to specific product variant
-    /// instead of product itself.
-    /// </summary>
-    public required bool IsVariantImage { get; set; }
+    public string[] VariantIds { get; set; } = [];
 }

@@ -2,6 +2,7 @@
 using CMS.Core;
 
 using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 
 using Shopify.ContentTypes;
 
@@ -17,7 +18,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
 
 
     public async Task<IEnumerable<Guid>> ProcessVariants(
-        IEnumerable<ProductVariant> variants,
+        IEnumerable<ShopifyProductVariantDto> variants,
         IEnumerable<ShopifyProductVariantItem>? existingVariants,
         Dictionary<string, Guid> variantImages,
         string languageName,
@@ -26,8 +27,12 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
         (var toCreate, var toUpdate, var toDelete) = ClassifyItems(variants, existingVariants ?? []);
 
         await contentItemService.DeleteContentItems(toDelete.Select(x => x.ContentItemIdentifier), languageName, userID);
-        var addedVariantsID = await CreateProductVariants(toCreate, variantImages, languageName, userID).ToListAsync();
-        await UpdateProductVariants(toUpdate, variantImages, languageName, userID);
+
+        // TODO
+        var addedVariantsID = new List<int>();//await CreateProductVariants(toCreate, variantImages, languageName, userID).ToListAsync();
+
+        // TODO
+        await UpdateProductVariants([]/*toUpdate*/, variantImages, languageName, userID);
 
         IEnumerable<ShopifyProductVariantItem> variantsToReturn;
         if (addedVariantsID.Count != 0)
@@ -43,7 +48,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
             variantsToReturn = existingVariants ?? Enumerable.Empty<ShopifyProductVariantItem>();
         }
 
-        return OrderItemsByShopify(variantsToReturn, variants.OrderBy(x => x.Position));
+        return OrderItemsByShopify(variantsToReturn, variants);
     }
 
 

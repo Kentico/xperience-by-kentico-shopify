@@ -12,8 +12,9 @@ using ShopifySharp.GraphQL;
 
 using ProductVariantInventoryPolicy = ShopifySharp.GraphQL.ProductVariantInventoryPolicy;
 using ProductVariant = ShopifySharp.GraphQL.ProductVariant;
-using ShopifySharp.Services.Graph;
+
 using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
+using Microsoft.Extensions.Logging;
 
 
 namespace Kentico.Xperience.Shopify.Products
@@ -56,18 +57,7 @@ namespace Kentico.Xperience.Shopify.Products
                 () => []);
         }
 
-        //public async Task<ListResultWrapper<ShopifySharp.GraphQL.Product>> GetAllProductsRaw(ProductFilter? initialFilter)
-        //{
-        //    var bulkRequest = new GraphRequest
-        //    {
-        //        Query = "mutation{bulkOperationRunQuery(query:\"\"\"{products{edges{node{title descriptionHtml id media(first:250){edges{node{...on MediaImage{__typename image{url id altText}}}}}variants(first:250){edges{node{id title sku position inventoryItem{measurement{weight{value}}}media(first:1){edges{node{...on MediaImage{__typename image{altText url id}}}}}}}}}}}} \"\"\"){bulkOperation{id}}}"
-        //    };
-
-        //    var bulkResult = await graphService.PostAsync(bulkRequest, typeof(BulkOperationRunQueryPayload));
-
-        //}
-
-        public async Task<ShopifySharp.Lists.ListResult<ShopifySharp.Product>> GetAllProductsRaw()
+        public async Task<IEnumerable<ShopifyProductDto>> GetAllProductsRaw()
         {
             return await TryCatch(
                 async () =>
@@ -95,17 +85,21 @@ namespace Kentico.Xperience.Shopify.Products
 
                     if (status == BulkOperationStatus.FAILED || string.IsNullOrEmpty(bulkDataUrl))
                     {
-                        return new([], null);
+                        logger.LogError("Could not get products from Shopify.");
+                        return [];
                     }
 
                     var productDict = new Dictionary<string, ShopifyProductDto>();
+                    var variantDict = new Dictionary<string, ShopifyProductVariantDto>();
+                    var productsList = new List<ShopifyProductDto>();
 
                     using (var httpClient = new HttpClient())
                     {
                         var response = await httpClient.GetAsync(bulkDataUrl);
                         response.EnsureSuccessStatusCode();
+
                         using var reader = new StreamReader(await response.Content.ReadAsStreamAsync());
-                        var variantDict = new Dictionary<string, ShopifyProductVariantDto>();
+                        ShopifyProductDto? currentProduct = null;
 
                         while (!reader.EndOfStream)
                         {
@@ -119,6 +113,8 @@ namespace Kentico.Xperience.Shopify.Products
                             if (parsed is ShopifyProductDto product)
                             {
                                 productDict.Add(product.Id, product);
+                                currentProduct = product;
+                                productsList.Add(product);
                             }
                             else if (parsed is ShopifyProductVariantDto productVariant)
                             {
@@ -131,23 +127,29 @@ namespace Kentico.Xperience.Shopify.Products
                             }
                             else if (parsed is ShopifyMediaImageDto mediaImage && mediaImage.ParentId != null)
                             {
+                                // Since shopify returns image wrapped inside MediaImage object, assign ID from image retrieved from Shopify
+                                mediaImage.Id = mediaImage.Image.id ?? string.Empty;
+
                                 if (productDict.TryGetValue(mediaImage.ParentId, out var productItem))
                                 {
                                     productItem.Images.Add(mediaImage);
-                                    mediaImage.Parent = productItem.Parent;
+                                    mediaImage.Parent = productItem;
                                 }
                                 else if (variantDict.TryGetValue(mediaImage.ParentId, out var variantItem))
                                 {
                                     variantItem.Images.Add(mediaImage);
-                                    mediaImage.Parent = variantItem.Parent;
+                                    mediaImage.Parent = variantItem;
+
+                                    // remove image from product images field to prevent from uploading multiple times
+                                    currentProduct?.Images.RemoveAll(x => string.Equals(x.Id, mediaImage.Id, StringComparison.Ordinal));
                                 }
                             }
                         }
                     }
 
-                    return await productService.ListAsync();
+                    return productsList;
                 },
-                () => new ShopifySharp.Lists.ListResult<ShopifySharp.Product>([], null));
+                () => []);
         }
 
         private async Task<Dictionary<string, ProductVariantListModel>> GetProductVariantsInternal(string shopifyProductID, CountryCode countryCode)

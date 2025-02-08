@@ -45,7 +45,7 @@ internal abstract class SynchronizationServiceBase
     }
 
 
-    protected IEnumerable<Guid> OrderItemsByShopify(IEnumerable<IContentItemBase> contentItems, IOrderedEnumerable<SynchronizationDtoBase> shopifyObjects)
+    protected IEnumerable<Guid> OrderItemsByShopify(IEnumerable<IContentItemBase> contentItems, IEnumerable<SynchronizationDtoBase> shopifyObjects)
     {
         foreach (var shopifyObject in shopifyObjects)
         {

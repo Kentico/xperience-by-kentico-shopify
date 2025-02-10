@@ -2,9 +2,9 @@
 
 namespace Kentico.Xperience.Shopify.Admin
 {
-    public partial class IntegrationSettingsInfo
+    public partial class ShopifySettingsInfo
     {
-        static IntegrationSettingsInfo()
+        static ShopifySettingsInfo()
         {
             TYPEINFO.ContinuousIntegrationSettings.Enabled = true;
         }

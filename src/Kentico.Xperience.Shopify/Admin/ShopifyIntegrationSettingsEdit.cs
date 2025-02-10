@@ -92,6 +92,9 @@ namespace Kentico.Xperience.Shopify.Admin
                 StorefrontApiKey = integrationSettings.StorefrontApiKey,
                 ShopifyStoreUrl = integrationSettings.ShopifyUrl,
                 StorefrontApiVersion = integrationSettings.StorefrontApiVersion,
+                WorkspaceName = integrationSettings.ShopifyEffectiveWorkspaceName,
+                ProductSKUFolderId = integrationSettings.ShopifyProductSKUFolderGuid,
+                ProductVariantFolderId = integrationSettings
             };
         }
     }

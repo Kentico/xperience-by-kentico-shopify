@@ -6,8 +6,6 @@ using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 
 using Shopify.ContentTypes;
 
-using ShopifySharp;
-
 namespace Kentico.Xperience.Shopify.Synchronization.Products;
 internal class ProductSynchronizationService : SynchronizationServiceBase, IProductSynchronizationService
 {
@@ -16,13 +14,13 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
     {
     }
 
-    public async Task ProcessProduct(Product product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, int userID, ShopifyProductItem? existingProduct)
+    public async Task ProcessProduct(ShopifyProductDto product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, int userID, ShopifyProductItem? existingProduct)
     {
         var productSyncItem = new ProductSynchronizationItem()
         {
             Title = product.Title,
-            Description = product.BodyHtml,
-            ShopifyProductID = product.Id?.ToString() ?? "",
+            Description = product.DescriptionHtml,
+            ShopifyProductID = product.Id ?? string.Empty,
             Variants = variants.Select(v => new ContentItemReference()
             {
                 Identifier = v

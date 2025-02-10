@@ -6,8 +6,6 @@ using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 
 using Shopify.ContentTypes;
 
-using ShopifySharp;
-
 namespace Kentico.Xperience.Shopify.Synchronization.Variants;
 internal class VariantSynchronizationService : SynchronizationServiceBase, IVariantSynchronizationService
 {
@@ -28,11 +26,9 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
 
         await contentItemService.DeleteContentItems(toDelete.Select(x => x.ContentItemIdentifier), languageName, userID);
 
-        // TODO
-        var addedVariantsID = new List<int>();//await CreateProductVariants(toCreate, variantImages, languageName, userID).ToListAsync();
+        var addedVariantsID = await CreateProductVariants(toCreate, variantImages, languageName, userID).ToListAsync();
 
-        // TODO
-        await UpdateProductVariants([]/*toUpdate*/, variantImages, languageName, userID);
+        await UpdateProductVariants(toUpdate, variantImages, languageName, userID);
 
         IEnumerable<ShopifyProductVariantItem> variantsToReturn;
         if (addedVariantsID.Count != 0)
@@ -53,7 +49,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
 
 
     private async Task UpdateProductVariants(
-        IEnumerable<(ProductVariant ShopifyItem, ShopifyProductVariantItem ContentItem)> productVariants,
+        IEnumerable<(ShopifyProductVariantDto ShopifyItem, ShopifyProductVariantItem ContentItem)> productVariants,
         IDictionary<string, Guid> variantsImages,
         string languageName,
         int userID)
@@ -82,7 +78,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
 
 
     private async IAsyncEnumerable<int> CreateProductVariants(
-        IEnumerable<ProductVariant> productVariants,
+        IEnumerable<ShopifyProductVariantDto> productVariants,
         IDictionary<string, Guid> variantsImages,
         string languageName,
         int userID)
@@ -109,18 +105,18 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
     }
 
 
-    private VariantSynchronizationItem CreateVariantSynchronizationItem(IDictionary<string, Guid> variantsImages, ProductVariant variant)
+    private VariantSynchronizationItem CreateVariantSynchronizationItem(IDictionary<string, Guid> variantsImages, ShopifyProductVariantDto variant)
     {
-        bool hasImage = variantsImages.TryGetValue(variant.Id?.ToString() ?? string.Empty, out var variantImageGuid);
+        bool hasImage = variantsImages.TryGetValue(variant.Id ?? string.Empty, out var variantImageGuid);
 
         return new VariantSynchronizationItem()
         {
-            ShopifyVariantID = variant.Id?.ToString() ?? string.Empty,
+            ShopifyVariantID = variant.Id ?? string.Empty,
             Title = variant.Title,
-            SKU = variant.SKU,
-            Weight = variant.Weight ?? 0,
-            ShopifyMerchandiseID = variant.AdminGraphQLAPIId,
-            ShopifyProductID = variant.ProductId?.ToString() ?? string.Empty,
+            SKU = variant.Sku,
+            Weight = variant.InventoryItem?.measurement?.weight?.value ?? 0,
+            ShopifyMerchandiseID = variant.Id ?? string.Empty,
+            ShopifyProductID = variant.ParentId ?? string.Empty,
             Image = hasImage ? [new ContentItemReference() { Identifier = variantImageGuid }] : []
         };
     }

@@ -19,7 +19,7 @@ This integration connects your Shopify store with the Xperience by Kentico appli
 
 - **Shopify API can return maximum of 250 items in one API request**. For larger number of products, pagination needs to be implemented. More info can be found in the [Usage-Guide.md](./docs/Usage-Guide.md#limitations).
 
-- Only one currency pre website channel is supported.
+- Only one currency per website channel is supported.
 
 ## Screenshots
 

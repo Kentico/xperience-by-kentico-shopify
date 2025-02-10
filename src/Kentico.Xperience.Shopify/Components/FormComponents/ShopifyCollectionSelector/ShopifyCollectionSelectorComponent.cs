@@ -36,7 +36,7 @@ public class ShopifyCollectionSelectorComponent : SelectorFormComponent<ShopifyC
 
         yield return new HtmlOptionItem()
         {
-            Value = "0",
+            Value = "",
             Text = "all"
         };
 

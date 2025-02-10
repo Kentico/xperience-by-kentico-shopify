@@ -44,11 +44,11 @@ namespace Kentico.Xperience.Shopify.Config
         /// <summary>
         /// ISO 4217 currency code.
         /// </summary>
-        public required string CurrencyCode { get; set; }
+        public required CurrencyCode CurrencyCode { get; set; }
 
         /// <summary>
         /// Two letter country code.
         /// </summary>
-        public required CountryCode CountryCode { get; set; }
+        public required CountryCode Country { get; set; }
     }
 }

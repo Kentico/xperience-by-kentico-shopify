@@ -91,7 +91,7 @@ public class ShopifyStoreController : Controller
 
             if (!string.IsNullOrEmpty(shopifyProductId) && prices.TryGetValue(shopifyProductId, out var price))
             {
-                string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty;
+                string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode.ToStringRepresentation() ?? string.Empty;
 
                 productViewModels.Add(ShopifyProductListItemViewModel.GetViewModel(productPage.Product.FirstOrDefault(), url, price, currencyCode));
             }

@@ -12,16 +12,13 @@ namespace Kentico.Xperience.Shopify.Products;
 internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
 {
     private readonly IGraphService graphService;
-    private readonly IShopifyIntegrationSettingsService settingsService;
 
     public ShopifyPriceService(
         IShopifyIntegrationSettingsService integrationSettingsService,
-        IGraphServiceFactory graphServiceFactory,
-        IShopifyIntegrationSettingsService settingsService)
+        IGraphServiceFactory graphServiceFactory)
         : base(integrationSettingsService)
     {
         graphService = graphServiceFactory.Create(shopifyCredentials);
-        this.settingsService = settingsService;
     }
 
     public async Task<IDictionary<string, ProductPriceModel>> GetProductsPrice(IEnumerable<string> shopifyProductIds, CountryCode countryCode)
@@ -33,7 +30,6 @@ internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
 
     private async Task<IDictionary<string, ProductPriceModel>> GetProductsPriceInternal(IEnumerable<string> shopifyProductIds, CountryCode countryCode)
     {
-        string currencyCode = settingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty;
         var productsQuery = shopifyProductIds.Select(x => $"id:{x}")
             .Join(" OR ");
 

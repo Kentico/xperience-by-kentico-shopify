@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Kentico.Xperience.Shopify.Config;
+
+using Microsoft.AspNetCore.Mvc;
 
 using ShopifySharp.GraphQL;
 
@@ -11,15 +13,17 @@ namespace Kentico.Xperience.Shopify.Products.Api;
 public class ShopifyProductApiController : Controller
 {
     private readonly IShopifyProductService productService;
+    private readonly IShopifyIntegrationSettingsService settingsService;
 
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ShopifyProductApiController"/> class.
     /// </summary>
     /// <param name="productService">The Shopify product service.</param>
-    public ShopifyProductApiController(IShopifyProductService productService)
+    public ShopifyProductApiController(IShopifyProductService productService, IShopifyIntegrationSettingsService settingsService)
     {
         this.productService = productService;
+        this.settingsService = settingsService;
     }
 
 
@@ -32,9 +36,8 @@ public class ShopifyProductApiController : Controller
     [HttpGet]
     public async Task<IActionResult> GetProductPrices([FromQuery] string productId, [FromQuery] string currency)
     {
-        // TODO get country code instead of currency
-        var countryCode = CountryCode.CZ;
-        var variants = await productService.GetProductVariants(productId, countryCode);
+        var settings = settingsService.GetWebsiteChannelSettings();
+        var variants = await productService.GetProductVariants(productId, settings?.Country ?? CountryCode.US);
         return Json(variants);
     }
 }

@@ -3,6 +3,7 @@
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products;
+using Kentico.Xperience.Shopify.Products.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -42,11 +43,16 @@ namespace DancingGoat.Components.Widgets.Shopify.ProductListWidget
                 properties.Limit = 250;
             }
 
-            var settings = shopifyIntegrationSettingsService.GetWebsiteChannelSettings();
+            var country = shopifyIntegrationSettingsService.CountryByCurrency(currencyProperty) ?? CountryCode.US;
+            var productFilter = new ProductFilter()
+            {
+                Limit = properties.Limit,
+                Country = country
+            };
 
             var products = string.IsNullOrEmpty(properties.CollectionID)
-                ? (await productService.GetProductsAsync(new Kentico.Xperience.Shopify.Products.Models.ProductFilter())).Items
-                : await collectionService.GetCollectionProducts(properties.CollectionID, properties.Limit, settings.CountryCode);
+                ? (await productService.GetProductsAsync(productFilter)).Items
+                : await collectionService.GetCollectionProducts(properties.CollectionID, properties.Limit, country);
 
             return View("~/Components/Widgets/Shopify/ProductListWidget/_ShopifyProductListWidget.cshtml", new ShopifyProductListViewModel
             {

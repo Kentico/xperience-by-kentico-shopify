@@ -62,7 +62,7 @@ public class ShopifyProductDetailController : Controller
             return View(new ProductDetailViewModel());
         }
 
-        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, config.CountryCode.ToStringRepresentation(), config.CurrencyCode, errorMessages));
+        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, config.Country.ToStringRepresentation(), errorMessages));
     }
 
     [HttpPost]

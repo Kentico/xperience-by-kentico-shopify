@@ -1,4 +1,6 @@
-﻿namespace Kentico.Xperience.Shopify.Config
+﻿using ShopifySharp.GraphQL;
+
+namespace Kentico.Xperience.Shopify.Config
 {
     /// <summary>
     /// Service for getting admin Shopify settings.
@@ -26,5 +28,12 @@
         /// </summary>
         /// <returns>True if settings from admin UI are used. Otherwise False.</returns>
         bool AdminUISettingsUsed();
+
+        /// <summary>
+        /// Get country code by currency code based on data from appsettings.json or user secrets.
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <returns></returns>
+        CountryCode? CountryByCurrency(CurrencyCode currency);
     }
 }

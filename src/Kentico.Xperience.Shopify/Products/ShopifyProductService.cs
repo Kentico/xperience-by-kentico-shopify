@@ -266,7 +266,7 @@ namespace Kentico.Xperience.Shopify.Products
 
             var variants = result.Data.ProductVariants.nodes ?? [];
 
-            return variants.ToDictionary(x => x.id?.Split('/')[^1] ?? string.Empty, x => GetVariantListModel(x));
+            return variants.ToDictionary(x => x.id ?? string.Empty, x => GetVariantListModel(x));
         }
 
         private ProductVariantListModel GetVariantListModel(ProductVariant variant)

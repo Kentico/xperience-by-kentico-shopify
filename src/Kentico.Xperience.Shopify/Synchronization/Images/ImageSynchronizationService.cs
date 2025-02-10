@@ -255,7 +255,8 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
                 ShopifyImageID = uploadModel.ShopifyImageID
             },
             LanguageName = languageName,
-            UserID = userID
+            UserID = userID,
+            WorkspaceName = "KenticoDefault"
         };
 
         return await contentItemService.AddContentItem(addParams);

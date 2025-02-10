@@ -90,7 +90,8 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
             {
                 ContentItem = variantSyncItem,
                 LanguageName = languageName,
-                UserID = userID
+                UserID = userID,
+                WorkspaceName = "KenticoDefault"
             });
 
             if (itemId == 0)

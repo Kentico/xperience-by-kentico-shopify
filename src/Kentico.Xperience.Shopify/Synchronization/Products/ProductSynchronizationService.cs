@@ -52,7 +52,8 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
             {
                 ContentItem = productSyncItem,
                 LanguageName = languageName,
-                UserID = userID
+                UserID = userID,
+                WorkspaceName = "KenticoDefault"
             };
 
             await CreateContentItem(addParams);

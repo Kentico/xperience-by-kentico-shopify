@@ -5,6 +5,9 @@ using CMS.Helpers;
 using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
+
+using Microsoft.Extensions.Logging;
 
 using ShopifySharp;
 using ShopifySharp.Factories;
@@ -13,9 +16,6 @@ using ShopifySharp.GraphQL;
 using ProductVariantInventoryPolicy = ShopifySharp.GraphQL.ProductVariantInventoryPolicy;
 using ProductVariant = ShopifySharp.GraphQL.ProductVariant;
 
-using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
-using Microsoft.Extensions.Logging;
-
 
 namespace Kentico.Xperience.Shopify.Products
 {
@@ -23,24 +23,17 @@ namespace Kentico.Xperience.Shopify.Products
     {
         private readonly IShoppingService shoppingService;
         private readonly IGraphService graphService;
-        private readonly IHttpClientFactory httpClientFactory;
-
-        private readonly IProductService productService;
 
         private const CurrencyCode defaultCurrency = CurrencyCode.USD;
 
         public ShopifyProductService(
             IShopifyIntegrationSettingsService integrationSettingsService,
             IGraphServiceFactory graphServiceFactory,
-            IProductServiceFactory productServiceFactory,
-            IHttpClientFactory httpClientFactory,
             IShoppingService shoppingService) : base(integrationSettingsService)
         {
             this.shoppingService = shoppingService;
-            this.httpClientFactory = httpClientFactory;
 
             graphService = graphServiceFactory.Create(shopifyCredentials);
-            productService = productServiceFactory.Create(shopifyCredentials);
         }
 
         public async Task<ListResultWrapper<ShopifyProductListModel>> GetProductsAsync(ProductFilter? initialFilter = null)

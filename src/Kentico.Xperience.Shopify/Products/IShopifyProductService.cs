@@ -25,6 +25,10 @@ namespace Kentico.Xperience.Shopify.Products
         /// <returns>Dictionary where key is Shopify variant ID</returns>
         Task<Dictionary<string, ProductVariantListModel>> GetProductVariants(string shopifyProductID, CountryCode countryCode);
 
+        /// <summary>
+        /// Get all products from Shopify using GraphQL Admin API.
+        /// </summary>
+        /// <returns>List of all Shopify products.</returns>
         Task<IEnumerable<ShopifyProductDto>> GetAllProductsRaw();
     }
 }

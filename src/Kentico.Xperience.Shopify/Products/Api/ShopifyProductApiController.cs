@@ -20,6 +20,7 @@ public class ShopifyProductApiController : Controller
     /// Initializes a new instance of the <see cref="ShopifyProductApiController"/> class.
     /// </summary>
     /// <param name="productService">The Shopify product service.</param>
+    /// <param name="settingsService">Shopify integration settings service.</param>
     public ShopifyProductApiController(IShopifyProductService productService, IShopifyIntegrationSettingsService settingsService)
     {
         this.productService = productService;
@@ -31,10 +32,9 @@ public class ShopifyProductApiController : Controller
     /// Retrieves product prices for the specified product ID and currency.
     /// </summary>
     /// <param name="productId">The ID of the product.</param>
-    /// <param name="currency">The currency for which prices are retrieved.</param>
     /// <returns>The action result containing the product variants.</returns>
     [HttpGet]
-    public async Task<IActionResult> GetProductPrices([FromQuery] string productId, [FromQuery] string currency)
+    public async Task<IActionResult> GetProductPrices([FromQuery] string productId)
     {
         var settings = settingsService.GetWebsiteChannelSettings();
         var variants = await productService.GetProductVariants(productId, settings?.Country ?? CountryCode.US);

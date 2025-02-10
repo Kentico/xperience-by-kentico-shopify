@@ -14,15 +14,14 @@
 
 
         /// <summary>
-        /// Parameters to retrieve previous page.
+        /// Start cursor.
         /// </summary>
-        public PagingFilterParams? PrevPageFilter { get; set; }
-
+        public string? StartCursor { get; set; }
 
         /// <summary>
-        /// Parameters to retrieve next page.
+        /// End cursor.
         /// </summary>
-        public PagingFilterParams? NextPageFilter { get; set; }
+        public string? EndCursor { get; set; }
     }
 }
 

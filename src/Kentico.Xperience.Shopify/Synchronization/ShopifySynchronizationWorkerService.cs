@@ -62,7 +62,7 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         string languageName = "en";
         int adminUserID = UserInfoProvider.AdministratorUser.UserID;
 
-        var shopifyProducts = (await shopifyProductService.GetAllProductsRaw()).Items;
+        var shopifyProducts = await shopifyProductService.GetAllProductsRaw();
         var contentItemProducts = await shopifyContentItemService.GetContentItems<ShopifyProductItem>(Product.CONTENT_TYPE_NAME, 2);
 
         await productSynchronizationService.DeleteNonExistingProducts(contentItemProducts, shopifyProducts, languageName, adminUserID);
@@ -72,15 +72,11 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
 
         foreach (var shopifyProduct in shopifyProducts)
         {
-            if (!shopifyProduct.Id.HasValue)
-            {
-                continue;
-            }
-            var productContentItem = contentItemProductsLookup[shopifyProduct.Id.Value.ToString()].FirstOrDefault();
+            var productContentItem = contentItemProductsLookup[shopifyProduct.Id].FirstOrDefault();
             var imageContentItems = GetAllProductImages(productContentItem);
 
             var imageSyncResult = await imageSynchronizationService.ProcessImages(
-                shopifyProduct.Images,
+                shopifyProduct,
                 imageContentItems,
                 languageName,
                 workspaceName,

@@ -40,6 +40,7 @@ internal class ShopifySynchronizationWorker : ThreadWorker<ShopifySynchronizatio
     {
         using var serviceScope = Service.Resolve<IServiceProvider>().CreateScope();
         var provider = serviceScope.ServiceProvider;
+
         var shopifySynchronizationWorkerService = provider.GetRequiredService<IShopifySynchronizationWorkerService>();
         shopifySynchronizationWorkerService.SynchronizeProducts().GetAwaiter().GetResult();
     }

@@ -66,14 +66,15 @@ public class ShopifyCategoryController : Controller
             async (_) => await GetProductPrices(products.Select(x => x.Product.FirstOrDefault())),
             new CacheSettings(cacheMinutes, webPage.WebsiteChannelName, webPage.LanguageName, categoryPage.SystemFields.WebPageItemGUID));
 
-        string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty;
+        string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode.ToStringRepresentation() ?? string.Empty;
 
         return View(CategoryPageViewModel.GetViewModel(categoryPage, prices, products, urls, logger, currencyCode));
     }
 
     private async Task<IDictionary<string, ProductPriceModel>> GetProductPrices(IEnumerable<Product> productContentItems)
     {
+        // TODO retrieve country code
         var productIds = productContentItems.Select(x => x.ShopifyProductID);
-        return await priceService.GetProductsPrice(productIds);
+        return await priceService.GetProductsPrice(productIds, ShopifySharp.GraphQL.CountryCode.CZ);
     }
 }

@@ -33,7 +33,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IShopifyProductService, ShopifyProductService>();
         services.AddScoped<IShopifyCollectionService, ShopifyCollectionService>();
         services.AddScoped<IShopifyCurrencyService, ShopifyCurrencyService>();
-        services.AddScoped<IShopifyInventoryService, ShopifyInventoryService>();
         services.AddScoped<IShopifyContentItemService, ShopifyContentItemService>();
         services.AddScoped<IShopifyPriceService, ShopifyPriceService>();
         services.AddScoped<IImageSynchronizationService, ImageSynchronizationService>();

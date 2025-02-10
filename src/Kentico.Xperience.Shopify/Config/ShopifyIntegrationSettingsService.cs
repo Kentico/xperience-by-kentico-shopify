@@ -6,6 +6,8 @@ using Kentico.Xperience.Shopify.Admin;
 
 using Microsoft.Extensions.Options;
 
+using ShopifySharp.GraphQL;
+
 namespace Kentico.Xperience.Shopify.Config
 {
     internal class ShopifyIntegrationSettingsService : IShopifyIntegrationSettingsService
@@ -58,6 +60,16 @@ namespace Kentico.Xperience.Shopify.Config
                 return websiteChannelConfig.DefaultSetting;
             }
             return websiteChannelConfig.Settings?.Find(x => x.ChannelName == currentChannel) ?? websiteChannelConfig.DefaultSetting;
+        }
+
+        public CountryCode? CountryByCurrency(CurrencyCode currency)
+        {
+            if (websiteChannelConfig == null)
+            {
+                return null;
+            }
+
+            return websiteChannelConfig.Settings?.Find(x => x.CurrencyCode == currency)?.Country ?? websiteChannelConfig.DefaultSetting?.Country;
         }
 
         public bool AdminUISettingsUsed()

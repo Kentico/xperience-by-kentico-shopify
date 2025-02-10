@@ -1,9 +1,8 @@
 ﻿using CMS.Core;
 
 using Kentico.Xperience.Ecommerce.Common.ContentItemSynchronization;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
 using Kentico.Xperience.Shopify.Synchronization.Variants;
-
-using ShopifySharp;
 
 namespace Kentico.Xperience.Shopify.Synchronization;
 internal abstract class SynchronizationServiceBase
@@ -26,7 +25,7 @@ internal abstract class SynchronizationServiceBase
     /// <param name="languageName">Content items language.</param>
     /// <param name="userID">User ID used to add/modify/delete content items.</param>
     /// <returns>List of deleted ContentItemIDs</returns>
-    protected async Task<IEnumerable<int>> DeleteNonExistingItems(IEnumerable<IContentItemBase>? contentItems, IEnumerable<ShopifyObject> shopifyItems, string languageName, int userID)
+    protected async Task<IEnumerable<int>> DeleteNonExistingItems(IEnumerable<IContentItemBase>? contentItems, IEnumerable<SynchronizationDtoBase> shopifyItems, string languageName, int userID)
     {
         var removedIDs = new List<int>();
         if (contentItems == null || !contentItems.Any())
@@ -34,7 +33,7 @@ internal abstract class SynchronizationServiceBase
             return removedIDs;
         }
 
-        var shopifyObjectIDs = shopifyItems.Where(x => x.Id.HasValue).Select(x => x.Id.ToString() ?? string.Empty);
+        var shopifyObjectIDs = shopifyItems.Select(x => x.Id);
 
         var contentItemsToDelete = contentItems
             .Where(x => shopifyObjectIDs == null || !shopifyObjectIDs.Contains(x.ShopifyObjectID))
@@ -46,11 +45,11 @@ internal abstract class SynchronizationServiceBase
     }
 
 
-    protected IEnumerable<Guid> OrderItemsByShopify(IEnumerable<IContentItemBase> contentItems, IOrderedEnumerable<ShopifyObject> shopifyObjects)
+    protected IEnumerable<Guid> OrderItemsByShopify(IEnumerable<IContentItemBase> contentItems, IEnumerable<SynchronizationDtoBase> shopifyObjects)
     {
-        foreach (var shopifyObject in shopifyObjects.Where(x => x.Id.HasValue))
+        foreach (var shopifyObject in shopifyObjects)
         {
-            var contentItem = contentItems.FirstOrDefault(x => x.ShopifyObjectID.Equals(shopifyObject.Id?.ToString() ?? string.Empty, StringComparison.Ordinal));
+            var contentItem = contentItems.FirstOrDefault(x => x.ShopifyObjectID.Equals(shopifyObject.Id, StringComparison.Ordinal));
             yield return contentItem?.SystemFields.ContentItemGUID ?? Guid.Empty;
         }
     }
@@ -60,16 +59,16 @@ internal abstract class SynchronizationServiceBase
         IEnumerable<TContentItem> ToDelete)
         ClassifyItems<TShopifyItem, TContentItem>(IEnumerable<TShopifyItem> shopifyProducts,
             IEnumerable<TContentItem> existingItems)
-        where TShopifyItem : ShopifyObject
+        where TShopifyItem : SynchronizationDtoBase
         where TContentItem : IContentItemBase
     {
         var existingLookup = existingItems.ToLookup(item => item.ShopifyObjectID);
         var shopifyLookup = shopifyProducts.ToLookup(item => item.Id.ToString());
 
-        var toCreate = shopifyProducts.Where(shopifyItem => !existingLookup.Contains(shopifyItem.Id!.Value.ToString()))
+        var toCreate = shopifyProducts.Where(shopifyItem => !existingLookup.Contains(shopifyItem.Id))
             .ToList();
 
-        var toUpdate = shopifyProducts.SelectMany(storeItem => existingLookup[storeItem.Id!.Value.ToString()],
+        var toUpdate = shopifyProducts.SelectMany(storeItem => existingLookup[storeItem.Id],
                 (storeItem, existingItem) => (storeItem, existingItem))
             .ToList();
 

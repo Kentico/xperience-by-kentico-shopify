@@ -1,4 +1,6 @@
-﻿namespace Kentico.Xperience.Shopify.Config
+﻿using ShopifySharp.GraphQL;
+
+namespace Kentico.Xperience.Shopify.Config
 {
     /// <summary>
     /// Class with list of website channel configurations.
@@ -42,11 +44,11 @@
         /// <summary>
         /// ISO 4217 currency code.
         /// </summary>
-        public required string CurrencyCode { get; set; }
+        public required CurrencyCode CurrencyCode { get; set; }
 
         /// <summary>
         /// Two letter country code.
         /// </summary>
-        public required string Country { get; set; }
+        public required CountryCode Country { get; set; }
     }
 }

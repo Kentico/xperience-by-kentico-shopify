@@ -1,94 +1,154 @@
-﻿using Kentico.Xperience.Shopify.Config;
+﻿using System.Text;
+
+using CMS.Helpers;
+
+using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
+using Kentico.Xperience.Shopify.Synchronization.BulkOperations;
+
+using Microsoft.Extensions.Logging;
 
 using ShopifySharp;
 using ShopifySharp.Factories;
-using ShopifySharp.Filters;
-using ShopifySharp.Lists;
+using ShopifySharp.GraphQL;
+
+using ProductVariantInventoryPolicy = ShopifySharp.GraphQL.ProductVariantInventoryPolicy;
+using ProductVariant = ShopifySharp.GraphQL.ProductVariant;
 
 
 namespace Kentico.Xperience.Shopify.Products
 {
     internal class ShopifyProductService : ShopifyServiceBase, IShopifyProductService
     {
-        private readonly IProductService productService;
-        private readonly IShopifyInventoryService inventoryService;
         private readonly IShoppingService shoppingService;
-        private readonly IShopifyIntegrationSettingsService settingsService;
+        private readonly IGraphService graphService;
 
-        private readonly Uri shopifyProductUrlBase;
-        private readonly string[] _shopifyFields = ["title", "body_html", "handle", "images", "variants"];
-        private const string defaultCurrency = "USD";
-
-        private string ShopifyFields => string.Join(",", _shopifyFields);
+        private const CurrencyCode defaultCurrency = CurrencyCode.USD;
 
         public ShopifyProductService(
             IShopifyIntegrationSettingsService integrationSettingsService,
-            IProductServiceFactory productServiceFactory,
-            IShopifyInventoryService inventoryService,
-            IShoppingService shoppingService,
-            IShopifyIntegrationSettingsService settingsService) : base(integrationSettingsService)
+            IGraphServiceFactory graphServiceFactory,
+            IShoppingService shoppingService) : base(integrationSettingsService)
         {
-            this.inventoryService = inventoryService;
             this.shoppingService = shoppingService;
-            this.settingsService = settingsService;
 
-            productService = productServiceFactory.Create(shopifyCredentials);
-
-            var uriBuilder = new UriBuilder(shopifyCredentials.ShopDomain)
-            {
-                Path = "products"
-            };
-            shopifyProductUrlBase = uriBuilder.Uri;
+            graphService = graphServiceFactory.Create(shopifyCredentials);
         }
 
-        public async Task<ListResultWrapper<ShopifyProductListModel>> GetProductsAsync(ProductFilter initialFilter)
+        public async Task<ListResultWrapper<ShopifyProductListModel>> GetProductsAsync(ProductFilter? initialFilter = null)
         {
             return await TryCatch(
-                async () => await GetProductsAsyncInternal(initialFilter),
+                async () => CreateResultModel(await GetProductsAsyncInternal(initialFilter ?? new())),
                 GenerateEmptyResult);
         }
 
-        public async Task<ListResultWrapper<ShopifyProductListModel>> GetProductsAsync(PagingFilterParams filterParams)
+        public async Task<Dictionary<string, ProductVariantListModel>> GetProductVariants(string shopifyProductID, CountryCode countryCode)
         {
             return await TryCatch(
-                async () => await GetProductsInternal(filterParams),
-                GenerateEmptyResult);
-        }
-
-        public async Task<ListResult<Product>> GetAllProductsRaw(ListFilter<Product> filter)
-        {
-            return await TryCatch(
-                async () => await productService.ListAsync(filter),
-                () => new ListResult<Product>(Enumerable.Empty<Product>(), null));
-        }
-
-        public async Task<ListResult<Product>> GetAllProductsRaw()
-        {
-            return await TryCatch(
-                async () => await productService.ListAsync(),
-                () => new ListResult<Product>(Enumerable.Empty<Product>(), null));
-        }
-
-        public async Task<Dictionary<string, ProductVariantListModel>> GetProductVariants(string shopifyProductID, string currencyCode)
-        {
-            return await TryCatch(
-                async () => await GetProductVariantsInternal(shopifyProductID, currencyCode),
+                async () => await GetProductVariantsInternal(shopifyProductID, countryCode),
                 () => []);
         }
 
-        private async Task<ListResultWrapper<ShopifyProductListModel>> GetProductsInternal(PagingFilterParams filterParams)
+        public async Task<IEnumerable<ShopifyProductDto>> GetAllProductsRaw()
         {
-            var filter = new ListFilter<Product>(filterParams?.PageInfo, filterParams?.Limit, ShopifyFields);
-            var result = await productService.ListAsync(filter, true);
-            return CreateResultModel(result, settingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty);
+            return await TryCatch(
+                async () =>
+                {
+                    var bulkRequest = new GraphRequest
+                    {
+                        Query = "mutation{bulkOperationRunQuery(query:\"\"\"{products{edges{node{__typename title descriptionHtml id media(first:250){edges{node{...on MediaImage{__typename image{url id altText}}}}}variants(first:250){edges{node{__typename id title sku position inventoryItem{measurement{weight{value}}}media(first:1){edges{node{...on MediaImage{__typename image{altText url id}}}}}}}}}}}} \"\"\"){bulkOperation{id}}}"
+                    };
+
+                    await graphService.PostAsync<BulkOperationRunQueryRequest>(bulkRequest);
+                    var status = BulkOperationStatus.RUNNING;
+                    string bulkDataUrl = string.Empty;
+                    bulkRequest.Query = "query{currentBulkOperation{id status url}}";
+
+                    while (status == BulkOperationStatus.RUNNING)
+                    {
+                        Thread.Sleep(1000);
+                        var waitingResult = await graphService.PostAsync<CurrentBulkOperationResult>(bulkRequest);
+                        status = waitingResult.Data.CurrentBulkOperation.status ?? BulkOperationStatus.FAILED;
+                        if (status == BulkOperationStatus.COMPLETED)
+                        {
+                            bulkDataUrl = waitingResult.Data.CurrentBulkOperation.url ?? string.Empty;
+                        }
+                    }
+
+                    if (status == BulkOperationStatus.FAILED || string.IsNullOrEmpty(bulkDataUrl))
+                    {
+                        logger.LogError("Could not get products from Shopify.");
+                        return [];
+                    }
+
+                    var productDict = new Dictionary<string, ShopifyProductDto>();
+                    var variantDict = new Dictionary<string, ShopifyProductVariantDto>();
+                    var productsList = new List<ShopifyProductDto>();
+
+                    using (var httpClient = new HttpClient())
+                    {
+                        var response = await httpClient.GetAsync(bulkDataUrl);
+                        response.EnsureSuccessStatusCode();
+
+                        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync());
+                        ShopifyProductDto? currentProduct = null;
+
+                        while (!reader.EndOfStream)
+                        {
+                            var line = await reader.ReadLineAsync();
+                            if (string.IsNullOrWhiteSpace(line))
+                            {
+                                continue;
+                            }
+
+                            var parsed = Serializer.Deserialize<SynchronizationDtoBase>(line);
+                            if (parsed is ShopifyProductDto product)
+                            {
+                                productDict.Add(product.Id, product);
+                                currentProduct = product;
+                                productsList.Add(product);
+                            }
+                            else if (parsed is ShopifyProductVariantDto productVariant)
+                            {
+                                variantDict.Add(productVariant.Id, productVariant);
+                                if (productVariant.ParentId != null && productDict.TryGetValue(productVariant.ParentId, out var productItem))
+                                {
+                                    productItem.Variants.Add(productVariant);
+                                    productVariant.Parent = productItem;
+                                }
+                            }
+                            else if (parsed is ShopifyMediaImageDto mediaImage && mediaImage.ParentId != null)
+                            {
+                                // Since shopify returns image wrapped inside MediaImage object, assign ID from image retrieved from Shopify
+                                mediaImage.Id = mediaImage.Image.id ?? string.Empty;
+
+                                if (productDict.TryGetValue(mediaImage.ParentId, out var productItem))
+                                {
+                                    productItem.Images.Add(mediaImage);
+                                    mediaImage.Parent = productItem;
+                                }
+                                else if (variantDict.TryGetValue(mediaImage.ParentId, out var variantItem))
+                                {
+                                    variantItem.Images.Add(mediaImage);
+                                    mediaImage.Parent = variantItem;
+
+                                    // remove image from product images field to prevent from uploading multiple times
+                                    currentProduct?.Images.RemoveAll(x => string.Equals(x.Id, mediaImage.Id, StringComparison.Ordinal));
+                                }
+                            }
+                        }
+                    }
+
+                    return productsList;
+                },
+                () => []);
         }
 
-        private async Task<Dictionary<string, ProductVariantListModel>> GetProductVariantsInternal(string shopifyProductID, string currencyCode)
+        private async Task<Dictionary<string, ProductVariantListModel>> GetProductVariantsInternal(string shopifyProductID, CountryCode countryCode)
         {
             var cart = await shoppingService.GetCurrentShoppingCart();
-            var variants = await GetVariantsFromApi(shopifyProductID, currencyCode);
+            var variants = await GetVariantsFromApi(shopifyProductID, countryCode);
             if (cart != null)
             {
                 foreach (var variant in variants.Values)
@@ -101,95 +161,78 @@ namespace Kentico.Xperience.Shopify.Products
             return variants;
         }
 
-        private async Task<ListResultWrapper<ShopifyProductListModel>> GetProductsAsyncInternal(ProductFilter initialFilter)
+        private async Task<ProductConnection> GetProductsAsyncInternal(ProductFilter initialFilter)
         {
-            var filter = new ProductListFilter
+            var queryFilter = new StringBuilder();
+            if (initialFilter.CollectionID != null)
             {
-                Fields = ShopifyFields,
-                CollectionId = initialFilter.CollectionID,
-                Limit = initialFilter.Limit,
-                Ids = initialFilter.Ids,
-                PresentmentCurrencies = [initialFilter.Currency.ToString()]
-            };
-            var result = await productService.ListAsync(filter, true);
-
-            return CreateResultModel(result, initialFilter.Currency.ToString());
-        }
-
-        private ListResultWrapper<ShopifyProductListModel> CreateResultModel(ListResult<Product> products, string? currency)
-        {
-            var items = new List<ShopifyProductListModel>();
-            foreach (var item in products.Items)
+                queryFilter.Append($"collection_id:{initialFilter.CollectionID} ");
+            }
+            if (initialFilter.Ids != null && initialFilter.Ids.Any())
             {
-                var firstImage = item.Images.FirstOrDefault();
-                (decimal? price, decimal? listPrice) = GetPrices(item.Variants, currency ?? defaultCurrency);
-                items.Add(new ShopifyProductListModel
-                {
-                    Image = firstImage?.Src,
-                    ImageAlt = firstImage?.Alt,
-                    Name = item.Title,
-                    Description = item.BodyHtml,
-                    ShopifyUrl = $"{shopifyProductUrlBase.AbsoluteUri}/{Uri.EscapeDataString(item.Handle)}",
-                    Price = price,
-                    ListPrice = listPrice,
-                    PriceFormatted = price.FormatPrice(currency),
-                    ListPriceFormatted = listPrice.FormatPrice(currency),
-                    HasMoreVariants = item.Variants.Count() > 1
-                });
+                var ids = initialFilter.Ids.Select(x => $"id:{x}")
+                    .Join(" OR ");
+
+                queryFilter.Append("AND (", ids, ")");
             }
 
-            var nextPage = products.GetNextPageFilter();
-            var prevPage = products.GetPreviousPageFilter();
+            var request = new GraphRequest
+            {
+                Query = "query getProductsByCollection($query:String!,$topN:Int,$country:CountryCode,$startCursor:String,$endCursor:String){products(first:$topN,query:$query,after:$endCursor,before:$startCursor){nodes{id contextualPricing(context:{country:$country}){minVariantPricing{price{amount currencyCode}compareAtPrice{amount currencyCode}}}featuredMedia{...on MediaImage{__typename image{altText url}}}title description onlineStorePreviewUrl}pageInfo{endCursor startCursor}}}",
+                Variables = new Dictionary<string, object>
+                {
+                    ["topN"] = initialFilter.Limit ?? 250,
+                    ["country"] = initialFilter.Country,
+                    ["query"] = queryFilter.ToString(),
+                }
+            };
+
+            if (!string.IsNullOrEmpty(initialFilter.StartCursor))
+            {
+                request.Variables.Add("startCursor", initialFilter.StartCursor);
+            }
+            if (!string.IsNullOrEmpty(initialFilter.EndCursor))
+            {
+                request.Variables.Add("endCursor", initialFilter.EndCursor);
+            }
+
+            var result = await graphService.PostAsync<ProductConnectionResult>(request);
+
+            return result.Data.Products ?? new();
+        }
+
+        private ListResultWrapper<ShopifyProductListModel> CreateResultModel(ProductConnection products)
+        {
+            var items = new List<ShopifyProductListModel>();
+            foreach (var product in products.nodes ?? [])
+            {
+                var firstImage = product.featuredMedia?.AsMediaImage()?.image;
+                var pricing = product.contextualPricing?.minVariantPricing;
+                var currencyCode = pricing?.price?.currencyCode ?? defaultCurrency;
+                var price = pricing?.price?.amount;
+                var listPrice = pricing?.compareAtPrice?.amount;
+
+                items.Add(new ShopifyProductListModel
+                {
+                    Image = firstImage?.url,
+                    ImageAlt = firstImage?.altText,
+                    Name = product.title,
+                    Description = product.description,
+                    ShopifyUrl = product.onlineStorePreviewUrl,
+                    Price = price,
+                    ListPrice = listPrice,
+                    PriceFormatted = price.FormatPrice(currencyCode),
+                    ListPriceFormatted = listPrice.FormatPrice(currencyCode),
+                    HasMoreVariants = product.hasOnlyDefaultVariant ?? false
+                });
+            }
 
             return new ListResultWrapper<ShopifyProductListModel>()
             {
                 Items = items,
-                PrevPageFilter = new PagingFilterParams()
-                {
-                    PageInfo = prevPage?.PageInfo,
-                    Limit = prevPage?.Limit
-                },
-                NextPageFilter = new PagingFilterParams()
-                {
-                    PageInfo = nextPage?.PageInfo,
-                    Limit = nextPage?.Limit
-                }
+                StartCursor = products.pageInfo?.startCursor,
+                EndCursor = products.pageInfo?.endCursor
             };
-        }
-
-        private (decimal? price, decimal? listPrice) GetPrices(IEnumerable<ProductVariant> variants, string? currency)
-        {
-            if (variants == null || !variants.Any())
-            {
-                return (null, null);
-            }
-            if (variants.Count() == 1)
-            {
-                var onlyVariant = variants.First();
-                var currencyPrice = onlyVariant.PresentmentPrices?.FirstOrDefault(x => x.Price.CurrencyCode.Equals(currency, StringComparison.Ordinal));
-
-                return currencyPrice is { Price: not null } ?
-                    (currencyPrice.Price.Amount, currencyPrice.CompareAtPrice?.Amount) : (null, null);
-            }
-
-            decimal? minPrice = null;
-
-            foreach (var variant in variants)
-            {
-                var currencyPrice = variant.PresentmentPrices?.FirstOrDefault(x => x.Price.CurrencyCode.Equals(currency, StringComparison.Ordinal));
-
-                if (currencyPrice?.Price.Amount != null)
-                {
-                    decimal price = currencyPrice.Price.Amount.Value;
-
-                    if (!minPrice.HasValue || price < minPrice.Value)
-                    {
-                        minPrice = price;
-                    }
-                }
-            }
-
-            return (minPrice, null);
         }
 
         private ListResultWrapper<ShopifyProductListModel> GenerateEmptyResult()
@@ -200,41 +243,42 @@ namespace Kentico.Xperience.Shopify.Products
             };
         }
 
-        private async Task<Dictionary<string, ProductVariantListModel>> GetVariantsFromApi(string shopifyProductID, string currencyCode)
+        private async Task<Dictionary<string, ProductVariantListModel>> GetVariantsFromApi(string shopifyProductID, CountryCode countryCode)
         {
-            if (!long.TryParse(shopifyProductID, out long productIdValue))
+            var request = new GraphRequest
             {
-                return [];
-            }
-
-            var filter = new ProductListFilter()
-            {
-                PresentmentCurrencies = [currencyCode],
-                Ids = [productIdValue],
-                Fields = "variants"
+                Query = "query productVariants($query:String,$country:CountryCode){productVariants(first:250,query:$query){nodes{id inventoryPolicy inventoryQuantity inventoryItem{tracked} contextualPricing(context:{country:$country}){price{amount currencyCode}compareAtPrice{amount currencyCode}}}}}",
+                Variables = new Dictionary<string, object>()
+                {
+                    ["query"] = $"product_id:{shopifyProductID}",
+                    ["country"] = countryCode.ToStringRepresentation()
+                }
             };
 
-            var variants = (await productService.ListAsync(filter, true)).Items.First().Variants;
-            var inventoryItems = await inventoryService.GetVariantsInventoryItems(variants.Select(x => x.InventoryItemId ?? 0));
-            return variants.ToDictionary(x => x.Id?.ToString() ?? string.Empty, x => GetVariantListModel(x, currencyCode, inventoryItems));
+            var result = await graphService.PostAsync<ProductVariantConnectionResult>(request);
+
+            var variants = result.Data.ProductVariants.nodes ?? [];
+
+            return variants.ToDictionary(x => x.id ?? string.Empty, x => GetVariantListModel(x));
         }
 
-        private ProductVariantListModel GetVariantListModel(ProductVariant variant, string currencyCode, Dictionary<long, InventoryItem> inventoryItems)
+        private ProductVariantListModel GetVariantListModel(ProductVariant variant)
         {
-            var prices = variant.PresentmentPrices.First();
-            bool inStock = true;
-            if (inventoryItems.TryGetValue(variant.InventoryItemId ?? 0, out var inventoryItem))
-            {
-                inStock = !(inventoryItem.Tracked ?? false) || variant.InventoryQuantity > 0;
-            }
+            bool sellIfNotInStock = ProductVariantInventoryPolicy.CONTINUE == variant.inventoryPolicy;
+            var price = variant.contextualPricing?.price;
+            var listPrice = variant.contextualPricing?.compareAtPrice;
+            var inventoryItem = variant.inventoryItem;
+
+            bool inStock = sellIfNotInStock || !(inventoryItem?.tracked ?? false) || variant.inventoryQuantity > 0;
+
             return new ProductVariantListModel()
             {
-                PriceFormatted = prices.Price.Amount.FormatPrice(currencyCode),
-                ListPriceFormatted = prices.CompareAtPrice?.Amount.FormatPrice(currencyCode),
+                PriceFormatted = price?.amount.FormatPrice(price.currencyCode ?? defaultCurrency) ?? string.Empty,
+                ListPriceFormatted = listPrice?.amount.FormatPrice(listPrice.currencyCode ?? defaultCurrency) ?? string.Empty,
                 StockCssClass = inStock ? "available" : "unavailable",
                 StockStatusText = inStock ? "In stock" : "Out of stock",
                 Available = inStock,
-                MerchandiseID = variant.AdminGraphQLAPIId,
+                MerchandiseID = variant.id!,
             };
         }
     }

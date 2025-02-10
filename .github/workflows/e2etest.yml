@@ -3,6 +3,7 @@ name: "E2E: Build and Test"
 on:
   schedule:
     - cron: '0 10 * * 5'  # Runs every Friday at 10:00 UTC
+  workflow_dispatch:
 
 jobs:
   build_and_test:
@@ -71,8 +72,9 @@ jobs:
           Expand-Archive `
             -Path "./database/${{ env.DATABASE_BACKUP_FILENAME }}.zip" `
             -DestinationPath "./database"
+
       - name: Install a SQL Server suite of tools (SQLEngine, SQLPackage)
-        uses: potatoqualitee/mssqlsuite@9a0136e208df60b8ecb62909f076bc34854fa55a # set as a commit hash for security - v1.7
+        uses: potatoqualitee/mssqlsuite@605af2310e2e22978ebf2c74d5995ba102094b8a # set as a commit hash for security - v1.8
         with:
           install: sqlpackage, sqlengine, sqlclient
           sa-password: Pass@12345
@@ -87,6 +89,7 @@ jobs:
             -d master `
             -U "sa" `
             -P "Pass@12345" `
+            -C `
             -Q "RESTORE DATABASE [${{env.DB_NAME}}] FROM DISK='/var/opt/mssql/backup/${{ env.DATABASE_BACKUP_FILENAME }}' WITH MOVE 'XByK_DancingGoat_Shopify' TO '/var/opt/mssql/data/${{env.DB_NAME}}.mdf', MOVE 'XByK_DancingGoat_Shopify_log' TO '/var/opt/mssql/data/${{env.DB_NAME}}_log.ldf'"
         if: endsWith(env.DATABASE_BACKUP_FILENAME, '.bak')
 
@@ -97,6 +100,7 @@ jobs:
             -d ${{env.DB_NAME}} `
             -U "sa" `
             -P "Pass@12345" `
+            -C `
             -Q "UPDATE CMS_SettingsKey SET KeyValue='${{ env.XPERIENCE_BY_KENTICO_LICENSE }}' WHERE KeyName='CMSLicenseKey'"
 
       - name: Restore CI Repository
@@ -128,7 +132,10 @@ jobs:
         run: |
           # Run the ASP.NET Core app as a background job
           cd ./publish
-          Start-Job -ScriptBlock { dotnet ./${{ env.PROJECT_NAME }}.dll } -Name ${{ env.PROJECT_NAME }}
+          Start-Job -ScriptBlock { 
+            dotnet --version
+            dotnet ./${{ env.PROJECT_NAME }}.dll 
+          } -Name ${{ env.PROJECT_NAME }}
           Receive-Job -Name ${{ env.PROJECT_NAME }}
           cd ../
 
@@ -155,6 +162,9 @@ jobs:
 
           if (-not $success) {
               Write-Output "Application did not respond in time."
+              Receive-Job -Name ${{ env.PROJECT_NAME }}
+              Stop-Job -Name ${{ env.PROJECT_NAME }}
+              Remove-Job -Name ${{ env.PROJECT_NAME }}
               exit 1
           }
 
@@ -180,7 +190,7 @@ jobs:
       
       # Create an issue if this job fails
       - name: "Create GitHub Issue on Failure"
-        if: failure()
+        if: ${{ failure() && github.event_name != 'workflow_dispatch' }} # Runs only on failure and not manual trigger
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

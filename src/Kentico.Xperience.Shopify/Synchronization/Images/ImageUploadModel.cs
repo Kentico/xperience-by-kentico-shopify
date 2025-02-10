@@ -30,7 +30,8 @@ public class ImageUploadModel
 
 
     /// <summary>
-    /// The Shopify variant IDs associated with the image.
+    /// Variant IDs that use the image. If image is assigned
+    /// directly to product, array is empty.
     /// </summary>
-    public IEnumerable<string>? VariantIDs { get; set; }
+    public string[] VariantIds { get; set; } = [];
 }

@@ -172,7 +172,7 @@ View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
 
 ## Shopify configuration module
 
-The integration adds a new **Shopify integration** application to the admin UI. Using the application, administrators can set Shopify API credentials and add currency formats. If Shopify API credentials are provided both via this application and configuration providers (e.g., appsettings.json), values from the configuration will take precedence. The application is located under the `Configuration` category.
+The integration adds a new **Shopify integration** application to the admin UI. Using the application, administrators can set Shopify API credentials,add currency formats and set folders for synchronized content items. If Shopify API credentials are provided both via this application and configuration providers (e.g., appsettings.json), values from the configuration will take precedence. The application is located under the `Configuration` category.
 ![Shopify integration module overview](./images/screenshots/shopify_integration_module.jpg "Shopify integration module overview")
 
 ## Codebase overview

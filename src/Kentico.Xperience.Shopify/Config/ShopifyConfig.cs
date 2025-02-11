@@ -33,25 +33,5 @@
         /// Storefront API version
         /// </summary>
         public required string StorefrontApiVersion { get; set; }
-
-        /// <summary>
-        /// Workspace name for synchronized content items.
-        /// </summary>
-        public required string WorkspaceName { get; set; }
-
-        /// <summary>
-        /// Target folder of synchronization of products
-        /// </summary>
-        public required Guid ProductSKUFolderGuid { get; set; }
-
-        /// <summary>
-        /// Target folder of synchronization of product variants
-        /// </summary>
-        public required Guid ProductVariantFolderGuid { get; set; }
-
-        /// <summary>
-        /// Target folder of synchronization of product images
-        /// </summary>
-        public required Guid ProductImageFolderGuid { get; set; }
     }
 }

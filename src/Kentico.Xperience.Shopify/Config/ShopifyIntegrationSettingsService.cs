@@ -91,10 +91,6 @@ namespace Kentico.Xperience.Shopify.Config
                 ShopifyUrl = settingsInfo.ShopifyUrl,
                 StorefrontApiKey = settingsInfo.AdminApiKey,
                 StorefrontApiVersion = settingsInfo.StorefrontApiVersion,
-                WorkspaceName = "", //settingsInfo.ShopifyEffectiveWorkspaceName,
-                ProductSKUFolderGuid = Guid.Empty, //settingsInfo.ShopifyProductSKUFolderGuid,
-                ProductVariantFolderGuid = Guid.Empty, //settingsInfo.ShopifyProductVariantFolderGuid,
-                ProductImageFolderGuid = Guid.Empty //settingsInfo.ShopifyProductImageFolderGuid,
             };
         }
 
@@ -103,10 +99,6 @@ namespace Kentico.Xperience.Shopify.Config
                !string.IsNullOrEmpty(shopifyConfig.ShopifyUrl) &&
                !string.IsNullOrEmpty(shopifyConfig.AdminApiKey) &&
                !string.IsNullOrEmpty(shopifyConfig.StorefrontApiKey) &&
-               !string.IsNullOrEmpty(shopifyConfig.StorefrontApiVersion) &&
-               !string.IsNullOrEmpty(shopifyConfig.WorkspaceName) &&
-               shopifyConfig.ProductSKUFolderGuid != Guid.Empty &&
-               shopifyConfig.ProductVariantFolderGuid != Guid.Empty &&
-               shopifyConfig.ProductImageFolderGuid != Guid.Empty;
+               !string.IsNullOrEmpty(shopifyConfig.StorefrontApiVersion);
     }
 }

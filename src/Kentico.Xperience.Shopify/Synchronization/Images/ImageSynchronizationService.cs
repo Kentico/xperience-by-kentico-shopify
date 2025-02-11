@@ -142,6 +142,9 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
         // Upload images to content hub and create dictionary where key is Content item ID and value is list of Shopify variant IDs
         var uploadedKvp = uploadModels.ToDictionary(x => UploadProductImage(x, languageName, workspaceName, userID).GetAwaiter().GetResult());
 
+        // Store created image content item IDs so they can be moved to folder later
+        syncResult.CreatedImages = uploadedKvp.Keys;
+
         var imageContentItems = await contentItemService.GetContentItems<ShopifyImageItem>(global::Shopify.Image.CONTENT_TYPE_NAME,
                 config => config.Where(x => x.WhereIn(nameof(ShopifyImageItem.SystemFields.ContentItemID), uploadedKvp.Keys.ToArray()))
                     .Columns(nameof(ShopifyImageItem.SystemFields.ContentItemGUID), nameof(ShopifyImageItem.SystemFields.ContentItemID), nameof(ShopifyImageItem.ShopifyImageID)));

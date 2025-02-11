@@ -92,12 +92,15 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
 
     }
 
-    private async Task CreateContentItem(ContentItemAddParams addParams)
+    private async Task<int> CreateContentItem(ContentItemAddParams addParams)
     {
-        if (await contentItemService.AddContentItem(addParams) == 0)
+        var id = await contentItemService.AddContentItem(addParams);
+        if (id == 0)
         {
             LogEvent(EventTypeEnum.Error, nameof(ProcessProduct), $"Could not create product {addParams.ContentItem.DisplayName}");
         }
+
+        return id;
     }
 
     private async Task UpdateContentItem(ContentItemUpdateParams updateParams)

@@ -1,4 +1,8 @@
-﻿using CMS.Core;
+﻿using System.Threading;
+
+using CMS.ContentEngine;
+using CMS.ContentEngine.Internal;
+using CMS.Core;
 using CMS.Membership;
 
 using Kentico.Xperience.Shopify.Config;
@@ -24,6 +28,9 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
     private readonly IImageSynchronizationService imageSynchronizationService;
     private readonly IVariantSynchronizationService variantSynchronizationService;
     private readonly IProductSynchronizationService productSynchronizationService;
+    private readonly IShopifySynchronizationSettingsService synchronizationSettingsService;
+    private readonly IContentFolderManager contentFolderManager;
+    private readonly IContentQueryExecutor queryExecutor;
 
     public ShopifySynchronizationWorkerService(
         ILogger<ShopifySynchronizationWorkerService> logger,
@@ -32,8 +39,13 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         IShopifyContentItemService shopifyContentItemService,
         IImageSynchronizationService imageSynchronizationService,
         IVariantSynchronizationService variantSynchronizationService,
-        IProductSynchronizationService productSynchronizationService)
+        IProductSynchronizationService productSynchronizationService,
+        IShopifySynchronizationSettingsService synchronizationSettingsService,
+        IContentFolderManagerFactory contentFolderManagerFactory,
+        IContentQueryExecutor queryExecutor)
     {
+        contentFolderManager = contentFolderManagerFactory.Create(UserInfoProvider.AdministratorUser.UserID);
+
         this.logger = logger;
         this.shopifyIntegrationSettingsService = shopifyIntegrationSettingsService;
         this.shopifyProductService = shopifyProductService;
@@ -41,6 +53,8 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         this.imageSynchronizationService = imageSynchronizationService;
         this.variantSynchronizationService = variantSynchronizationService;
         this.productSynchronizationService = productSynchronizationService;
+        this.synchronizationSettingsService = synchronizationSettingsService;
+        this.queryExecutor = queryExecutor;
     }
 
     public async Task SynchronizeProducts()
@@ -68,7 +82,7 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         await productSynchronizationService.DeleteNonExistingProducts(contentItemProducts, shopifyProducts, languageName, adminUserID);
 
         var contentItemProductsLookup = contentItemProducts.ToLookup(x => x.ShopifyProductID);
-        var workspaceName = integrationSettings.WorkspaceName;
+        var syncSettings = await synchronizationSettingsService.GetSettings();
 
         foreach (var shopifyProduct in shopifyProducts)
         {
@@ -79,7 +93,7 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
                 shopifyProduct,
                 imageContentItems,
                 languageName,
-                workspaceName,
+                syncSettings.WorkspaceName,
                 adminUserID);
 
             var variantGuids = await variantSynchronizationService.ProcessVariants(
@@ -87,7 +101,7 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
                 productContentItem?.Variants,
                 imageSyncResult.VariantImages,
                 languageName,
-                workspaceName,
+                syncSettings.WorkspaceName,
                 adminUserID);
 
             await productSynchronizationService.ProcessProduct(
@@ -95,9 +109,22 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
                 variantGuids,
                 imageSyncResult.ProductImages,
                 languageName,
-                workspaceName,
+                syncSettings.WorkspaceName,
                 adminUserID,
                 productContentItem);
+        }
+
+        if (syncSettings.ProductFolder.FolderID != 0)
+        {
+            await MoveItemsToDestFolder(syncSettings.ProductFolder.FolderID, Product.CONTENT_TYPE_NAME);
+        }
+        if (syncSettings.ProductVariantFolder.FolderID != 0)
+        {
+            await MoveItemsToDestFolder(syncSettings.ProductVariantFolder.FolderID, ProductVariant.CONTENT_TYPE_NAME);
+        }
+        if (syncSettings.ImageFolder.FolderID != 0)
+        {
+            await MoveItemsToDestFolder(syncSettings.ImageFolder.FolderID, Image.CONTENT_TYPE_NAME);
         }
 
         logger.LogInformation("Finished shopify product synchronization.");
@@ -127,5 +154,28 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         }
 
         return images;
+    }
+
+    private async Task MoveItemsToDestFolder(int targetFolderId, string contentTypeName)
+    {
+        if (targetFolderId == 0)
+        {
+            return;
+        }
+
+        var builder = new ContentItemQueryBuilder().ForContentType(contentTypeName, config => config
+            .Where(p => p
+                .WhereNotEquals(nameof(ContentItemInfo.ContentItemContentFolderID), targetFolderId)
+            )
+            .Columns(nameof(ContentItemInfo.ContentItemID))
+        );
+
+        var ids = (await queryExecutor.GetResult(builder, rowData => rowData.ContentItemID))
+            .ToList();
+
+        if (ids.Count > 0)
+        {
+            await contentFolderManager.MoveItems(targetFolderId, ids);
+        }
     }
 }

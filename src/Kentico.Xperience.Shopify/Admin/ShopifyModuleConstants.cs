@@ -22,4 +22,6 @@ internal static class ShopifySettingsConstants
     public const string SettingsProductVariantFolderGuid = "Content item folder for '" + ProductVariant.CONTENT_TYPE_NAME + "'";
     public const string SettingsProductImageFolderGuid = "Content item folder for '" + Image.CONTENT_TYPE_NAME + "'";
     public const string SettingsWorkspaceName = "Content item workspace name";
+    public const string SettingsCurrencyCode = "Currency code";
+    public const string SettingsCurrencyPriceFormat = "Currency price format";
 }

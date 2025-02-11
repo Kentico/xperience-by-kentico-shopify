@@ -12,18 +12,61 @@ internal interface IShopifyIntegrationSettingsModuleInstaller
 internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSettingsModuleInstaller
 {
     private readonly IInfoProvider<ResourceInfo> resourceInfoProvider;
-    private readonly IInfoProvider<IntegrationSettingsInfo> shopifySettingsInfoProvider;
 
-    public ShopifyIntegrationSettingsModuleInstaller(IInfoProvider<ResourceInfo> resourceInfoProvider, IInfoProvider<IntegrationSettingsInfo> shopifySettingsInfoProvider)
+    public ShopifyIntegrationSettingsModuleInstaller(IInfoProvider<ResourceInfo> resourceInfoProvider)
     {
         this.resourceInfoProvider = resourceInfoProvider;
-        this.shopifySettingsInfoProvider = shopifySettingsInfoProvider;
     }
 
     public void Install()
     {
         var resourceInfo = InstallModule();
         InstallSettingsInfo(resourceInfo);
+        InstallSynchronizationSettingsInfo(resourceInfo);
+        InstallCurrencyFormatInfo(resourceInfo);
+    }
+
+    private void InstallCurrencyFormatInfo(ResourceInfo resourceInfo)
+    {
+        var info = DataClassInfoProvider.GetDataClassInfo(CurrencyFormatInfo.TYPEINFO.ObjectClassName) ??
+    DataClassInfo.New(CurrencyFormatInfo.OBJECT_TYPE);
+
+        info.ClassName = CurrencyFormatInfo.TYPEINFO.ObjectClassName;
+        info.ClassTableName = CurrencyFormatInfo.TYPEINFO.ObjectClassName.Replace(".", "_");
+        info.ClassDisplayName = "Shopify currency format";
+        info.ClassResourceID = resourceInfo.ResourceID;
+        info.ClassType = ClassType.OTHER;
+
+        var formInfo = FormHelper.GetBasicFormDefinition(nameof(CurrencyFormatInfo.CurrencyFormatID));
+
+        var formItem = new FormFieldInfo
+        {
+            Name = nameof(CurrencyFormatInfo.CurrencyCode),
+            Visible = true,
+            DataType = FieldDataType.Text,
+            Caption = ShopifySettingsConstants.SettingsCurrencyCode,
+            Enabled = true,
+            AllowEmpty = false,
+        };
+        formInfo.AddFormItem(formItem);
+
+        formItem = new FormFieldInfo
+        {
+            Name = nameof(CurrencyFormatInfo.CurrencyPriceFormat),
+            Visible = true,
+            DataType = FieldDataType.Text,
+            Caption = ShopifySettingsConstants.SettingsCurrencyPriceFormat,
+            Enabled = true,
+            AllowEmpty = false,
+        };
+        formInfo.AddFormItem(formItem);
+
+        SetFormDefinition(info, formInfo);
+
+        if (info.HasChanged)
+        {
+            DataClassInfoProvider.SetDataClassInfo(info);
+        }
     }
 
     private ResourceInfo InstallModule()
@@ -99,72 +142,76 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
         };
         formInfo.AddFormItem(formItem);
 
-        //formItem = new FormFieldInfo
-        //{
-        //    Name = nameof(IntegrationSettingsInfo.ShopifyWorkspaceName),
-        //    Visible = true,
-        //    DataType = FieldDataType.Text,
-        //    Caption = ShopifySettingsConstants.SettingsWorkspaceName,
-        //    Enabled = true,
-        //    AllowEmpty = true,
-        //};
-        //formInfo.AddFormItem(formItem);
-
-        //formItem = new FormFieldInfo
-        //{
-        //    Name = nameof(IntegrationSettingsInfo.ShopifyProductSKUFolderGuid),
-        //    Visible = true,
-        //    DataType = FieldDataType.Guid,
-        //    Caption = ShopifySettingsConstants.SettingsProductSKUFolderGuid,
-        //    Enabled = true,
-        //    AllowEmpty = false,
-        //};
-        //formInfo.AddFormItem(formItem);
-
-        //formItem = new FormFieldInfo
-        //{
-        //    Name = nameof(IntegrationSettingsInfo.ShopifyProductVariantFolderGuid),
-        //    Visible = true,
-        //    DataType = FieldDataType.Guid,
-        //    Caption = ShopifySettingsConstants.SettingsProductVariantFolderGuid,
-        //    Enabled = true,
-        //    AllowEmpty = false,
-        //};
-        //formInfo.AddFormItem(formItem);
-
-        //formItem = new FormFieldInfo
-        //{
-        //    Name = nameof(IntegrationSettingsInfo.ShopifyProductImageFolderGuid),
-        //    Visible = true,
-        //    DataType = FieldDataType.Guid,
-        //    Caption = ShopifySettingsConstants.SettingsProductImageFolderGuid,
-        //    Enabled = true,
-        //    AllowEmpty = false,
-        //};
-        //formInfo.AddFormItem(formItem);
-
         SetFormDefinition(info, formInfo);
 
         if (info.HasChanged)
         {
             DataClassInfoProvider.SetDataClassInfo(info);
         }
+    }
 
-        var settings = shopifySettingsInfoProvider.Get().TopN(1).GetEnumerableTypedResult().FirstOrDefault();
-        if (settings is null)
+    private void InstallSynchronizationSettingsInfo(ResourceInfo resourceInfo)
+    {
+        var info = DataClassInfoProvider.GetDataClassInfo(SynchronizationSettingsInfo.TYPEINFO.ObjectClassName) ??
+            DataClassInfo.New(SynchronizationSettingsInfo.OBJECT_TYPE);
+
+        info.ClassName = SynchronizationSettingsInfo.TYPEINFO.ObjectClassName;
+        info.ClassTableName = SynchronizationSettingsInfo.TYPEINFO.ObjectClassName.Replace(".", "_");
+        info.ClassDisplayName = "Shopify Synchronization settings";
+        info.ClassResourceID = resourceInfo.ResourceID;
+        info.ClassType = ClassType.OTHER;
+
+        var formInfo = FormHelper.GetBasicFormDefinition(nameof(SynchronizationSettingsInfo.SynchronizationSettingsID));
+
+        var formItem = new FormFieldInfo
         {
-            settings = new IntegrationSettingsInfo()
-            {
-                ShopifyUrl = string.Empty,
-                AdminApiKey = string.Empty,
-                StorefrontApiKey = string.Empty,
-                StorefrontApiVersion = string.Empty,
-                //ShopifyWorkspaceName = string.Empty,
-                //ShopifyProductSKUFolderGuid = Guid.Empty,
-                //ShopifyProductVariantFolderGuid = Guid.Empty,
-                //ShopifyProductImageFolderGuid = Guid.Empty,
-            };
-            settings.Insert();
+            Name = nameof(SynchronizationSettingsInfo.ShopifyWorkspaceName),
+            Visible = true,
+            DataType = FieldDataType.Text,
+            Caption = ShopifySettingsConstants.SettingsWorkspaceName,
+            Enabled = true,
+            AllowEmpty = true,
+        };
+        formInfo.AddFormItem(formItem);
+
+        formItem = new FormFieldInfo
+        {
+            Name = nameof(SynchronizationSettingsInfo.ShopifyProductFolderGuid),
+            Visible = true,
+            DataType = FieldDataType.Guid,
+            Caption = ShopifySettingsConstants.SettingsProductSKUFolderGuid,
+            Enabled = true,
+            AllowEmpty = false,
+        };
+        formInfo.AddFormItem(formItem);
+
+        formItem = new FormFieldInfo
+        {
+            Name = nameof(SynchronizationSettingsInfo.ShopifyProductVariantFolderGuid),
+            Visible = true,
+            DataType = FieldDataType.Guid,
+            Caption = ShopifySettingsConstants.SettingsProductVariantFolderGuid,
+            Enabled = true,
+            AllowEmpty = false,
+        };
+        formInfo.AddFormItem(formItem);
+
+        formItem = new FormFieldInfo
+        {
+            Name = nameof(SynchronizationSettingsInfo.ShopifyImageFolderGuid),
+            Visible = true,
+            DataType = FieldDataType.Guid,
+            Caption = ShopifySettingsConstants.SettingsProductImageFolderGuid,
+            Enabled = true,
+            AllowEmpty = false,
+        };
+        formInfo.AddFormItem(formItem);
+
+        SetFormDefinition(info, formInfo);
+
+        if (info.HasChanged)
+        {
+            DataClassInfoProvider.SetDataClassInfo(info);
         }
     }
 

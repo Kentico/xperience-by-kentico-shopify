@@ -71,8 +71,14 @@ namespace Kentico.Xperience.Shopify.Admin
 
         protected override async Task<ICommandResponse> ProcessFormData(SynchronizationSettingsModel model, ICollection<IFormItem> formItems)
         {
+            var rootFolder = (await contentFolderManager.GetRoot(model.WorkspaceName))?.ContentFolderID;
             var info = SettingsInfo ?? new SynchronizationSettingsInfo();
             info.ShopifyWorkspaceName = model.WorkspaceName;
+
+            if (rootFolder != null)
+            {
+                AssignDefaultFolder(model, rootFolder.Value);
+            }
 
             var folderDict = await GetFolderGuidsByIds([model.ProductFolderId, model.ProductVariantFolderId, model.ImageFolderId]);
 
@@ -112,6 +118,27 @@ namespace Kentico.Xperience.Shopify.Admin
                 .GetEnumerableTypedResult();
 
             return folders.ToDictionary(x => x.ContentFolderGUID, x => x.ContentFolderID);
+        }
+
+        private void AssignDefaultFolder(SynchronizationSettingsModel model, int defaultFolder)
+        {
+            if (defaultFolder == 0)
+            {
+                return;
+            }
+
+            if (model.ProductFolderId == 0)
+            {
+                model.ProductFolderId = defaultFolder;
+            }
+            if (model.ProductVariantFolderId == 0)
+            {
+                model.ProductVariantFolderId = defaultFolder;
+            }
+            if (model.ImageFolderId == 0)
+            {
+                model.ImageFolderId = defaultFolder;
+            }
         }
     }
 }

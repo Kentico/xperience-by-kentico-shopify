@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-using CMS.ContentEngine;
+﻿using CMS.ContentEngine;
 using CMS.ContentEngine.Internal;
 using CMS.Core;
 using CMS.Membership;

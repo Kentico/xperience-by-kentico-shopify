@@ -2,9 +2,14 @@
 
 namespace Kentico.Xperience.Shopify.Admin
 {
-    public partial class ShopifySettingsInfo
+    public partial class SynchronizationSettingsInfo
     {
-        static ShopifySettingsInfo()
+        /// <summary>
+        /// Code name of the form to edit <see cref="SynchronizationSettingsInfo"/> object.
+        /// </summary>
+        public const string UI_FORM_NAME = "ShopifySynchronizationSettingsForm";
+
+        static SynchronizationSettingsInfo()
         {
             TYPEINFO.ContinuousIntegrationSettings.Enabled = true;
         }

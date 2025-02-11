@@ -91,10 +91,10 @@ namespace Kentico.Xperience.Shopify.Config
                 ShopifyUrl = settingsInfo.ShopifyUrl,
                 StorefrontApiKey = settingsInfo.AdminApiKey,
                 StorefrontApiVersion = settingsInfo.StorefrontApiVersion,
-                WorkspaceName = settingsInfo.ShopifyEffectiveWorkspaceName,
-                ProductSKUFolderGuid = settingsInfo.ShopifyProductSKUFolderGuid,
-                ProductVariantFolderGuid = settingsInfo.ShopifyProductVariantFolderGuid,
-                ProductImageFolderGuid = settingsInfo.ShopifyProductImageFolderGuid,
+                WorkspaceName = "", //settingsInfo.ShopifyEffectiveWorkspaceName,
+                ProductSKUFolderGuid = Guid.Empty, //settingsInfo.ShopifyProductSKUFolderGuid,
+                ProductVariantFolderGuid = Guid.Empty, //settingsInfo.ShopifyProductVariantFolderGuid,
+                ProductImageFolderGuid = Guid.Empty //settingsInfo.ShopifyProductImageFolderGuid,
             };
         }
 

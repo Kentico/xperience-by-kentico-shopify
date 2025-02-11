@@ -99,49 +99,49 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
         };
         formInfo.AddFormItem(formItem);
 
-        formItem = new FormFieldInfo
-        {
-            Name = nameof(IntegrationSettingsInfo.ShopifyWorkspaceName),
-            Visible = true,
-            DataType = FieldDataType.Text,
-            Caption = ShopifySettingsConstants.SettingsWorkspaceName,
-            Enabled = true,
-            AllowEmpty = true,
-        };
-        formInfo.AddFormItem(formItem);
+        //formItem = new FormFieldInfo
+        //{
+        //    Name = nameof(IntegrationSettingsInfo.ShopifyWorkspaceName),
+        //    Visible = true,
+        //    DataType = FieldDataType.Text,
+        //    Caption = ShopifySettingsConstants.SettingsWorkspaceName,
+        //    Enabled = true,
+        //    AllowEmpty = true,
+        //};
+        //formInfo.AddFormItem(formItem);
 
-        formItem = new FormFieldInfo
-        {
-            Name = nameof(IntegrationSettingsInfo.ShopifyProductSKUFolderGuid),
-            Visible = true,
-            DataType = FieldDataType.Guid,
-            Caption = ShopifySettingsConstants.SettingsProductSKUFolderGuid,
-            Enabled = true,
-            AllowEmpty = false,
-        };
-        formInfo.AddFormItem(formItem);
+        //formItem = new FormFieldInfo
+        //{
+        //    Name = nameof(IntegrationSettingsInfo.ShopifyProductSKUFolderGuid),
+        //    Visible = true,
+        //    DataType = FieldDataType.Guid,
+        //    Caption = ShopifySettingsConstants.SettingsProductSKUFolderGuid,
+        //    Enabled = true,
+        //    AllowEmpty = false,
+        //};
+        //formInfo.AddFormItem(formItem);
 
-        formItem = new FormFieldInfo
-        {
-            Name = nameof(IntegrationSettingsInfo.ShopifyProductVariantFolderGuid),
-            Visible = true,
-            DataType = FieldDataType.Guid,
-            Caption = ShopifySettingsConstants.SettingsProductVariantFolderGuid,
-            Enabled = true,
-            AllowEmpty = false,
-        };
-        formInfo.AddFormItem(formItem);
+        //formItem = new FormFieldInfo
+        //{
+        //    Name = nameof(IntegrationSettingsInfo.ShopifyProductVariantFolderGuid),
+        //    Visible = true,
+        //    DataType = FieldDataType.Guid,
+        //    Caption = ShopifySettingsConstants.SettingsProductVariantFolderGuid,
+        //    Enabled = true,
+        //    AllowEmpty = false,
+        //};
+        //formInfo.AddFormItem(formItem);
 
-        formItem = new FormFieldInfo
-        {
-            Name = nameof(IntegrationSettingsInfo.ShopifyProductImageFolderGuid),
-            Visible = true,
-            DataType = FieldDataType.Guid,
-            Caption = ShopifySettingsConstants.SettingsProductImageFolderGuid,
-            Enabled = true,
-            AllowEmpty = false,
-        };
-        formInfo.AddFormItem(formItem);
+        //formItem = new FormFieldInfo
+        //{
+        //    Name = nameof(IntegrationSettingsInfo.ShopifyProductImageFolderGuid),
+        //    Visible = true,
+        //    DataType = FieldDataType.Guid,
+        //    Caption = ShopifySettingsConstants.SettingsProductImageFolderGuid,
+        //    Enabled = true,
+        //    AllowEmpty = false,
+        //};
+        //formInfo.AddFormItem(formItem);
 
         SetFormDefinition(info, formInfo);
 
@@ -159,10 +159,10 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
                 AdminApiKey = string.Empty,
                 StorefrontApiKey = string.Empty,
                 StorefrontApiVersion = string.Empty,
-                ShopifyWorkspaceName = string.Empty,
-                ShopifyProductSKUFolderGuid = Guid.Empty,
-                ShopifyProductVariantFolderGuid = Guid.Empty,
-                ShopifyProductImageFolderGuid = Guid.Empty,
+                //ShopifyWorkspaceName = string.Empty,
+                //ShopifyProductSKUFolderGuid = Guid.Empty,
+                //ShopifyProductVariantFolderGuid = Guid.Empty,
+                //ShopifyProductImageFolderGuid = Guid.Empty,
             };
             settings.Insert();
         }

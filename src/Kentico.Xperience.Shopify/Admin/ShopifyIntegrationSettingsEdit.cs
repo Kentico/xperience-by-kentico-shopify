@@ -9,7 +9,7 @@ using Kentico.Xperience.Shopify.Config;
     uiPageType: typeof(ShopifyIntegrationSettingsEdit),
     name: "Shopify settings",
     templateName: TemplateNames.EDIT,
-    order: UIPageOrder.First)]
+    order: 200)]
 
 namespace Kentico.Xperience.Shopify.Admin
 {
@@ -92,9 +92,6 @@ namespace Kentico.Xperience.Shopify.Admin
                 StorefrontApiKey = integrationSettings.StorefrontApiKey,
                 ShopifyStoreUrl = integrationSettings.ShopifyUrl,
                 StorefrontApiVersion = integrationSettings.StorefrontApiVersion,
-                WorkspaceName = integrationSettings.ShopifyEffectiveWorkspaceName,
-                ProductSKUFolderId = integrationSettings.ShopifyProductSKUFolderGuid,
-                ProductVariantFolderId = integrationSettings
             };
         }
     }

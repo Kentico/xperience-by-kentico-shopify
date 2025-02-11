@@ -120,7 +120,7 @@ namespace Kentico.Xperience.Shopify.Admin
             return folders.ToDictionary(x => x.ContentFolderGUID, x => x.ContentFolderID);
         }
 
-        private void AssignDefaultFolder(SynchronizationSettingsModel model, int defaultFolder)
+        private static void AssignDefaultFolder(SynchronizationSettingsModel model, int defaultFolder)
         {
             if (defaultFolder == 0)
             {

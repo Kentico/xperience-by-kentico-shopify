@@ -1,4 +1,4 @@
-﻿using ShopifySharp;
+﻿using Kentico.Xperience.Shopify.Orders.Models;
 
 namespace Kentico.Xperience.Shopify.Orders
 {
@@ -12,6 +12,6 @@ namespace Kentico.Xperience.Shopify.Orders
         /// </summary>
         /// <param name="orderId">Order identifier.</param>
         /// <returns>Retrieved Shopify order if found.</returns>
-        Task<Order?> GetOrder(long orderId);
+        Task<OrderModel?> GetOrder(long orderId);
     }
 }

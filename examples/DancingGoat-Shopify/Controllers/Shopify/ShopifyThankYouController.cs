@@ -9,11 +9,10 @@ using DancingGoat.Models;
 using Kentico.Content.Web.Mvc.Routing;
 using Kentico.Xperience.Shopify.Activities;
 using Kentico.Xperience.Shopify.Orders;
+using Kentico.Xperience.Shopify.Orders.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 
 using Microsoft.AspNetCore.Mvc;
-
-using ShopifySharp;
 
 [assembly: RegisterWebPageRoute(ThankYouPage.CONTENT_TYPE_NAME, typeof(ShopifyThankYouController), WebsiteChannelNames = new[] { DancingGoatConstants.WEBSITE_CHANNEL_NAME })]
 
@@ -64,9 +63,9 @@ namespace DancingGoat.Controllers.Shopify
         }
 
 
-        private void LogPurchaseActivity(Order order, ShoppingCartInfo cart)
+        private void LogPurchaseActivity(OrderModel order, ShoppingCartInfo cart)
         {
-            activityLogger.LogPurchaseActivity(order.TotalPriceSet.PresentmentMoney.Amount ?? 0, order?.Id ?? 0, order.PresentmentCurrency);
+            activityLogger.LogPurchaseActivity(order.Amount, order.Id, order.CurrencyCode);
             foreach (var lineItem in cart.Items)
             {
                 activityLogger.LogPurchasedProductActivity(lineItem);
@@ -74,7 +73,7 @@ namespace DancingGoat.Controllers.Shopify
         }
 
 
-        private void UpdateCurrentContact(Order order)
+        private void UpdateCurrentContact(OrderModel order)
         {
             var currentContact = ContactManagementContext.CurrentContact;
             if (currentContact == null || order == null)
@@ -82,20 +81,18 @@ namespace DancingGoat.Controllers.Shopify
                 return;
             }
 
-            var customerDetails = order.Customer;
+            currentContact.ContactFirstName = order.FirstName;
+            currentContact.ContactLastName = order.LastName;
+            currentContact.ContactEmail = order.Email;
+            currentContact.ContactAddress1 = order.DefaultAddress.Address1;
+            currentContact.ContactCity = order.DefaultAddress.City;
+            currentContact.ContactZIP = order.DefaultAddress.Zip;
 
-            currentContact.ContactFirstName = customerDetails.FirstName;
-            currentContact.ContactLastName = customerDetails.LastName;
-            currentContact.ContactEmail = customerDetails.Email;
-            currentContact.ContactAddress1 = customerDetails.DefaultAddress.Address1;
-            currentContact.ContactCity = customerDetails.DefaultAddress.City;
-            currentContact.ContactZIP = customerDetails.DefaultAddress.Zip;
-
-            if (!string.IsNullOrEmpty(customerDetails.DefaultAddress.CountryCode))
+            if (!string.IsNullOrEmpty(order.DefaultAddress.CountryCode))
             {
                 var country = countryInfoProvider.Get()
                 .TopN(1)
-                .WhereEquals(nameof(CountryInfo.CountryTwoLetterCode), customerDetails.DefaultAddress.CountryCode)
+                .WhereEquals(nameof(CountryInfo.CountryTwoLetterCode), order.DefaultAddress.CountryCode)
                 .FirstOrDefault();
 
                 currentContact.ContactCountryID = country?.CountryID ?? 0;

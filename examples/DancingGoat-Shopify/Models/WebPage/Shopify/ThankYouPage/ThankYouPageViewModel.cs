@@ -1,4 +1,4 @@
-﻿using ShopifySharp;
+﻿using Kentico.Xperience.Shopify.Orders.Models;
 
 namespace DancingGoat.Models
 {
@@ -7,11 +7,11 @@ namespace DancingGoat.Models
         public string OrderName { get; set; }
         public string OrderStatusUrl { get; set; }
 
-        public static ThankYouPageViewModel GetModel(Order order) =>
+        public static ThankYouPageViewModel GetModel(OrderModel order) =>
             new()
             {
                 OrderName = order?.Name,
-                OrderStatusUrl = order?.OrderStatusUrl
+                OrderStatusUrl = order?.StatusPageUrl
             };
     }
 }

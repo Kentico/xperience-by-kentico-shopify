@@ -2,7 +2,9 @@ name: "CI: Build and Test"
 
 on:
   push:
-    branches: [main, fix/TrustDatabaseCertificate]
+    branches:
+      - main
+      - fix/TrustDatabaseCertificate
     paths:
       - "**.cs"
       - "**.tsx"

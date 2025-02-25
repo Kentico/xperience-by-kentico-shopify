@@ -2,9 +2,16 @@ name: "CI: Build and Test"
 
 on:
   push:
-    branches:
-      - main
-      - fix/TrustDatabaseCertificate
+    branches: [main]
+    paths:
+      - "**.cs"
+      - "**.tsx"
+      - "**.js"
+      - "**.csproj"
+      - "**.props"
+      - "**.targets"
+      - "**.sln"
+      - "**/Client/**/*.json"
   pull_request:
     branches: [main]
     paths:

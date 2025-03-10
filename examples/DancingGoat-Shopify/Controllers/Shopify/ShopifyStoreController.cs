@@ -73,7 +73,7 @@ public class ShopifyStoreController : Controller
 
         // TODO retrieve country code
         var productPrices = await priceService.GetProductsPrice(
-            bestSellers.Concat(hotTips).Select(x => x.Product.FirstOrDefault()?.ShopifyProductID ?? string.Empty), ShopifySharp.GraphQL.CountryCode.CZ);
+            bestSellers.Concat(hotTips).Select(x => x.Product.FirstOrDefault()?.ProductIDShort ?? string.Empty), ShopifySharp.GraphQL.CountryCode.CZ);
 
         var bestSellerModels = await GetProductListViewModels(bestSellers, productPrices);
         var hotTipModels = await GetProductListViewModels(hotTips, productPrices);
@@ -86,7 +86,7 @@ public class ShopifyStoreController : Controller
         var productViewModels = new List<ShopifyProductListItemViewModel>();
         foreach (var productPage in productPages)
         {
-            string shopifyProductId = productPage.Product.FirstOrDefault()?.ShopifyProductID ?? string.Empty;
+            string shopifyProductId = productPage.Product.FirstOrDefault()?.ProductIDShort ?? string.Empty;
             var url = await urlRetriever.Retrieve(productPage);
 
             if (!string.IsNullOrEmpty(shopifyProductId) && prices.TryGetValue(shopifyProductId, out var price))

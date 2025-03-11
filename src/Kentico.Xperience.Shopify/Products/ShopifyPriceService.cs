@@ -63,7 +63,7 @@ internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
             {
                 Price = product.contextualPricing.minVariantPricing.price?.amount ?? 0,
                 ListPrice = product.contextualPricing.minVariantPricing.compareAtPrice?.amount,
-                HasMultipleVariants = product.hasOnlyDefaultVariant ?? false
+                HasMultipleVariants = !product.hasOnlyDefaultVariant ?? false
             });
         }
 

@@ -79,7 +79,7 @@ namespace Kentico.Xperience.Shopify.Products
                     ListPrice = listPrice,
                     PriceFormatted = price.FormatPrice(currencyCode),
                     ListPriceFormatted = listPrice.FormatPrice(currencyCode),
-                    HasMoreVariants = product.hasOnlyDefaultVariant ?? false
+                    HasMoreVariants = !product.hasOnlyDefaultVariant ?? false
                 });
             }
 

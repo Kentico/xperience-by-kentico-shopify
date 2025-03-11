@@ -70,10 +70,10 @@ public class ShopifyStoreController : Controller
         var categories = await GetCategories(storePage, webPage.LanguageName)
             .SelectAwait(x => StoreCategoryListViewModel.GetViewModel(x, urlRetriever))
             .ToListAsync();
+        var currency = shopifySettingsService.GetWebsiteChannelSettings()?.Country ?? ShopifySharp.GraphQL.CountryCode.US;
 
-        // TODO retrieve country code
         var productPrices = await priceService.GetProductsPrice(
-            bestSellers.Concat(hotTips).Select(x => x.Product.FirstOrDefault()?.ProductIDShort ?? string.Empty), ShopifySharp.GraphQL.CountryCode.CZ);
+            bestSellers.Concat(hotTips).Select(x => x.Product.FirstOrDefault()?.ProductIDShort ?? string.Empty), currency);
 
         var bestSellerModels = await GetProductListViewModels(bestSellers, productPrices);
         var hotTipModels = await GetProductListViewModels(hotTips, productPrices);

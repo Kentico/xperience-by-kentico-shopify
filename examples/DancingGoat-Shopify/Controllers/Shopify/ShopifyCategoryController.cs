@@ -74,6 +74,8 @@ public class ShopifyCategoryController : Controller
     private async Task<IDictionary<string, ProductPriceModel>> GetProductPrices(IEnumerable<Product> productContentItems)
     {
         var productIds = productContentItems.Select(x => x.ProductIDShort);
-        return await priceService.GetProductsPrice(productIds, ShopifySharp.GraphQL.CountryCode.CZ);
+        var country = shopifySettingsService.GetWebsiteChannelSettings()?.Country ?? ShopifySharp.GraphQL.CountryCode.CZ;
+
+        return await priceService.GetProductsPrice(productIds, country);
     }
 }

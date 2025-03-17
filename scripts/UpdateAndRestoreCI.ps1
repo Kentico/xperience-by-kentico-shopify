@@ -15,6 +15,7 @@ function SetCIValue {
             "-d $Env:DB_NAME " + `
             "-U `"sa`" " + `
             "-P `"Pass@12345`" " + `
+            "-C " + `
             "-Q `"UPDATE CMS_SettingsKey SET KeyValue = N'$ciValue' WHERE KeyName = N'CMSEnableCI'`""
     Invoke-ExpressionWithException $toggleCICommand
 }

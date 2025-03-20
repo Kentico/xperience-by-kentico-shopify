@@ -15,7 +15,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
     }
 
 
-    public async Task<IEnumerable<Guid>> ProcessVariants(
+    public async Task<VariantSynchronizationResult> ProcessVariants(
         IEnumerable<ShopifyProductVariantDto> variants,
         IEnumerable<ShopifyProductVariantItem>? existingVariants,
         Dictionary<string, Guid> variantImages,
@@ -44,7 +44,11 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
             variantsToReturn = existingVariants ?? Enumerable.Empty<ShopifyProductVariantItem>();
         }
 
-        return OrderItemsByShopify(variantsToReturn, variants);
+        return new VariantSynchronizationResult()
+        {
+            ProductVariantGuids = OrderItemsByShopify(variantsToReturn, variants),
+            CreatedVariantContentItemIDs = addedVariantsID
+        };
     }
 
 

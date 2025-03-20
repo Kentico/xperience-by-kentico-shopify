@@ -14,8 +14,11 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
     {
     }
 
-    public async Task ProcessProduct(ShopifyProductDto product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, string workspaceName, int userID, ShopifyProductItem? existingProduct)
+    public async Task<ProductSynchronizationResult> ProcessProduct(ShopifyProductDto product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, string workspaceName, int userID, ShopifyProductItem? existingProduct)
     {
+        var productContentItemID = existingProduct?.SystemFields.ContentItemID ?? 0;
+        var newProductCreated = false;
+
         var productSyncItem = new ProductSynchronizationItem()
         {
             Title = product.Title,
@@ -56,8 +59,15 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
                 UserID = userID
             };
 
-            await CreateContentItem(addParams);
+            productContentItemID = await CreateContentItem(addParams);
+            newProductCreated = true;
         }
+
+        return new ProductSynchronizationResult()
+        {
+            NewProductCreated = newProductCreated,
+            ProductContentItemID = productContentItemID
+        };
     }
 
     public async Task DeleteNonExistingProducts(IEnumerable<ShopifyProductItem> contentItemProducts, IEnumerable<ShopifyProductDto> shopifyProducts, string languageName, int userID)

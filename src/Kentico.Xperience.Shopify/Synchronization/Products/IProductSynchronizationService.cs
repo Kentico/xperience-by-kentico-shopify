@@ -15,7 +15,7 @@ internal interface IProductSynchronizationService
     /// <param name="workspaceName">Workspace name for synchronized content items.</param>
     /// <param name="userID">User ID</param>
     /// <param name="existingProduct">Shopify product equivallent stored as content item</param>
-    Task ProcessProduct(
+    Task<ProductSynchronizationResult> ProcessProduct(
         ShopifyProductDto product,
         IEnumerable<Guid> variants,
         IEnumerable<Guid> images,

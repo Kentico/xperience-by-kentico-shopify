@@ -5,7 +5,7 @@ using Shopify.ContentTypes;
 namespace Kentico.Xperience.Shopify.Synchronization.Variants;
 internal interface IVariantSynchronizationService
 {
-    Task<IEnumerable<Guid>> ProcessVariants(
+    Task<VariantSynchronizationResult> ProcessVariants(
         IEnumerable<ShopifyProductVariantDto> variants,
         IEnumerable<ShopifyProductVariantItem>? existingVariants,
         Dictionary<string, Guid> variantImages,

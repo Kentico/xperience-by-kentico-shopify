@@ -1,5 +1,4 @@
 ﻿using CMS.ContentEngine;
-using CMS.ContentEngine.Internal;
 using CMS.Core;
 using CMS.Membership;
 
@@ -28,7 +27,6 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
     private readonly IProductSynchronizationService productSynchronizationService;
     private readonly IShopifySynchronizationSettingsService synchronizationSettingsService;
     private readonly IContentFolderManager contentFolderManager;
-    private readonly IContentQueryExecutor queryExecutor;
 
     public ShopifySynchronizationWorkerService(
         ILogger<ShopifySynchronizationWorkerService> logger,
@@ -39,8 +37,7 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         IVariantSynchronizationService variantSynchronizationService,
         IProductSynchronizationService productSynchronizationService,
         IShopifySynchronizationSettingsService synchronizationSettingsService,
-        IContentFolderManagerFactory contentFolderManagerFactory,
-        IContentQueryExecutor queryExecutor)
+        IContentFolderManagerFactory contentFolderManagerFactory)
     {
         contentFolderManager = contentFolderManagerFactory.Create(UserInfoProvider.AdministratorUser.UserID);
 
@@ -52,7 +49,6 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         this.variantSynchronizationService = variantSynchronizationService;
         this.productSynchronizationService = productSynchronizationService;
         this.synchronizationSettingsService = synchronizationSettingsService;
-        this.queryExecutor = queryExecutor;
     }
 
     public async Task SynchronizeProducts()

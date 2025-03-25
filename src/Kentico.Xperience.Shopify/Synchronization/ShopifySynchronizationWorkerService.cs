@@ -123,9 +123,11 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
             }
         }
 
-        await MoveItemsToDestFolder(syncSettings.ProductFolder.FolderID, createdProducts);
-        await MoveItemsToDestFolder(syncSettings.ProductVariantFolder.FolderID, createdVariants);
-        await MoveItemsToDestFolder(syncSettings.ImageFolder.FolderID, createdImages);
+        var workspaceRoot = (await contentFolderManager.GetRoot(syncSettings.WorkspaceName))?.ContentFolderID ?? 0;
+
+        await MoveItemsToDestFolder(syncSettings.ProductFolder.FolderID, createdProducts, workspaceRoot);
+        await MoveItemsToDestFolder(syncSettings.ProductVariantFolder.FolderID, createdVariants, workspaceRoot);
+        await MoveItemsToDestFolder(syncSettings.ImageFolder.FolderID, createdImages, workspaceRoot);
 
         logger.LogInformation("Finished shopify product synchronization.");
     }
@@ -156,9 +158,9 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
         return images;
     }
 
-    private async Task MoveItemsToDestFolder(int targetFolderId, IEnumerable<int> ids)
+    private async Task MoveItemsToDestFolder(int targetFolderId, IEnumerable<int> ids, int rootFolderId)
     {
-        if (targetFolderId == 0)
+        if (targetFolderId == 0 || rootFolderId == targetFolderId)
         {
             return;
         }

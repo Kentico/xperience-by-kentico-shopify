@@ -39,7 +39,7 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
 
         var formInfo = FormHelper.GetBasicFormDefinition(nameof(CurrencyFormatInfo.CurrencyFormatID));
 
-        var formItem = new FormFieldInfo
+        var currencyCodeField = new FormFieldInfo
         {
             Name = nameof(CurrencyFormatInfo.CurrencyCode),
             Visible = true,
@@ -48,9 +48,9 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = false,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(currencyCodeField);
 
-        formItem = new FormFieldInfo
+        var currencyPriceFormatField = new FormFieldInfo
         {
             Name = nameof(CurrencyFormatInfo.CurrencyPriceFormat),
             Visible = true,
@@ -59,7 +59,7 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = false,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(currencyPriceFormatField);
 
         SetFormDefinition(info, formInfo);
 
@@ -98,7 +98,7 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
 
         var formInfo = FormHelper.GetBasicFormDefinition(nameof(IntegrationSettingsInfo.IntegrationSettingsID));
 
-        var formItem = new FormFieldInfo
+        var shopifyUrlField = new FormFieldInfo
         {
             Name = nameof(IntegrationSettingsInfo.ShopifyUrl),
             Visible = true,
@@ -107,9 +107,9 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = false,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(shopifyUrlField);
 
-        formItem = new FormFieldInfo
+        var adminApiKeyField = new FormFieldInfo
         {
             Name = nameof(IntegrationSettingsInfo.AdminApiKey),
             Visible = true,
@@ -118,9 +118,9 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = true,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(adminApiKeyField);
 
-        formItem = new FormFieldInfo
+        var storefrontApiKeyField = new FormFieldInfo
         {
             Name = nameof(IntegrationSettingsInfo.StorefrontApiKey),
             Visible = true,
@@ -129,9 +129,9 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = true,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(storefrontApiKeyField);
 
-        formItem = new FormFieldInfo
+        var storefrontApiVersionField = new FormFieldInfo
         {
             Name = nameof(IntegrationSettingsInfo.StorefrontApiVersion),
             Visible = true,
@@ -140,7 +140,7 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = true,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(storefrontApiVersionField);
 
         SetFormDefinition(info, formInfo);
 
@@ -163,7 +163,7 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
 
         var formInfo = FormHelper.GetBasicFormDefinition(nameof(SynchronizationSettingsInfo.SynchronizationSettingsID));
 
-        var formItem = new FormFieldInfo
+        var workspaceNameField = new FormFieldInfo
         {
             Name = nameof(SynchronizationSettingsInfo.ShopifyWorkspaceName),
             Visible = true,
@@ -172,9 +172,9 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = true,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(workspaceNameField);
 
-        formItem = new FormFieldInfo
+        var productFolderGuidField = new FormFieldInfo
         {
             Name = nameof(SynchronizationSettingsInfo.ShopifyProductFolderGuid),
             Visible = true,
@@ -183,9 +183,9 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = false,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(productFolderGuidField);
 
-        formItem = new FormFieldInfo
+        var variantFolderGuidField = new FormFieldInfo
         {
             Name = nameof(SynchronizationSettingsInfo.ShopifyProductVariantFolderGuid),
             Visible = true,
@@ -194,9 +194,9 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = false,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(variantFolderGuidField);
 
-        formItem = new FormFieldInfo
+        var imageFolderGuidField = new FormFieldInfo
         {
             Name = nameof(SynchronizationSettingsInfo.ShopifyImageFolderGuid),
             Visible = true,
@@ -205,7 +205,7 @@ internal class ShopifyIntegrationSettingsModuleInstaller : IShopifyIntegrationSe
             Enabled = true,
             AllowEmpty = false,
         };
-        formInfo.AddFormItem(formItem);
+        formInfo.AddFormItem(imageFolderGuidField);
 
         SetFormDefinition(info, formInfo);
 

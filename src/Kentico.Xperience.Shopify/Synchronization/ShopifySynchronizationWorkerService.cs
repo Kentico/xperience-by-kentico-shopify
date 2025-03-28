@@ -55,7 +55,7 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
     {
 
         var integrationSettings = shopifyIntegrationSettingsService.GetSettings();
-        if (integrationSettings == null)
+        if (integrationSettings is null)
         {
             logger.LogError("Cannot start products synchronization. No Shopify integration settings provided.");
             return;
@@ -130,23 +130,23 @@ internal class ShopifySynchronizationWorkerService : IShopifySynchronizationWork
 
     private IEnumerable<ShopifyImageItem> GetAllProductImages(ShopifyProductItem? product)
     {
-        if (product == null)
+        if (product is null)
         {
             return Enumerable.Empty<ShopifyImageItem>();
         }
 
         var images = new List<ShopifyImageItem>();
 
-        if (product.Images != null && product.Images.Any())
+        if (product.Images is not null && product.Images.Any())
         {
             images.AddRange(product.Images);
         }
-        if (product.Variants == null || !product.Variants.Any())
+        if (product.Variants is null || !product.Variants.Any())
         {
             return images;
         }
 
-        foreach (var variant in product.Variants.Where(variant => variant.Image != null && variant.Image.Any()))
+        foreach (var variant in product.Variants.Where(variant => variant.Image is not null && variant.Image.Any()))
         {
             images.AddRange(variant.Image);
         }

@@ -140,7 +140,8 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
         }
 
         // Upload images to content hub and create dictionary where key is Content item ID and value is list of Shopify variant IDs
-        var uploadedKvp = uploadModels.ToDictionary(x => UploadProductImage(x, languageName, workspaceName, userID).GetAwaiter().GetResult());
+        var uploadedKvp = await uploadModels.ToAsyncEnumerable()
+            .ToDictionaryAwaitAsync(async x => await UploadProductImage(x, languageName, workspaceName, userID));
 
         // Store created image content item IDs so they can be moved to folder later
         syncResult.CreatedImages = uploadedKvp.Keys;

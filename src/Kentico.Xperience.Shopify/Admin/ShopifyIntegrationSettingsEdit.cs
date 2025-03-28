@@ -81,7 +81,7 @@ namespace Kentico.Xperience.Shopify.Admin
 
         private ShopifyIntegrationSettingsModel CreateShopifySettingsModel(IntegrationSettingsInfo? integrationSettings)
         {
-            if (integrationSettings == null)
+            if (integrationSettings is null)
             {
                 return new ShopifyIntegrationSettingsModel();
             }

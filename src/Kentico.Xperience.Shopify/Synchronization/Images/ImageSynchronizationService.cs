@@ -38,7 +38,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
         await contentItemService.DeleteContentItems(toDelete.Select(x => x.ContentItemIdentifier), languageName, userID);
 
         // Create new content item images
-        if (toCreate != null && toCreate.Any())
+        if (toCreate is not null && toCreate.Any())
         {
             resultImages.AddRange(await CreateNewImages(toCreate, languageName, workspaceName, userID, syncResult));
         }
@@ -183,7 +183,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
 
         foreach ((var shopifyImage, var contentItemImage) in imagesToUpdate)
         {
-            if (shopifyImage?.Image.url == null || contentItemImage == null)
+            if (shopifyImage?.Image.url is null || contentItemImage is null)
             {
                 continue;
             }
@@ -218,7 +218,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
 
             // if image's parent is ProductVariant and contentItemsDict already contains image content item, add variantID to list
             if (shopifyImage.Parent is ShopifyProductVariantDto
-                && shopifyImage.ParentId != null
+                && shopifyImage.ParentId is not null
                 && !contentItemDict.TryAdd(contentItemImage.SystemFields.ContentItemGUID, [shopifyImage.ParentId]))
             {
                 contentItemDict[contentItemImage.SystemFields.ContentItemGUID]!.Add(shopifyImage.ParentId);
@@ -227,7 +227,7 @@ internal class ImageSynchronizationService : SynchronizationServiceBase, IImageS
 
         foreach (var kvp in contentItemDict)
         {
-            if (kvp.Value != null && kvp.Value.Any())
+            if (kvp.Value is not null && kvp.Value.Any())
             {
                 foreach (string shopifyVariantID in kvp.Value)
                 {

@@ -49,7 +49,7 @@ namespace Kentico.Xperience.Shopify.Config
 
         public ShopifyWebsiteChannelConfig? GetWebsiteChannelSettings()
         {
-            if (websiteChannelConfig == null)
+            if (websiteChannelConfig is null)
             {
                 return null;
             }
@@ -64,7 +64,7 @@ namespace Kentico.Xperience.Shopify.Config
 
         public CountryCode? CountryByCurrency(CurrencyCode currency)
         {
-            if (websiteChannelConfig == null)
+            if (websiteChannelConfig is null)
             {
                 return null;
             }
@@ -80,7 +80,7 @@ namespace Kentico.Xperience.Shopify.Config
             var settingsInfo = integrationSettingsProvider.Get()
                     .TopN(1)
                     .FirstOrDefault();
-            if (settingsInfo == null)
+            if (settingsInfo is null)
             {
                 return null;
             }

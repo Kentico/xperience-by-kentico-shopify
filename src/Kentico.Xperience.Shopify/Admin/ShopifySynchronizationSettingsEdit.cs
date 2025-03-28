@@ -42,7 +42,7 @@ namespace Kentico.Xperience.Shopify.Admin
         private SynchronizationSettingsModel CreateSynchronizationSettingsModel(SynchronizationSettingsInfo? settingsInfo)
         {
             var settingsModel = new SynchronizationSettingsModel();
-            if (settingsInfo == null)
+            if (settingsInfo is null)
             {
                 return settingsModel;
             }
@@ -74,7 +74,7 @@ namespace Kentico.Xperience.Shopify.Admin
             var info = SettingsInfo ?? new SynchronizationSettingsInfo();
             info.ShopifyWorkspaceName = model.WorkspaceName;
 
-            if (rootFolder != null)
+            if (rootFolder is not null)
             {
                 AssignDefaultFolder(model, rootFolder.Value);
             }

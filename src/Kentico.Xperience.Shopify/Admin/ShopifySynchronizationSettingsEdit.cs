@@ -1,5 +1,4 @@
-﻿
-using CMS.ContentEngine;
+﻿using CMS.ContentEngine;
 using CMS.Membership;
 
 using Kentico.Xperience.Admin.Base;

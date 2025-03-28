@@ -8,7 +8,6 @@ internal static class ShopifyResourceConstants
     public const string ResourceName = "ShopifyStoreConfiguration";
     public const string ResourceDescription = "The module integrates connection with Shopify API.";
     public const bool ResourceIsInDevelopment = false;
-
 }
 
 internal static class ShopifySettingsConstants

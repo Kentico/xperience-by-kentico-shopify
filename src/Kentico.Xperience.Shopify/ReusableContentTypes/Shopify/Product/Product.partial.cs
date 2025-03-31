@@ -1,5 +1,8 @@
 ﻿namespace Shopify
 {
+    /// <summary>
+    /// Represents a partial class for <see cref="Product"/> reusable content item.
+    /// </summary>
     public partial class Product
     {
         /// <summary>

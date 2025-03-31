@@ -47,14 +47,14 @@ internal class ShopifyPriceService : ShopifyServiceBase, IShopifyPriceService
         var products = result.Data.Products.nodes;
 
         var dict = new Dictionary<string, ProductPriceModel>();
-        if (products == null)
+        if (products is null)
         {
             return dict;
         }
 
         foreach (var product in products)
         {
-            if (product == null || string.IsNullOrEmpty(product.id) || product.contextualPricing?.minVariantPricing == null)
+            if (product is null || string.IsNullOrEmpty(product.id) || product.contextualPricing?.minVariantPricing is null)
             {
                 continue;
             }

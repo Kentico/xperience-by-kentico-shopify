@@ -10,7 +10,13 @@ internal interface IImageSynchronizationService
     /// <param name="shopifyProduct">Retrieved product from Shopify.</param>
     /// <param name="imagesCI">Existing image content items.</param>
     /// <param name="languageName">Content items language.</param>
+    /// <param name="workspaceName">Workspace name of synchronized content items.</param>
     /// <param name="userID">User ID used to add/modify/delete content items.</param>
     /// <returns>Images that should be assigned to particular variants and products.</returns>
-    Task<ImageSynchronizationResult> ProcessImages(ShopifyProductDto shopifyProduct, IEnumerable<ShopifyImageItem>? imagesCI, string languageName, int userID);
+    Task<ImageSynchronizationResult> ProcessImages(
+        ShopifyProductDto shopifyProduct,
+        IEnumerable<ShopifyImageItem>? imagesCI,
+        string languageName,
+        string workspaceName,
+        int userID);
 }

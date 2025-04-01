@@ -10,4 +10,9 @@ internal class ImageSynchronizationResult
     /// Product images.
     /// </summary>
     public List<Guid> ProductImages { get; set; } = [];
+
+    /// <summary>
+    /// Content item IDs of created images.
+    /// </summary>
+    public IEnumerable<int> CreatedImages { get; set; } = [];
 }

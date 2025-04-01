@@ -15,18 +15,19 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
     }
 
 
-    public async Task<IEnumerable<Guid>> ProcessVariants(
+    public async Task<VariantSynchronizationResult> ProcessVariants(
         IEnumerable<ShopifyProductVariantDto> variants,
         IEnumerable<ShopifyProductVariantItem>? existingVariants,
         Dictionary<string, Guid> variantImages,
         string languageName,
+        string workspaceName,
         int userID)
     {
         (var toCreate, var toUpdate, var toDelete) = ClassifyItems(variants, existingVariants ?? []);
 
         await contentItemService.DeleteContentItems(toDelete.Select(x => x.ContentItemIdentifier), languageName, userID);
+        var addedVariantsID = await CreateProductVariants(toCreate, variantImages, languageName, workspaceName, userID).ToListAsync();
 
-        var addedVariantsID = await CreateProductVariants(toCreate, variantImages, languageName, userID).ToListAsync();
 
         await UpdateProductVariants(toUpdate, variantImages, languageName, userID);
 
@@ -44,7 +45,11 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
             variantsToReturn = existingVariants ?? Enumerable.Empty<ShopifyProductVariantItem>();
         }
 
-        return OrderItemsByShopify(variantsToReturn, variants);
+        return new VariantSynchronizationResult()
+        {
+            ProductVariantGuids = OrderItemsByShopify(variantsToReturn, variants),
+            CreatedVariantContentItemIDs = addedVariantsID
+        };
     }
 
 
@@ -81,6 +86,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
         IEnumerable<ShopifyProductVariantDto> productVariants,
         IDictionary<string, Guid> variantsImages,
         string languageName,
+        string workspaceName,
         int userID)
     {
         foreach (var productVariant in productVariants)
@@ -91,7 +97,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
                 ContentItem = variantSyncItem,
                 LanguageName = languageName,
                 UserID = userID,
-                WorkspaceName = "KenticoDefault"
+                WorkspaceName = workspaceName
             });
 
             if (itemId == 0)

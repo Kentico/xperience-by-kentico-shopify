@@ -14,8 +14,11 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
     {
     }
 
-    public async Task ProcessProduct(ShopifyProductDto product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, int userID, ShopifyProductItem? existingProduct)
+    public async Task<ProductSynchronizationResult> ProcessProduct(ShopifyProductDto product, IEnumerable<Guid> variants, IEnumerable<Guid> images, string languageName, string workspaceName, int userID, ShopifyProductItem? existingProduct)
     {
+        var productContentItemID = existingProduct?.SystemFields.ContentItemID ?? 0;
+        var newProductCreated = false;
+
         var productSyncItem = new ProductSynchronizationItem()
         {
             Title = product.Title,
@@ -52,12 +55,19 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
             {
                 ContentItem = productSyncItem,
                 LanguageName = languageName,
-                UserID = userID,
-                WorkspaceName = "KenticoDefault"
+                WorkspaceName = workspaceName,
+                UserID = userID
             };
 
-            await CreateContentItem(addParams);
+            productContentItemID = await CreateContentItem(addParams);
+            newProductCreated = true;
         }
+
+        return new ProductSynchronizationResult()
+        {
+            NewProductCreated = newProductCreated,
+            ProductContentItemID = productContentItemID
+        };
     }
 
     public async Task DeleteNonExistingProducts(IEnumerable<ShopifyProductItem> contentItemProducts, IEnumerable<ShopifyProductDto> shopifyProducts, string languageName, int userID)
@@ -92,12 +102,15 @@ internal class ProductSynchronizationService : SynchronizationServiceBase, IProd
 
     }
 
-    private async Task CreateContentItem(ContentItemAddParams addParams)
+    private async Task<int> CreateContentItem(ContentItemAddParams addParams)
     {
-        if (await contentItemService.AddContentItem(addParams) == 0)
+        var id = await contentItemService.AddContentItem(addParams);
+        if (id == 0)
         {
             LogEvent(EventTypeEnum.Error, nameof(ProcessProduct), $"Could not create product {addParams.ContentItem.DisplayName}");
         }
+
+        return id;
     }
 
     private async Task UpdateContentItem(ContentItemUpdateParams updateParams)

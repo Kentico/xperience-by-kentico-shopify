@@ -14,7 +14,6 @@ namespace Kentico.Xperience.Shopify.Admin
     /// <summary>
     /// Data container class for <see cref="IntegrationSettingsInfo"/>.
     /// </summary>
-    [Serializable]
     public partial class IntegrationSettingsInfo : AbstractInfo<IntegrationSettingsInfo, IInfoProvider<IntegrationSettingsInfo>>, IInfoWithId
     {
         /// <summary>
@@ -85,7 +84,6 @@ namespace Kentico.Xperience.Shopify.Admin
             get => ValidationHelper.GetString(GetValue(nameof(StorefrontApiVersion)), String.Empty);
             set => SetValue(nameof(StorefrontApiVersion), value);
         }
-
 
         /// <summary>
         /// Deletes the object using appropriate provider.

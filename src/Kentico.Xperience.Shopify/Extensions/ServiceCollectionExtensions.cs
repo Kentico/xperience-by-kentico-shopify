@@ -1,4 +1,5 @@
 ﻿using Kentico.Xperience.Shopify.Activities;
+using Kentico.Xperience.Shopify.Admin;
 using Kentico.Xperience.Shopify.Config;
 using Kentico.Xperience.Shopify.Orders;
 using Kentico.Xperience.Shopify.Products;
@@ -44,8 +45,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IShopifyIntegrationSettingsService, ShopifyIntegrationSettingsService>();
         services.AddScoped<IEcommerceActivityLogger, EcommerceActivityLogger>();
         services.AddScoped<IShopifyOrderService, ShopifyOrderService>();
+        services.AddScoped<IShopifySynchronizationWorkerService, ShopifySynchronizationWorkerService>();
+        services.AddScoped<IShopifySynchronizationSettingsService, ShopifySynchronizationSettingsService>();
 
         services.AddSingleton<IShopifyCurrencyFormatService, ShopifyCurrencyFormatService>();
+        services.AddSingleton<IShopifyIntegrationSettingsModuleInstaller, ShopifyIntegrationSettingsModuleInstaller>();
 
         // Add Storefront API HTTP client
         services.AddHttpClient(ShopifyConstants.STOREFRONT_API_CLIENT_NAME, SetupHttpClient);

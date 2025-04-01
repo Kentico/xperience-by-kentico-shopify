@@ -9,7 +9,7 @@ using Kentico.Xperience.Shopify.Config;
     uiPageType: typeof(ShopifyIntegrationSettingsEdit),
     name: "Shopify settings",
     templateName: TemplateNames.EDIT,
-    order: UIPageOrder.First)]
+    order: 200)]
 
 namespace Kentico.Xperience.Shopify.Admin
 {
@@ -81,7 +81,7 @@ namespace Kentico.Xperience.Shopify.Admin
 
         private ShopifyIntegrationSettingsModel CreateShopifySettingsModel(IntegrationSettingsInfo? integrationSettings)
         {
-            if (integrationSettings == null)
+            if (integrationSettings is null)
             {
                 return new ShopifyIntegrationSettingsModel();
             }

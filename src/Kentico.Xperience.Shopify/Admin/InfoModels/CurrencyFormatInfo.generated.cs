@@ -14,7 +14,6 @@ namespace Kentico.Xperience.Shopify.Admin
     /// <summary>
     /// Data container class for <see cref="CurrencyFormatInfo"/>.
     /// </summary>
-    [Serializable]
     public partial class CurrencyFormatInfo : AbstractInfo<CurrencyFormatInfo, IInfoProvider<CurrencyFormatInfo>>, IInfoWithId, IInfoWithName
     {
         /// <summary>

@@ -974,6 +974,7 @@
       "kentico.xperience.ecommerce.common": {
         "type": "Project",
         "dependencies": {
+          "Kentico.Xperience.Admin": "[30.0.1, )",
           "Kentico.Xperience.Core": "[30.0.1, )",
           "Microsoft.Extensions.Http": "[8.0.0, )"
         }

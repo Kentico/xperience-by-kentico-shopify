@@ -29,7 +29,7 @@ namespace Kentico.Xperience.Shopify.Activities
         /// <param name="totalPrice">Order total price in shopping cart currency.</param>
         /// <param name="orderId">Order ID.</param>
         /// <param name="currencyCode">Shopping cart currency.</param>
-        void LogPurchaseActivity(decimal totalPrice, long orderId, string currencyCode);
+        void LogPurchaseActivity(decimal totalPrice, string orderId, string currencyCode);
 
 
         /// <summary>

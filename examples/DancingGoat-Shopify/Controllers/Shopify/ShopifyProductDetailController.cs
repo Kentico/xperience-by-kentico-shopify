@@ -1,5 +1,7 @@
 ﻿using System.Text;
 
+using CMS.Helpers;
+
 using DancingGoat;
 using DancingGoat.Models;
 
@@ -10,7 +12,6 @@ using Kentico.Xperience.Shopify.Products.Models;
 using Kentico.Xperience.Shopify.ShoppingCart;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 using Shopify.Controllers;
 
@@ -61,7 +62,7 @@ public class ShopifyProductDetailController : Controller
             return View(new ProductDetailViewModel());
         }
 
-        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, config.Country, config.CurrencyCode, errorMessages));
+        return View(ProductDetailViewModel.GetViewModel(productDetail, variantID ?? string.Empty, config.Country.ToStringRepresentation(), errorMessages));
     }
 
     [HttpPost]

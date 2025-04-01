@@ -30,8 +30,8 @@ namespace Kentico.Xperience.Shopify.Products
         /// </summary>
         /// <typeparam name="T">Object of this type will be returned.</typeparam>
         /// <param name="func">Function to be executed inside try catch block.</param>
-        /// <param name="defaultValue">Function to get default value if <see cref="ShopifyHttpException"/> is thrown.</param>
-        /// <returns>Result of <paramref name="func"/> or result of <paramref name="defaultValue"/> if <see cref="ShopifyHttpException"/> is thrown.</returns>
+        /// <param name="defaultValue">Function to get default value if <see cref="ShopifyGraphErrorsException"/> is thrown.</param>
+        /// <returns>Result of <paramref name="func"/> or result of <paramref name="defaultValue"/> if <see cref="ShopifyGraphErrorsException"/> is thrown.</returns>
         protected async Task<T> TryCatch<T>(Func<Task<T>> func, Func<T> defaultValue)
         {
             try
@@ -39,7 +39,7 @@ namespace Kentico.Xperience.Shopify.Products
                 var result = await func.Invoke();
                 return result;
             }
-            catch (ShopifyHttpException e)
+            catch (ShopifyGraphErrorsException e)
             {
                 logger.LogError(e, $"Error occured while calling Shopify API in {func.Method.Name} method.");
                 return defaultValue.Invoke();

@@ -19,7 +19,7 @@ This integration connects your Shopify store with the Xperience by Kentico appli
 
 - **Shopify API can return maximum of 250 items in one API request**. For larger number of products, pagination needs to be implemented. More info can be found in the [Usage-Guide.md](./docs/Usage-Guide.md#limitations).
 
-- Only one currency pre website channel is supported.
+- Only one currency per website channel is supported.
 
 ## Screenshots
 
@@ -49,7 +49,7 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
 1. Generate Shopify API access tokens (see [Generating Shopify API credentials](./docs/Usage-Guide.md#generating-shopify-api-credentials) for details).
 
    - [Install](https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/getting-started) the [Headless channel](https://shopify.dev/docs/custom-storefronts/getting-started/build-options#the-headless-channel) into your Shopify admin. During the installation, select **Create storefront** and [generate a private Storefront API token](https://shopify.dev/docs/api/usage/authentication#getting-started-with-private-access).
-   - Install a [custom application](https://help.shopify.com/en/manual/apps/app-types/custom-apps#create-and-install-a-custom-app) into your Shopify admin and generate a Shopify Admin API access token. Set following access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`.
+   - Install a [custom application](https://help.shopify.com/en/manual/apps/app-types/custom-apps#create-and-install-a-custom-app) into your Shopify admin and generate a Shopify Admin API access token. Set following access scopes: `write_product_listings`, `read_product_listings`, `write_products`, `read_products`, `read_inventory`, `write_orders`, `read_orders`, `read_markets`.
 
 2. Add these packages to your Xperience by Kentico application using the .NET CLI.
 

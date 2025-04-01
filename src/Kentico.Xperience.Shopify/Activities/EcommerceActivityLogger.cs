@@ -35,7 +35,7 @@ namespace Kentico.Xperience.Shopify.Activities
         }
 
 
-        public void LogPurchaseActivity(decimal totalPrice, long orderId, string currencyCode)
+        public void LogPurchaseActivity(decimal totalPrice, string orderId, string currencyCode)
         {
             customActivityLogger.Log(EcommerceActivityTypes.PurchaseActivity, new CustomActivityData()
             {

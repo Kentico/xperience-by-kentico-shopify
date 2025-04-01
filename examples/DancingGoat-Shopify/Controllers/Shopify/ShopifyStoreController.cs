@@ -71,8 +71,10 @@ public class ShopifyStoreController : Controller
             .SelectAwait(x => StoreCategoryListViewModel.GetViewModel(x, urlRetriever))
             .ToListAsync();
 
+        var country = shopifySettingsService.GetWebsiteChannelSettings()?.Country ?? ShopifySharp.GraphQL.CountryCode.CZ;
+
         var productPrices = await priceService.GetProductsPrice(
-            bestSellers.Concat(hotTips).Select(x => x.Product.FirstOrDefault()?.ShopifyProductID ?? string.Empty));
+            bestSellers.Concat(hotTips).Select(x => x.Product.FirstOrDefault()?.ProductIDShort ?? string.Empty), country);
 
         var bestSellerModels = await GetProductListViewModels(bestSellers, productPrices);
         var hotTipModels = await GetProductListViewModels(hotTips, productPrices);
@@ -85,12 +87,12 @@ public class ShopifyStoreController : Controller
         var productViewModels = new List<ShopifyProductListItemViewModel>();
         foreach (var productPage in productPages)
         {
-            string shopifyProductId = productPage.Product.FirstOrDefault()?.ShopifyProductID ?? string.Empty;
+            string shopifyProductId = productPage.Product.FirstOrDefault()?.ProductIDShort ?? string.Empty;
             var url = await urlRetriever.Retrieve(productPage);
 
             if (!string.IsNullOrEmpty(shopifyProductId) && prices.TryGetValue(shopifyProductId, out var price))
             {
-                string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode ?? string.Empty;
+                string currencyCode = shopifySettingsService.GetWebsiteChannelSettings()?.CurrencyCode.ToStringRepresentation() ?? string.Empty;
 
                 productViewModels.Add(ShopifyProductListItemViewModel.GetViewModel(productPage.Product.FirstOrDefault(), url, price, currencyCode));
             }

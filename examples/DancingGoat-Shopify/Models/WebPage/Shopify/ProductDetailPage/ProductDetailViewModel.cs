@@ -20,15 +20,13 @@ public record ProductDetailViewModel
 
     public string CountryCode { get; init; }
 
-    public string CurrencyCode { get; init; }
-
     public int VariantQuantity { get; init; }
 
     public string SelectedVariantMerchandiseID { get; init; }
 
     public string[] ErrorMessages { get; init; }
 
-    public static ProductDetailViewModel GetViewModel(ProductDetailPage page, string selectedVariantID, string country, string currency, string[] errorMessages)
+    public static ProductDetailViewModel GetViewModel(ProductDetailPage page, string selectedVariantID, string country, string[] errorMessages)
     {
         var product = page.Product.First();
         var selectedVariant = product.Variants.FirstOrDefault(x => x.ShopifyVariantID.Equals(selectedVariantID, StringComparison.Ordinal)) ?? product.Variants.First();
@@ -50,9 +48,8 @@ public record ProductDetailViewModel
             ParametersSection = product.Parameters,
             Variants = product.Variants.Select(x => new SelectListItem(x.Title, x.ShopifyVariantID, x.ShopifyVariantID.Equals(selectedVariant.ShopifyVariantID, StringComparison.Ordinal))).ToList(),
             SelectedShopifyVariantId = selectedVariant.ShopifyVariantID,
-            ShopifyProductId = product.ShopifyProductID,
+            ShopifyProductId = product.ProductIDShort,
             CountryCode = country,
-            CurrencyCode = currency,
             VariantQuantity = 1,
             SelectedVariantMerchandiseID = selectedVariant.ShopifyMerchandiseID,
             ErrorMessages = errorMessages

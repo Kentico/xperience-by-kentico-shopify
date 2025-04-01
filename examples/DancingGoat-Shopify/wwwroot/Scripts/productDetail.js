@@ -5,11 +5,9 @@ var variants = {};
 
 function fetchVariants(select) {
     var productId = container.getAttribute('data-product-id');
-    var currencyCode = container.getAttribute('data-currency-code');
     var url = new URL(PRICES_URL, window.location.origin);
     const cartSection = container.querySelector('.js-cartSection');
     url.searchParams.append('productId', productId);
-    url.searchParams.append('currency', currencyCode);
 
     fetch(url)
         .then(function (response) {
@@ -102,7 +100,7 @@ function changePricesAndStock(selectedVariant) {
     }
 }
 
-if (container && container.getAttribute('data-product-id') != null && container.getAttribute('data-currency-code') != null) {
+if (container && container.getAttribute('data-product-id') != null) {
     const select = container.querySelector('.js-variantSelector');
     if (select) {
         select.onchange = selectChanged

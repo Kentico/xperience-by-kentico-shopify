@@ -1,17 +1,19 @@
 ﻿using Kentico.Xperience.Shopify.Config;
+using Kentico.Xperience.Shopify.Products.Models;
 
 using ShopifySharp;
 using ShopifySharp.Factories;
+
 
 namespace Kentico.Xperience.Shopify.Products
 {
     internal class ShopifyCurrencyService : ShopifyServiceBase, IShopifyCurrencyService
     {
-        private readonly IShopService shopService;
-        public ShopifyCurrencyService(IShopifyIntegrationSettingsService integrationSettingsService, IShopServiceFactory shopServiceFactory)
+        private readonly IGraphService graphService;
+        public ShopifyCurrencyService(IShopifyIntegrationSettingsService integrationSettingsService, IGraphServiceFactory graphServiceFactory)
             : base(integrationSettingsService)
         {
-            shopService = shopServiceFactory.Create(shopifyCredentials);
+            graphService = graphServiceFactory.Create(shopifyCredentials);
         }
 
         public async Task<IEnumerable<string>> GetCurrencyCodes()
@@ -21,8 +23,20 @@ namespace Kentico.Xperience.Shopify.Products
 
         public async Task<IEnumerable<string>> GetCurrencyCodesInternal()
         {
-            var shop = await shopService.GetAsync();
-            return shop.EnabledPresentmentCurrencies;
+            var request = new GraphRequest()
+            {
+                Query = "query Markets { markets(first: 250) { nodes { currencySettings { baseCurrency { currencyCode } } } } }"
+            };
+
+            var response = await graphService.PostAsync<MarketListingModel>(request);
+            var markets = response.Data.Markets.nodes;
+
+            if (markets is null)
+            {
+                return [];
+            }
+
+            return markets.Select(x => x.currencySettings?.baseCurrency?.currencyCode?.ToString() ?? string.Empty);
         }
     }
 }

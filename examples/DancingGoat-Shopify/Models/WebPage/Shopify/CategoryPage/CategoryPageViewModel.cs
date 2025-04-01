@@ -51,7 +51,7 @@ public record CategoryPageViewModel
         }
 
         productUrls.TryGetValue(productPage.SystemFields.WebPageItemGUID, out var url);
-        productPrices.TryGetValue(product.ShopifyProductID, out var productPriceModel);
+        productPrices.TryGetValue(product.ProductIDShort, out var productPriceModel);
         return ShopifyProductListItemViewModel.GetViewModel(product, url, productPriceModel, currencyCode);
     }
 }

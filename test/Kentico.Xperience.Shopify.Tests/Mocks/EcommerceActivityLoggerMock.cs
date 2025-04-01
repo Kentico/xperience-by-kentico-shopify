@@ -13,7 +13,7 @@ namespace Kentico.Xperience.Shopify.Tests.Mocks
         {
         }
 
-        public void LogPurchaseActivity(decimal totalPrice, long orderId, string currencyCode)
+        public void LogPurchaseActivity(decimal totalPrice, string orderId, string currencyCode)
         {
         }
 

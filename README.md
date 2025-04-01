@@ -35,7 +35,7 @@ Summary of libraries (NuGet packages) used by this integration and their Xperien
 
 | Xperience by Kentico Version | Library Version |
 | ---------------------------- | --------------- |
-| \>= 30.0.1                   | 5.0.0           |
+| \>= 30.0.1                   | \>= 5.0.0       |
 | \>= 29.2.0                   | 3.0.0           |
 | \>= 29.0.2, \< 29.2.0        | 2.0.0           |
 

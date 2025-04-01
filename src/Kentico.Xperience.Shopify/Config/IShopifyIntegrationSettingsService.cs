@@ -33,7 +33,7 @@ namespace Kentico.Xperience.Shopify.Config
         /// Get country code by currency code based on data from appsettings.json or user secrets.
         /// </summary>
         /// <param name="currency"></param>
-        /// <returns></returns>
+        /// <returns>Country code based on currency code.</returns>
         CountryCode? CountryByCurrency(CurrencyCode currency);
     }
 }

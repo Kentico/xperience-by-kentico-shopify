@@ -28,6 +28,7 @@ internal class VariantSynchronizationService : SynchronizationServiceBase, IVari
         await contentItemService.DeleteContentItems(toDelete.Select(x => x.ContentItemIdentifier), languageName, userID);
         var addedVariantsID = await CreateProductVariants(toCreate, variantImages, languageName, workspaceName, userID).ToListAsync();
 
+
         await UpdateProductVariants(toUpdate, variantImages, languageName, userID);
 
         IEnumerable<ShopifyProductVariantItem> variantsToReturn;

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.class>
-  <ClassDisplayName>Shopify integration settings</ClassDisplayName>
+  <ClassDisplayName>Shopify Settings info</ClassDisplayName>
   <ClassFormDefinition>
     <form>
       <field column="IntegrationSettingsID" columntype="integer" enabled="true" guid="f1e4df61-6f06-4258-bcc5-d62f589ba275" isPK="true" />

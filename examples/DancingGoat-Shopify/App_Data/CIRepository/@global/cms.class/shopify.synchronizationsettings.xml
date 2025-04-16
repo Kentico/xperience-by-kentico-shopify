@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.class>
+  <ClassDisplayName>Shopify Synchronization settings</ClassDisplayName>
+  <ClassFormDefinition>
+    <form>
+      <field column="SynchronizationSettingsID" columntype="integer" enabled="true" guid="7ac6daf7-ba69-4f52-81f9-85b9c61bd4f4" isPK="true" />
+      <field allowempty="true" column="ShopifyWorkspaceName" columntype="text" enabled="true" guid="1400ee63-394f-4802-92f6-8910c862f11a" visible="true">
+        <properties>
+          <fieldcaption>Content item workspace name</fieldcaption>
+        </properties>
+      </field>
+      <field column="ShopifyProductFolderGuid" columntype="guid" enabled="true" guid="b8cbf048-1818-4160-8033-c19f35653087" visible="true">
+        <properties>
+          <fieldcaption>
+            <![CDATA[Content item folder for 'Shopify.Product']]>
+          </fieldcaption>
+        </properties>
+      </field>
+      <field column="ShopifyProductVariantFolderGuid" columntype="guid" enabled="true" guid="43b75c73-264d-414a-ae8d-b39b42d3b277" visible="true">
+        <properties>
+          <fieldcaption>
+            <![CDATA[Content item folder for 'Shopify.ProductVariant']]>
+          </fieldcaption>
+        </properties>
+      </field>
+      <field column="ShopifyImageFolderGuid" columntype="guid" enabled="true" guid="9414eff9-e0e2-4caa-b588-20a70df35d45" visible="true">
+        <properties>
+          <fieldcaption>
+            <![CDATA[Content item folder for 'Shopify.Image']]>
+          </fieldcaption>
+        </properties>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>60cf221f-00df-4fd9-b0bb-4475197d72c1</ClassGUID>
+  <ClassHasUnmanagedDbSchema>False</ClassHasUnmanagedDbSchema>
+  <ClassName>Shopify.SynchronizationSettings</ClassName>
+  <ClassResourceID>
+    <CodeName>ShopifyStoreConfiguration</CodeName>
+    <GUID>3b34600d-ecb1-4048-bdf0-4ec6298ddd28</GUID>
+    <ObjectType>cms.resource</ObjectType>
+  </ClassResourceID>
+  <ClassTableName>Shopify_SynchronizationSettings</ClassTableName>
+  <ClassType>Other</ClassType>
+</cms.class>

@@ -201,7 +201,9 @@ jobs:
             - **Repository**: ${{ github.repository }}
             - **Workflow**: [Test E2E](https://github.com/Kentico/xperience-by-kentico-shopify/actions/runs/${{ github.run_id }})
             - **Timestamp**: ${date.toISOString()}
+
             Please check the logs and resolve the issue.`;
+
             try {
               await github.rest.issues.create({
                 owner: context.repo.owner,

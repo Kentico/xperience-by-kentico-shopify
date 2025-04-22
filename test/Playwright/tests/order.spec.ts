@@ -91,7 +91,9 @@ test.describe("Orders", () => {
 
     await test.step("Fill customer details, shipping and payment information", async () => {
       await checkoutPage.fillCustomerDetails(testData.customer);
+      await expect(page.locator('[role="row"]', { hasText: /Shipping/ })).toContainText("Kč 30.00"); // implicit option, also automatically waits for the contact details to be processed and shipping options visible
       await checkoutPage.selectShipping(testData.shipping);
+      await expect(page.locator('[role="row"]', { hasText: /Shipping/ })).toContainText("Kč 450.00"); // selected option
       await checkoutPage.fillPayment(testData.payment);
     });
     await test.step("Check calculated price", async () => {

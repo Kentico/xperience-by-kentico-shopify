@@ -187,7 +187,7 @@ jobs:
           name: playwright-report
           path: ./test/Playwright/playwright-report/
           retention-days: 30
-      
+
       # Create an issue if this job fails
       - name: "Create GitHub Issue on Failure"
         if: ${{ failure() && github.event_name != 'workflow_dispatch' }} # Runs only on failure and not manual trigger

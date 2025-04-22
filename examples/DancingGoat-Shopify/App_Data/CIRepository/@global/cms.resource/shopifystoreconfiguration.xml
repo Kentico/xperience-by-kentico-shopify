@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.resource>
+  <ResourceDescription>The module integrates connection with Shopify API.</ResourceDescription>
   <ResourceDisplayName>Shopify configuration</ResourceDisplayName>
   <ResourceGUID>3b34600d-ecb1-4048-bdf0-4ec6298ddd28</ResourceGUID>
   <ResourceIsInDevelopment>False</ResourceIsInDevelopment>

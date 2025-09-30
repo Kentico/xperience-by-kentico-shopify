@@ -55,36 +55,36 @@ test.describe("Orders", () => {
     });
 
     await test.step("Select category 'Brewing kits' from store page", async () => {
-      await page.locator(".store-menu-list li", { hasText: "Brewing kits" }).click();
+      await page.locator(".store-menu-list li", { hasText: "Brewing kits" }).click({ delay: 250 });
       await expect(page).toHaveURL("/store/brewing-kits");
     });
     await test.step(`Select product 'Aeropress'`, async () => {
-      await page.locator(".product-tile", { hasText: "Aeropress" }).click();
+      await page.locator(".product-tile", { hasText: "Aeropress" }).click({ delay: 250 });
       await expect(page.locator(".product-detail", { hasText: "Aeropress" })).toBeVisible(); // expecting to be on product page of Coffee Plunger
     });
     await test.step("Add product to cart", async () => {
-      await page.locator("button", { hasText: "Add to cart" }).click();
+      await page.locator("button", { hasText: "Add to cart" }).click({ delay: 250 });
     });
     await test.step("Go to shopping cart", async () => {
       await page.goto("/shopping-cart");
     });
     await test.step("Update quantity", async () => {
       await page.locator('input[name="Quantity"]').fill("2");
-      await page.locator('input[name="cartOperation"][value="Update"]').click();
+      await page.locator('input[name="cartOperation"][value="Update"]').click({ delay: 250 });
       await expect(page.locator(".cart-item-info__price")).toContainText(`1884 Kč`);
       await expect(page.locator(".cart-total")).toContainText(`1884 Kč`);
     });
     await test.step("Go to checkout", async () => {
-      await page.locator("a", { hasText: "Go to shopify checkout page" }).click();
+      await page.locator("a", { hasText: "Go to shopify checkout page" }).click({ delay: 250 });
     });
     await test.step("Login to shopify store", async () => {
       if (!SHOPIFY_STORE_PASSWORD) {
         throw new Error("Invalid env variable SHOPIFY_STORE_PASSWORD");
       }
       await page.locator("#password").fill(SHOPIFY_STORE_PASSWORD);
-      await page.locator('button[type="submit"]').click();
+      await page.locator('button[type="submit"]').click({ delay: 250 });
       await page.goto("/shopping-cart");
-      await page.locator("a", { hasText: "Go to shopify checkout page" }).click();
+      await page.locator("a", { hasText: "Go to shopify checkout page" }).click({ delay: 250 });
     });
 
     const checkoutPage = new CheckoutPage(page);
@@ -107,7 +107,7 @@ test.describe("Orders", () => {
       await expect(page.locator("#checkout-main")).toContainText("Thank you");
       await expect(page.locator('[role="row"]', { hasText: /Total/ })).toContainText("Kč 2,334.00");
       await page.waitForTimeout(3000); // explicit wait for shopify to process
-      await page.locator("a", { hasText: "Continue shopping" }).click();
+      await page.locator("a", { hasText: "Continue shopping" }).click({ delay: 250 });
       await expect(page).toHaveURL(/\/thank-you\?orderId=[0-9]*/);
       await expect(page.locator(".thank-you-content")).toContainText("Thank You");
       orderId = await page.url().split("orderId=")[1];

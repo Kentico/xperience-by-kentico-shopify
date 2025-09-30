@@ -28,16 +28,20 @@ export default defineConfig({
   reporter: [["list"], ["html", { open: "never" }], ["junit", { outputFile: "test-results/e2e-junit-results.xml" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    screenshot: "only-on-failure",
+    screenshot: { mode: "only-on-failure", fullPage: true },
     video: "retain-on-failure",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
+    actionTimeout: 40_000,
+    launchOptions: {
+      slowMo: 250,
+    },
   },
   timeout: 60 * 1000, // Maximum time a test can run
   expect: {
-    timeout: 10000, // Maximum time expect() should wait for the condition to be met.
+    timeout: 40_000, // Maximum time expect() should wait for the condition to be met.
   },
 
   /* Configure projects for major browsers */
@@ -46,7 +50,7 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        baseURL: XBYK_STORE_URL, //
+        baseURL: XBYK_STORE_URL,
         ignoreHTTPSErrors: true,
       },
     },

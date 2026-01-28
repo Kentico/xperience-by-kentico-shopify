@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using CMS.ContentEngine;
 using CMS.Websites;
 
-
 namespace DancingGoat.Models
 {
     /// <summary>

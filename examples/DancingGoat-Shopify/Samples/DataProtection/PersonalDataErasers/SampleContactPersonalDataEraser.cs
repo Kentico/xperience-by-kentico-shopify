@@ -37,7 +37,7 @@ namespace Samples.DancingGoat
 
         private readonly IInfoProvider<ConsentAgreementInfo> consentAgreementInfoProvider;
         private readonly IInfoProvider<BizFormInfo> bizFormInfoProvider;
-        private readonly IInfoProvider<AccountContactInfo> accountContactInfoProvider;
+
         private readonly IInfoProvider<ContactInfo> contactInfoProvider;
         private readonly IInfoProvider<ActivityInfo> activityInfoProvider;
 
@@ -47,19 +47,19 @@ namespace Samples.DancingGoat
         /// </summary>
         /// <param name="consentAgreementInfoProvider">Consent agreement info provider.</param>
         /// <param name="bizFormInfoProvider">BizForm info provider.</param>
-        /// <param name="accountContactInfoProvider">Account contact info provider.</param>
+
         /// <param name="contactInfoProvider">Contact info provider.</param>
         /// <param name="activityInfoProvider">Activity info provider.</param>
         public SampleContactPersonalDataEraser(
             IInfoProvider<ConsentAgreementInfo> consentAgreementInfoProvider,
             IInfoProvider<BizFormInfo> bizFormInfoProvider,
-            IInfoProvider<AccountContactInfo> accountContactInfoProvider,
+
             IInfoProvider<ContactInfo> contactInfoProvider,
             IInfoProvider<ActivityInfo> activityInfoProvider)
         {
             this.consentAgreementInfoProvider = consentAgreementInfoProvider;
             this.bizFormInfoProvider = bizFormInfoProvider;
-            this.accountContactInfoProvider = accountContactInfoProvider;
+
             this.contactInfoProvider = contactInfoProvider;
             this.activityInfoProvider = activityInfoProvider;
         }
@@ -78,10 +78,10 @@ namespace Samples.DancingGoat
         /// <description>Flag indicating whether contact(s) contained in <paramref name="identities"/> are to be deleted.</description>
         /// </item>
         /// <item>
-        /// <term>deleteContactFromAccounts</term>
-        /// <description>Flag indicating whether contact's association with accounts is to be deleted.</description>
-        /// </item>
-        /// <item>
+
+
+
+
         /// <term>DeleteActivities</term>
         /// <description>Flag indicating whether activities of contact are to be deleted.</description>
         /// </item>
@@ -106,7 +106,7 @@ namespace Samples.DancingGoat
 
             DeleteActivities(contactIds, configuration);
 
-            DeleteContactFromAccounts(contactIds, configuration);
+
 
             DeleteContacts(contacts, configuration);
 
@@ -178,24 +178,6 @@ namespace Samples.DancingGoat
                 && ValidationHelper.GetBoolean(deleteActivities, false))
             {
                 activityInfoProvider.BulkDelete(new WhereCondition().WhereIn("ActivityContactID", contactIds));
-            }
-        }
-
-
-        /// <summary>
-        /// Deletes contact from accounts based on <paramref name="configuration"/>'s <c>deleteContactFromAccounts</c> flag.
-        /// </summary>
-        private void DeleteContactFromAccounts(ICollection<int> contactIds, IDictionary<string, object> configuration)
-        {
-            if (configuration.TryGetValue("deleteContactFromAccounts", out object deleteContactFromAccounts)
-                && ValidationHelper.GetBoolean(deleteContactFromAccounts, false))
-            {
-                var accounts = accountContactInfoProvider.Get().WhereIn("ContactID", contactIds);
-
-                foreach (var account in accounts)
-                {
-                    account.Delete();
-                }
             }
         }
 

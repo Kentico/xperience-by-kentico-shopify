@@ -4,7 +4,7 @@
     <SeparatedAdmin Condition="'$(SeparatedAdmin)' == ''">false</SeparatedAdmin>
     <Nullable>disable</Nullable>
     <DisableCodeAnalysis>True</DisableCodeAnalysis>
-    <NoWarn>$(NoWarn);CS1570;CS1572;1591</NoWarn>
+    <NoWarn>$(NoWarn);KXE0004;CS1570;CS1572;1591</NoWarn>
     <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>b43dbf40-f6c3-4bca-99d4-f485b81c97ec</UserSecretsId>
   </PropertyGroup>

@@ -14,6 +14,7 @@
                         {
                             <a href="@relatedPage.Url">
                                 <img src="@relatedPage.TeaserUrl" alt="@relatedPage.Title" title="@relatedPage.Title" class="article-tile-image" loading="lazy" />
+
                             </a>
                         }
                         <div class="article-tile-info">
@@ -28,7 +29,7 @@
                                     <a href="@relatedPage.Url">@relatedPage.Title</a>
                                 </h2>
                                 <p class="article-tile-text">
-                                    @relatedPage.Summary
+                                    @Html.Raw(relatedPage.Summary)
                                 </p>
                             </div>
                         </div>

@@ -26,7 +26,7 @@ public class ShopifyStoreController : Controller
     private readonly StorePageRepository storePageRepository;
     private readonly IWebPageDataContextRetriever webPageDataContextRetriever;
     private readonly IContentQueryExecutor contentQueryExecutor;
-    private readonly IWebPageQueryResultMapper mapper;
+    private readonly IContentQueryModelTypeMapper mapper;
     private readonly IWebsiteChannelContext websiteChannelContext;
     private readonly IWebPageUrlRetriever urlRetriever;
     private readonly IProgressiveCache progressiveCache;
@@ -38,7 +38,7 @@ public class ShopifyStoreController : Controller
     public ShopifyStoreController(StorePageRepository storePageRepository,
         IWebPageDataContextRetriever webPageDataContextRetriever,
         IContentQueryExecutor contentQueryExecutor,
-        IWebPageQueryResultMapper mapper,
+        IContentQueryModelTypeMapper mapper,
         IWebsiteChannelContext websiteChannelContext,
         IWebPageUrlRetriever urlRetriever,
         IProgressiveCache progressiveCache,

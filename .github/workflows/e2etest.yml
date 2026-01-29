@@ -60,7 +60,7 @@ jobs:
         run: |
           dotnet build `
             --configuration Release `
-            -p:XbyKVersion=31.0.0
+            -p:XbyKVersion=*
 
       - name: Get Database Backup Name
         run: |

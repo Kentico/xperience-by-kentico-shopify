@@ -4,7 +4,7 @@
     "net8.0": {
       "Kentico.Xperience.Admin": {
         "type": "Direct",
-        "requested": "[*, )",
+        "requested": "[31.1.1, )",
         "resolved": "31.1.1",
         "contentHash": "3ZBPaVTSrwVymUOGZCV+PBG2ZaN1vqzNPjrADti02SKu49c+MntHcn7cxcqoMIRDWtp5PWrPlf6GsoX+KfaZIA==",
         "dependencies": {
@@ -19,7 +19,7 @@
       },
       "Kentico.Xperience.AzureStorage": {
         "type": "Direct",
-        "requested": "[*, )",
+        "requested": "[31.1.1, )",
         "resolved": "31.1.1",
         "contentHash": "KsZoBx7PWqQFVq4tQ/yq0C2zckYYMeTqfK2GnPGqTWGTZK9j+oDKoLM4xngLdYcdGuzlNM0Tn1XHi0TFsfaLZA==",
         "dependencies": {
@@ -31,7 +31,7 @@
       },
       "Kentico.Xperience.ImageProcessing": {
         "type": "Direct",
-        "requested": "[*, )",
+        "requested": "[31.1.1, )",
         "resolved": "31.1.1",
         "contentHash": "QiTBptETs+cN07+VQm6u1TBoU29Sv/0CGCKB1IHhxQ0+RLra9lBZx1b6vcQ17OfKamNXjtIh1MLKCuSoKtMh4Q==",
         "dependencies": {
@@ -42,7 +42,7 @@
       },
       "Kentico.Xperience.WebApp": {
         "type": "Direct",
-        "requested": "[*, )",
+        "requested": "[31.1.1, )",
         "resolved": "31.1.1",
         "contentHash": "RLuWH3bIPerfG00DK2a5fjHGC8PvBN3T3Ky3lP7o5hfzQGVipYcarNfybmhYdW2aJMudptoWoz6cT/qRLvWM7w==",
         "dependencies": {
@@ -1268,8 +1268,8 @@
           "GraphQL": "[7.8.0, )",
           "GraphQL.Client": "[6.0.2, )",
           "GraphQL.Client.Serializer.Newtonsoft": "[6.0.2, )",
-          "Kentico.Xperience.Admin": "[31.1.1, )",
-          "Kentico.Xperience.Core": "[31.1.1, )",
+          "Kentico.Xperience.Admin": "[31.0.0, )",
+          "Kentico.Xperience.Core": "[31.0.0, )",
           "Kentico.Xperience.Ecommerce.Common": "[2.1.0, )",
           "ShopifySharp": "[6.22.1, )",
           "ShopifySharp.Extensions.DependencyInjection": "[1.8.0, )",
@@ -1316,7 +1316,7 @@
       },
       "Kentico.Xperience.Core": {
         "type": "CentralTransitive",
-        "requested": "[31.1.1, )",
+        "requested": "[31.0.0, )",
         "resolved": "31.1.1",
         "contentHash": "eQgzVCck+NEX/plK3uH2HfO5Swi5vZ9Ql+0H4mD1p6UMTvjNH5YEi4GNpDSRdGOOijB/wIkSPlEx+A3FhPVVQg==",
         "dependencies": {

@@ -5,7 +5,7 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
 	<CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
-	<LastAppliedHotfix>31.1.1</LastAppliedHotfix>
+	<LastAppliedHotfix>31.0.0</LastAppliedHotfix>
 	<XbyKVersion Condition="'$(XbyKVersion)' == ''">$(LastAppliedHotfix)</XbyKVersion>
   </PropertyGroup>
   <ItemGroup>

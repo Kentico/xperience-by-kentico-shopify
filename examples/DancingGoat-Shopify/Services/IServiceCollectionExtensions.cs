@@ -19,10 +19,19 @@ namespace DancingGoat
         {
             AddViewComponentServices(services);
             AddCommerceServices(services);
+            AddShopifyRepositories(services);
 
             services.AddSingleton<CurrentWebsiteChannelPrimaryLanguageRetriever>();
             services.AddSingleton<TagTitleRetriever>();
             services.AddSingleton<WebPageUrlProvider>();
+        }
+
+
+        private static void AddShopifyRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<StorePageRepository>();
+            services.AddSingleton<CategoryPageRepository>();
+            services.AddSingleton<ProductDetailPageRepository>();
         }
 
 

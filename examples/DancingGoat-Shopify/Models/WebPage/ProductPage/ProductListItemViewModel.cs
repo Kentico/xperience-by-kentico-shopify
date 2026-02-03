@@ -1,24 +1,37 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using DancingGoat.Commerce;
 
-using CMS.Websites;
 
 namespace DancingGoat.Models
 {
-    public record ProductListItemViewModel(string Name, string ImagePath, string Url)
+    public record ProductListItemViewModel(string Name, string ImagePath, string Url, decimal Price, decimal ListPrice, DancingGoatCatalogPromotionCandidate AppliedPromotion, string Tag)
     {
-        public static async Task<ProductListItemViewModel> GetViewModel(IProductPage productPage, IWebPageUrlRetriever urlRetriever, string languageName)
+        public static ProductListItemViewModel GetViewModel(IProductFields product, DancingGoatPriceCalculationResultItem calculationResultItem, string urlPath, string tag)
         {
-            var product = productPage.RelatedItem.FirstOrDefault();
-            var image = product.ProductFieldsImage.FirstOrDefault();
+            var appliedPromotion = calculationResultItem.PromotionData.CatalogPromotionCandidates.FirstOrDefault(c => c.Applied)?.PromotionCandidate as DancingGoatCatalogPromotionCandidate;
 
-            var path = (await urlRetriever.Retrieve(productPage, languageName)).RelativePath;
+
+
 
             return new ProductListItemViewModel(
-                product.ProductFieldsName,
-                image?.ImageFile.Url,
-                path
-            );
+                            product.ProductFieldName,
+                            product.ProductFieldImage.FirstOrDefault()?.ImageFile.Url,
+                            urlPath,
+                            calculationResultItem?.LineSubtotalAfterLineDiscount ?? product.ProductFieldPrice,
+                            product.ProductFieldPrice,
+                            appliedPromotion,
+                            tag);
+        }
+
+        public static ProductListItemViewModel GetViewModel(IProductFields product, string urlPath, string tag)
+        {
+            return new ProductListItemViewModel(
+                            product.ProductFieldName,
+                            product.ProductFieldImage.FirstOrDefault()?.ImageFile.Url,
+                            urlPath,
+                            product.ProductFieldPrice,
+                            product.ProductFieldPrice,
+                            null,
+                            tag);
         }
     }
 }

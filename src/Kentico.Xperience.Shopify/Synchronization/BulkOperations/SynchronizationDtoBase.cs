@@ -20,12 +20,6 @@ namespace Kentico.Xperience.Shopify.Synchronization.BulkOperations
         public string? ParentId { get; set; }
 
         /// <summary>
-        /// Object type name.
-        /// </summary>
-        [JsonPropertyName("__typename")]
-        public string TypeName { get; set; } = string.Empty;
-
-        /// <summary>
         /// ID.
         /// </summary>
         [JsonPropertyName("id")]

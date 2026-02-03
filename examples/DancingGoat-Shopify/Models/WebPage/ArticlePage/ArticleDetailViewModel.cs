@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using CMS.Websites;
+﻿using CMS.Websites;
 
 namespace DancingGoat.Models
 {
@@ -17,7 +12,7 @@ namespace DancingGoat.Models
         /// <summary>
         /// Validates and maps <see cref="ArticlePage"/> to a <see cref="ArticleDetailViewModel"/>.
         /// </summary>
-        public static async Task<ArticleDetailViewModel> GetViewModel(ArticlePage articlePage, string languageName, IWebPageUrlRetriever urlRetriever)
+        public static ArticleDetailViewModel GetViewModel(ArticlePage articlePage)
         {
             var teaser = articlePage.ArticlePageTeaser.FirstOrDefault();
 
@@ -25,10 +20,8 @@ namespace DancingGoat.Models
 
             foreach (var relatedPage in articlePage.ArticleRelatedPages)
             {
-                relatedPageViewModels.Add(await RelatedPageViewModel.GetViewModel(relatedPage, urlRetriever, languageName));
+                relatedPageViewModels.Add(RelatedPageViewModel.GetViewModel(relatedPage));
             }
-
-            var url = await urlRetriever.Retrieve(articlePage, languageName);
 
             return new ArticleDetailViewModel(
                 articlePage.ArticleTitle,
@@ -38,7 +31,7 @@ namespace DancingGoat.Models
                 articlePage.ArticlePagePublishDate,
                 articlePage.SystemFields.ContentItemGUID,
                 articlePage.SystemFields.ContentItemIsSecured,
-                url.RelativePath,
+                articlePage.GetUrl().RelativePath,
                 relatedPageViewModels)
             {
                 WebPage = articlePage

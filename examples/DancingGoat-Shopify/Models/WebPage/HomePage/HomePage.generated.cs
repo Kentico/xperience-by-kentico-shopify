@@ -59,16 +59,16 @@ namespace DancingGoat.Models
 		public IEnumerable<Reference> HomePageReference { get; set; }
 
 
-		/// <summary>
-		/// HomePageCafes.
-		/// </summary>
-		public IEnumerable<Cafe> HomePageCafes { get; set; }
+        /// <summary>
+	/// HomePageCafesFolder.
+        /// </summary>
+        public SmartFolderReference HomePageCafesFolder { get; set; }
 
 
-		/// <summary>
-		/// HomePageArticlesSection.
-		/// </summary>
-		public IEnumerable<WebPageRelatedItem> HomePageArticlesSection { get; set; }
+        /// <summary>
+        /// HomePageArticlesSection.
+        /// </summary>
+        public IEnumerable<WebPageRelatedItem> HomePageArticlesSection { get; set; }
 
 
 		/// <summary>

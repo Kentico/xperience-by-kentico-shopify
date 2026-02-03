@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Generic;
 
+using CMS.ContentEngine;
+
 namespace DancingGoat.Models
 {
 	/// <summary>
@@ -26,26 +28,38 @@ namespace DancingGoat.Models
 
 
 		/// <summary>
-		/// ProductFieldsName.
+		/// ProductFieldName.
 		/// </summary>
-		public string ProductFieldsName { get; set; }
+		public string ProductFieldName { get; set; }
 
 
 		/// <summary>
-		/// ProductFieldsDescription.
+		/// ProductFieldDescription.
 		/// </summary>
-		public string ProductFieldsDescription { get; set; }
+		public string ProductFieldDescription { get; set; }
 
 
 		/// <summary>
-		/// ProductFieldsShortDescription.
+		/// ProductFieldImage.
 		/// </summary>
-		public string ProductFieldsShortDescription { get; set; }
+		public IEnumerable<Image> ProductFieldImage { get; set; }
 
 
 		/// <summary>
-		/// ProductFieldsImage.
+		/// ProductFieldPrice.
 		/// </summary>
-		public IEnumerable<Image> ProductFieldsImage { get; set; }
+		public decimal ProductFieldPrice { get; set; }
+
+
+		/// <summary>
+		/// ProductFieldTags.
+		/// </summary>
+		public IEnumerable<TagReference> ProductFieldTags { get; set; }
+
+
+		/// <summary>
+		/// ProductFieldCategory.
+		/// </summary>
+		public IEnumerable<TagReference> ProductFieldCategory { get; set; }
 	}
 }

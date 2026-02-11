@@ -40,6 +40,33 @@
           "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.1"
         }
       },
+      "Kentico.Xperience.Shopify": {
+        "type": "Direct",
+        "requested": "[6.0.0-prerelease-2, )",
+        "resolved": "6.0.0-prerelease-2",
+        "contentHash": "m71aUjqd+4xOwrnulTwvcqdKm2oBrZyURAEU0cR5NPgTixCk9TpdJewhAld8BlJZEEKPp7pZdSfd/F3WsRR3FQ==",
+        "dependencies": {
+          "GraphQL": "7.8.0",
+          "GraphQL.Client": "6.0.2",
+          "GraphQL.Client.Serializer.Newtonsoft": "6.0.2",
+          "Kentico.Xperience.Admin": "31.0.0",
+          "Kentico.Xperience.Core": "31.0.0",
+          "Kentico.Xperience.Ecommerce.Common": "3.0.0",
+          "ShopifySharp": "6.22.1",
+          "ShopifySharp.Extensions.DependencyInjection": "1.8.0",
+          "System.Configuration.ConfigurationManager": "8.0.0",
+          "System.Linq.Async": "7.0.0"
+        }
+      },
+      "Kentico.Xperience.Shopify.Rcl": {
+        "type": "Direct",
+        "requested": "[6.0.0-prerelease-2, )",
+        "resolved": "6.0.0-prerelease-2",
+        "contentHash": "z7rAIyPevVjGOw8Iqma2YgJxDr7cSPlJA+R6MEjcy3HboFqFvWmfCjZ1AWjV8QEFad1qM24qfVs2yelrKi+Bww==",
+        "dependencies": {
+          "Kentico.Xperience.Shopify": "6.0.0-prerelease-2"
+        }
+      },
       "Kentico.Xperience.WebApp": {
         "type": "Direct",
         "requested": "[31.0.0, )",
@@ -560,6 +587,16 @@
           "Microsoft.Extensions.Options": "9.0.8",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "8.0.0",
           "Microsoft.IdentityModel.JsonWebTokens": "8.14.0"
+        }
+      },
+      "Kentico.Xperience.Ecommerce.Common": {
+        "type": "Transitive",
+        "resolved": "3.0.0",
+        "contentHash": "+rGGvGe49LuBuKA3V+ZV6Jp0/RCTF35ByzRIKL+8833Cs66u1AnJqNRTmMm/l1H1wuS+NY9vDBHU00BPUls0WQ==",
+        "dependencies": {
+          "Kentico.Xperience.Admin": "31.0.0",
+          "Kentico.Xperience.Core": "31.0.0",
+          "Microsoft.Extensions.Http": "8.0.1"
         }
       },
       "Magick.NET-Q8-AnyCPU": {
@@ -1227,35 +1264,6 @@
         "contentHash": "t16Z+OplJEElJy1Q6t12EwMGF2BeLw8IKjD1ema7ewbCRaMqeVIRPZo3MlxidnRFRK+tV6II8tKYX+7N5ZS98A==",
         "dependencies": {
           "System.IO.Hashing": "8.0.0"
-        }
-      },
-      "kentico.xperience.ecommerce.common": {
-        "type": "Project",
-        "dependencies": {
-          "Kentico.Xperience.Admin": "[31.0.0, )",
-          "Kentico.Xperience.Core": "[31.0.0, )",
-          "Microsoft.Extensions.Http": "[8.0.1, )"
-        }
-      },
-      "kentico.xperience.shopify": {
-        "type": "Project",
-        "dependencies": {
-          "GraphQL": "[7.8.0, )",
-          "GraphQL.Client": "[6.0.2, )",
-          "GraphQL.Client.Serializer.Newtonsoft": "[6.0.2, )",
-          "Kentico.Xperience.Admin": "[31.0.0, )",
-          "Kentico.Xperience.Core": "[31.0.0, )",
-          "Kentico.Xperience.Ecommerce.Common": "[3.0.0, )",
-          "ShopifySharp": "[6.22.1, )",
-          "ShopifySharp.Extensions.DependencyInjection": "[1.8.0, )",
-          "System.Configuration.ConfigurationManager": "[8.0.0, )",
-          "System.Linq.Async": "[7.0.0, )"
-        }
-      },
-      "kentico.xperience.shopify.rcl": {
-        "type": "Project",
-        "dependencies": {
-          "Kentico.Xperience.Shopify": "[6.0.0-prerelease-1, )"
         }
       },
       "GraphQL": {

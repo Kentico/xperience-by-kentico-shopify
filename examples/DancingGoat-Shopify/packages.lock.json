@@ -42,9 +42,9 @@
       },
       "Kentico.Xperience.Shopify": {
         "type": "Direct",
-        "requested": "[6.0.0-prerelease-2, )",
-        "resolved": "6.0.0-prerelease-2",
-        "contentHash": "m71aUjqd+4xOwrnulTwvcqdKm2oBrZyURAEU0cR5NPgTixCk9TpdJewhAld8BlJZEEKPp7pZdSfd/F3WsRR3FQ==",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "EhNpt0EfhCXVFmKo6GtDU3DNeCKGI2tksBMLv3QiZJ6GFPM6B+sk18U8fo8jlMHG3pwcyHWVLSmBhrSRVzqNkw==",
         "dependencies": {
           "GraphQL": "7.8.0",
           "GraphQL.Client": "6.0.2",
@@ -60,11 +60,11 @@
       },
       "Kentico.Xperience.Shopify.Rcl": {
         "type": "Direct",
-        "requested": "[6.0.0-prerelease-2, )",
-        "resolved": "6.0.0-prerelease-2",
-        "contentHash": "z7rAIyPevVjGOw8Iqma2YgJxDr7cSPlJA+R6MEjcy3HboFqFvWmfCjZ1AWjV8QEFad1qM24qfVs2yelrKi+Bww==",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "BnkTALcXwdoO32gdIDKdss82oGwOX5iOP++fm3v9KJuKYp98UkaZJfxShrqrTsQc80OjgirCesjSkD4eM6CzOg==",
         "dependencies": {
-          "Kentico.Xperience.Shopify": "6.0.0-prerelease-2"
+          "Kentico.Xperience.Shopify": "6.0.0"
         }
       },
       "Kentico.Xperience.WebApp": {

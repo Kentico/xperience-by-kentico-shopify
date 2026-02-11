@@ -34,8 +34,8 @@
     <PackageReference Include="ShopifySharp" />
     <PackageReference Include="ShopifySharp.Extensions.DependencyInjection" />
     <PackageReference Include="System.Linq.Async" />
-    <PackageReference Include="Kentico.Xperience.Shopify.Rcl" VersionOverride="6.0.0-prerelease-2" />  
-    <PackageReference Include="Kentico.Xperience.Shopify" VersionOverride="6.0.0-prerelease-2" />  
+    <PackageReference Include="Kentico.Xperience.Shopify.Rcl" VersionOverride="6.0.0" />  
+    <PackageReference Include="Kentico.Xperience.Shopify" VersionOverride="6.0.0" />  
   </ItemGroup>
 
 	<Target Name="UpgradeXbK" AfterTargets="Rebuild">
